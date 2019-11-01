@@ -1,4 +1,5 @@
-﻿using Demo.Results;
+﻿using Demo.Model;
+using Demo.Results;
 using FirmaXadesNet;
 using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature;
@@ -9,8 +10,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -45,6 +49,21 @@ namespace Demo.Controllers
 
             return parametros;
         }
+
+        private bool Verify(X509Certificate2 aCert)
+        {
+            try
+            {
+                aCert.Verify().Equals(true);
+                var key = (RSACryptoServiceProvider)aCert.PrivateKey;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
         #endregion
 
         [HttpGet]
@@ -61,34 +80,100 @@ namespace Demo.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Signature/{typeSignature}")]
+        public IHttpActionResult Signature(string typeSignature, [FromBody] ObjetoModel model)
+        {
+            try
+            {
+                IService service = null;
+                //Xades Original :: 1
+                if (typeSignature.Equals("1"))
+                {
+                    service = new FirmaXadesNet.XadesService();
+                }
+                //Xades Custom :: 2
+                else
+                {
+                    service = new Custom.FirmaXadesNet.XadesService2();
+                }
+
+                SignatureParameters parametros = ObtenerParametrosFirma();
+                SignatureDocument _signatureDocument;
+
+                parametros.SignaturePolicyInfo = ObtenerPolitica();
+                parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
+                parametros.DataFormat = new DataFormat();
+                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
+
+                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+
+                X509Certificate2 aCert = CertUtil.SelectCertificate();
+
+                if (aCert == null)
+                {
+                    return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
+                }
+
+                else if (this.Verify(aCert).Equals(true))
+                {
+                    using (parametros.Signer = new Signer(aCert))
+                    {
+                        if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
+                        {
+                            using (Stream stream = new MemoryStream(bytes))
+                            {
+                                _signatureDocument = service.Sign(stream, parametros);
+                            }
+                        }
+                        else
+                        {
+                            _signatureDocument = service.Sign(null, parametros);
+                        }
+                    }
+                    _signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml");
+                    XmlDocument xmlDocument = _signatureDocument.Document;
+                    return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
+                }
+                return Content(HttpStatusCode.OK, -2); // Certificado no valido
+            }
+            catch (System.Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         /// <summary>
         /// Verifica si existe una o mas firmas
         /// </summary>
         /// <param name="value"></param>
         /// <returns>JSON</returns>
         [HttpPost]
-        [Route("Verify")]
-        public IHttpActionResult Verify([FromBody] string value)
+        [Route("Verify/1")]
+        public IHttpActionResult Verify1([FromBody] ObjetoModel model)
         {
             try
             {
-                string pathFile = "D:\\Desktop\\FacturaFirmada.xml";
+                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
+                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+
+                FirmaXadesNet.XadesService service = new FirmaXadesNet.XadesService();
                 JObject SignatureList = new JObject();
-                SignatureDocument[] firmas = null;
-                using (FileStream fs = new FileStream(pathFile, FileMode.Open))
-                //using (FileStream fs = new FileStream("D:\\Desktop\\Facturae.xml", FileMode.Open))
+
+                //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
+                using (Stream stream = new MemoryStream(bytes))
                 {
-                    XadesService xadesService = new XadesService();
-                    firmas = xadesService.Load(fs);
-                    foreach (var afirma in firmas)
+                    SignatureDocument[] signatureDocument = service.Load(stream);
+                    foreach (var aFirma in signatureDocument)
                     {
-                        string Subject = afirma.XadesSignature.GetSigningCertificate().Subject;
-                        DateTime SigningTime = afirma.XadesSignature.XadesObject.QualifyingProperties.SignedProperties.SignedSignatureProperties.SigningTime;
+                        string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
+                        DateTime SigningTime = aFirma.XadesSignature.XadesObject.QualifyingProperties.SignedProperties.SignedSignatureProperties.SigningTime;
                         JProperty Signature = new JProperty(Subject, SigningTime.ToString());
                         SignatureList.Add(Signature);
                     }
                 }
                 return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", SignatureList));
+
             }
             catch (System.Exception ex)
             {
@@ -97,87 +182,51 @@ namespace Demo.Controllers
         }
 
         [HttpPost]
-        [Route("Signature")]
-        public XmlElement Signature([FromBody] JObject byteArray)
-        //public XmlElement Signature()
+        [Route("Verify/2")]
+        public IHttpActionResult Verify2([FromBody] ObjetoModel model)
         {
             try
             {
-                string pathFile = "C:\\Users\\nperez\\Desktop\\xml_test.xml";
-                XadesService xadesService = new XadesService();
-                SignatureParameters parametros = ObtenerParametrosFirma();
-                SignatureDocument _signatureDocument;
+                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
+                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+                List<JObject> SignatureList = new List<JObject>();
 
-                parametros.SignaturePolicyInfo = ObtenerPolitica();
-                parametros.SignaturePackaging = SignaturePackaging.INTERNALLY_DETACHED;
-                parametros.DataFormat = new DataFormat();
-                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(pathFile);
-
-                /**
-                //INTERNNALLY DETACHED: Objeto indeterminado, se selecciona automaticamente el modo de firma. 
-                // Cuando la firma y los datos firmados relacionados se incluyen en un elemento primario (solo XML).
-                //if (rbInternnallyDetached.Checked)
-                //{
-                //    parametros.SignaturePolicyInfo = ObtenerPolitica();
-                //    parametros.SignaturePackaging = SignaturePackaging.INTERNALLY_DETACHED;
-                //    parametros.DataFormat = new DataFormat();
-                //    parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(txtFichero.Text);
-                //}
-                
-                //DETACHED: Se devuelve la firma sin el documento. Cuando la firma se relaciona con los recursos externos separados de ella.
-                //else if (rbExternallyDetached.Checked)
-                //{
-                //    parametros.SignaturePackaging = SignaturePackaging.EXTERNALLY_DETACHED;
-                //    parametros.ExternalContentUri = txtFichero.Text;
-                //}
-
-                //ENVELOPED: La firma está integrada dentro del documento XML. Cuando la firma se aplica a los datos que rodean el resto del documento.
-                //else if (rbEnveloped.Checked)
-                //{
-                //    parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
-                //}
-
-                //ENVELOPING: La firma incluye el documento XML codificado en base64.
-                //cuando los datos firmados forman un subelemento de la propia firma;
-                // - Binarios codificados en Base64;
-                // - Incrustar objetos XML;
-                // - Incrustar objeto(s) de manifiesto
-
-                //else if (rbEnveloping.Checked)
-                //{
-                //    parametros.SignaturePackaging = SignaturePackaging.ENVELOPING;
-                //}
-                */
-
-                byte[] file = File.ReadAllBytes(pathFile);
-
-                using (parametros.Signer = new Signer(CertUtil.SelectCertificate()))
+                Custom.FirmaXadesNet.XadesService2 service = new Custom.FirmaXadesNet.XadesService2();
+                //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
+                using (Stream stream = new MemoryStream(bytes))
                 {
-                    if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
+                    SignatureDocument[] signatureDocument = service.Load(stream);
+                    foreach (var aFirma in signatureDocument)
                     {
-                        using (Stream stream = new MemoryStream(file))
-                        {
-                            _signatureDocument = xadesService.Sign(stream, parametros);
-                        }
+                        FirmaXadesNet.Validation.ValidationResult validation = service.Validate(aFirma);
+                        string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
+
+                        JObject jObject = new JObject();
+                        jObject.Add("Subject", Subject) ;
+                        jObject.Add("IsValid", validation.IsValid);
+                        jObject.Add("Message", validation.Message);
+
+
+                        SignatureList.Add(jObject);
                     }
-                    else
-                    {
-                        _signatureDocument = xadesService.Sign(null, parametros);
-                    }
+
+
+                    return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
+
+                    
+                    //JProperty jProperty = new JProperty("Oops!", "Nunca deberia llegar aqui!");
+                    //jObject.Add(jProperty);
+                    //return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", jObject));
                 }
-                //_signatureDocument.Save("D:\\Desktop\\test.xml");
-                XmlDocument xmlDocument = _signatureDocument.Document;
-                return xmlDocument.DocumentElement;
             }
             catch (System.Exception ex)
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                XmlException exception = new XmlException(ex.ToString());
-                xmlDocument.LoadXml($"<root><exception>{exception}</exception></root>");
-                return xmlDocument.DocumentElement;
+                return InternalServerError(ex);
             }
         }
 
+        
+        /**
         [HttpGet]
         [Route("Document")]
         public XmlElement Document()
@@ -207,14 +256,11 @@ namespace Demo.Controllers
             XmlDocument document = new XmlDocument();
             document.Load(pathFile);
 
-
             XmlNode xnList = document.SelectSingleNode("/DOCFIRMA/CONTENT");
- 
-                Console.WriteLine("Name: {0} ", xnList.InnerText);
- 
- 
+                 Console.WriteLine("Name: {0} ", xnList.InnerText);
 
             return document.DocumentElement;
         }
+        */
     }
 }

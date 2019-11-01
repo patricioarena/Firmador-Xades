@@ -31,7 +31,7 @@ using System.Xml;
 
 namespace FirmaXadesNet.Utils
 {
-    class XMLUtil
+    public class XMLUtil
     {
         #region Public methods
 

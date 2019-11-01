@@ -13,11 +13,15 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'ng2-file-upload';
 
-import { DigitalSignatureService } from './digital-signature.service';
+import { DigitalSignatureService } from './service/digital-signature.service';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { NotificationService } from './service/notification.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,7 +32,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
 
   ],
   imports: [
@@ -36,6 +40,8 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     FileUploadModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
@@ -43,7 +49,7 @@ const routes: Routes = [
     TooltipModule.forRoot(),
     RouterModule.forRoot(routes)
   ],
-  providers: [ DigitalSignatureService, NgxSpinnerService ],
+  providers: [ DigitalSignatureService, NgxSpinnerService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

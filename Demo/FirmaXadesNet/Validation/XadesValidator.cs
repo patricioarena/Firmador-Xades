@@ -49,11 +49,11 @@ namespace FirmaXadesNet.Validation
              * 
              * La validación de perfiles -C, -X, -XL y -A esta fuera del ámbito de este proyecto.
              */
-            
+
             ValidationResult result = new ValidationResult();
-                       
+
             try
-            {                
+            {
                 // Verifica las huellas de las referencias y la firma
                 sigDocument.XadesSignature.CheckXmldsigSignature();
             }
@@ -64,7 +64,7 @@ namespace FirmaXadesNet.Validation
 
                 return result;
             }
-            
+
             if (sigDocument.XadesSignature.UnsignedProperties.UnsignedSignatureProperties.SignatureTimeStampCollection.Count > 0)
             {
                 // Se comprueba el sello de tiempo
@@ -97,6 +97,30 @@ namespace FirmaXadesNet.Validation
 
                     return result;
                 }
+            }
+
+            result.IsValid = true;
+            result.Message = "Verificación de la firma satisfactoria";
+
+            return result;
+        }
+
+        public ValidationResult ValidateSignature(SignatureDocument sigDocument)
+        {
+
+            ValidationResult result = new ValidationResult();
+
+            try
+            {
+                // Verifica las huellas de las referencias y la firma
+                sigDocument.XadesSignature.CheckXmldsigSignature();
+            }
+            catch (Exception ex)
+            {
+                result.IsValid = false;
+                result.Message = "La verificación de la firma no ha sido satisfactoria";
+
+                return result;
             }
 
             result.IsValid = true;

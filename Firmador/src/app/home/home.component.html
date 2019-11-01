@@ -4,50 +4,42 @@
 
 <div class="container">
   <div class="header"></div>
-      <div class="pb-2 mt-4 mb-2 border-bottom">
-          <h1>Digital Signature <sub><font size="2">Demo</font></sub></h1>
+  <div class="row ">
+    <div class="col-sm-9">
+      <div class="mt-5 border-bottom">
+        <h1>Digital Signature <sub>
+            <font size="2">Demo</font>
+          </sub></h1>
+      </div>
     </div>
-</div>
-
-
-
-<div class="container mt-3">
-
-      <!-- <div class="custom-file mb-3">
-        <input type="file" class="custom-file-input" id="customFile" name="filename" onchange="return onChangeFileInput(this);">
-        <label class="custom-file-label" for="customFile">Choose file</label>
-      </div>
-
-      <p>Default file:</p>
-      <input type="file" id="myFile" name="filename2"> -->
-      <div class="form-group">
-        <label for="exampleFormControlTextarea1">Example textarea</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-      </div>
-
-      <div class="row">
-        <div class="mt-3">
-          <button  (click)="firmar()" class="btn btn-primary">Firmar</button>
-        </div>
-
-        <div class="mt-3">
-          <button class="btn btn-primary">Co - Firmar</button>
-        </div>
-
-        <div class="mt-3">
-          <button  class="btn btn-primary">Verificar Firmas</button>
-        </div>
-
-        <div class="mt-3">
-          <button class="btn btn-primary">Revocar Firma</button>
-        </div>
-
-      </div>
-
-
-
+    <div class="col-mt-4 col-sm-3"  *ngIf="show" >
+      <button type="button" class="btn btn-success mt-4" (click)="downloadFile()">Descargar Documento Firmado&nbsp;<i
+          class="fa fa-download fa-lg" aria-hidden="true"></i></button></div>
   </div>
-
-
+</div>
+<div class=" mt-4"></div>
+<div class="container" >
+  <div class="form-group">
+    <!-- <label for="Textarea1">Example textarea</label> -->
+    <textarea class="form-control" id="Textarea1" rows="13" style="resize: none;" [(ngModel)]="text"></textarea>
+  </div>
+  <select class="custom-select" (change)="changeType($event)" >
+    <option *ngFor="let aType of TiposDeFirma" [ngValue]="aType">{{aType.key}}</option>
+  </select>
+</div>
+<br>
+<br>
+<div class="container">
+  <div class="text-center">
+    <button type="button" class="btn btn-primary waves-effect waves-light" (click)='Firmar()'><i
+        class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp;Firmar</button>
+    <!-- <button type="button" class="btn btn-default waves-effect waves-light"><i class="fa fa-pencil fa-fw"
+        aria-hidden="true"></i>&nbsp;Co - Firmar</button> -->
+    <button type="button" class="btn btn-warning waves-effect waves-light" (click)="Verificar()"><i
+        class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;Verificar Firmas</button>
+    <!-- <button type="button" class="btn btn-danger waves-effect waves-light" (click)="showSuccess()"><i class="fa fa-eraser fa-fw"
+        aria-hidden="true"></i>&nbsp;Revocar Firma</button> -->
+  </div>
+</div>
 
 

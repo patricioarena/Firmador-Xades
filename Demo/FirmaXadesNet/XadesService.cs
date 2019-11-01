@@ -38,7 +38,7 @@ using System.Xml;
 namespace FirmaXadesNet
 {
 
-    public class XadesService
+    public class XadesService: IService
     {
 
         #region Private variables

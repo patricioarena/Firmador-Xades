@@ -601,6 +601,40 @@ namespace Microsoft.Xades
             }
         }
 
+        public void AddXadesObjectForXmlDsigService(XadesObject xadesObject)
+        {
+            Reference reference;
+            DataObject dataObject;
+            XmlElement bufferXmlElement;
+
+            if (this.SignatureStandard != KnownSignatureStandard.Xades)
+            {
+                dataObject = new DataObject();
+                dataObject.Id = xadesObject.Id;
+                dataObject.Data = xadesObject.GetXml().ChildNodes;                    
+
+                reference = new Reference();
+                signedPropertiesIdBuffer = xadesObject.QualifyingProperties.SignedProperties.Id;
+                reference.Uri = "#" + signedPropertiesIdBuffer;
+                reference.Type = SignedPropertiesType;
+
+                this.cachedXadesObjectDocument = new XmlDocument();
+                bufferXmlElement = xadesObject.GetXml();
+
+                // Add "ds" namespace prefix to all XmlDsig nodes in the XAdES object
+                SetPrefix("ds", bufferXmlElement);
+
+                this.cachedXadesObjectDocument.PreserveWhitespace = true;
+                this.cachedXadesObjectDocument.LoadXml(bufferXmlElement.OuterXml); //Cache to XAdES object for later use
+
+                this.signatureStandard = KnownSignatureStandard.Xades;
+            }
+            else
+            {
+                throw new CryptographicException("Can't add XAdES object, the signature already contains a XAdES object");
+            }
+        }
+
         /// <summary>
         /// Additional tests for XAdES signatures.  These tests focus on
         /// XMLDSIG verification and correct form of the XAdES XML structure

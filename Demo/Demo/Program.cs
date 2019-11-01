@@ -17,7 +17,6 @@ namespace Demo
         static void Main()
         {
 
-
             int port = 8400;
             SelfSignedCertificateService.Port = port;
             SelfSignedCertificateService.Init();
