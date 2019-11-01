@@ -180,10 +180,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/router@~8.2.11":
-  version "8.2.11"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-8.2.11.tgz#3925f0e9840ce0c9002eb154f1f7cd998994a15d"
-  integrity sha512-US8vp9TiryAVoLZwKZqApG6OvRizlJh6k+YA40/Z+fZBFIFM+Og80yiuUJ+p29unheVqA/tvAHmBdBrLNaliJA==
+"@angular/router@^8.2.11":
+  version "8.2.13"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-8.2.13.tgz#fad64a7147e2863d8332aaaa08b3bda9e3dcdd51"
+  integrity sha512-9CqnachtdASnEmRMtrG/R3c5nDCjjlCU4n0W/xt5+LlveyuUVvAT/CFUC38km4Df3lIvqap8mSpxzGaEzCL+wQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -3544,8 +3544,9 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
 lodash.mergewith@^4.6.0:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
+  integrity sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==
 
 lodash.tail@^4.1.1:
   version "4.1.1"
