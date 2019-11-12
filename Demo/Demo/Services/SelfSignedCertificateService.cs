@@ -182,6 +182,7 @@ namespace Demo.Services
         public static void ViewDataCertificate()
         {
 #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
+            Console.WriteLine("Friendly Name: {0}{1}", x509Certificate.FriendlyName, Environment.NewLine);
             Console.WriteLine("Name: {0}{1}", x509Certificate.GetName(), Environment.NewLine);
 #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
             Console.WriteLine("Simple Name: {0}{1}", x509Certificate.GetNameInfo(X509NameType.SimpleName, true), Environment.NewLine);

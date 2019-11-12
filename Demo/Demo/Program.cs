@@ -1,4 +1,5 @@
-﻿using Demo.Services;
+﻿using Demo.Model;
+using Demo.Services;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ namespace Demo
         [STAThread]
         static void Main()
         {
-
             int port = 8400;
             SelfSignedCertificateService.Port = port;
             SelfSignedCertificateService.Init();
@@ -24,7 +24,7 @@ namespace Demo
             WebApp.Start<Startup>($"https://localhost:{port}/");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Configuración());
+            Application.Run(new Signature());
         }
     }
 }

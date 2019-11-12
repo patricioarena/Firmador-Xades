@@ -59,7 +59,9 @@
       <DependentUpon>Configuración.cs</DependentUpon>
     </Compile>
     <Compile Include="MimeTypeInfo.cs" />
+    <Compile Include="Model\DataNode.cs" />
     <Compile Include="Model\ObjetoModel.cs" />
+    <Compile Include="Model\MyItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\CustomException.cs" />

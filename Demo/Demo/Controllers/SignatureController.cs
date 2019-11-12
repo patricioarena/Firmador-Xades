@@ -155,6 +155,7 @@ namespace Demo.Controllers
             try
             {
                 //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
+
                 byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
 
                 FirmaXadesNet.XadesService service = new FirmaXadesNet.XadesService();
@@ -187,7 +188,16 @@ namespace Demo.Controllers
         {
             try
             {
+
+
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(model.Archivo);
+
+                //this.TeViewerVerify(doc);
+
+
                 //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
+
                 byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
                 List<JObject> SignatureList = new List<JObject>();
 
@@ -202,7 +212,7 @@ namespace Demo.Controllers
                         string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
 
                         JObject jObject = new JObject();
-                        jObject.Add("Subject", Subject) ;
+                        jObject.Add("Subject", Subject);
                         jObject.Add("IsValid", validation.IsValid);
                         jObject.Add("Message", validation.Message);
 
@@ -210,10 +220,8 @@ namespace Demo.Controllers
                         SignatureList.Add(jObject);
                     }
 
-
                     return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
 
-                    
                     //JProperty jProperty = new JProperty("Oops!", "Nunca deberia llegar aqui!");
                     //jObject.Add(jProperty);
                     //return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", jObject));
@@ -225,7 +233,56 @@ namespace Demo.Controllers
             }
         }
 
-        
+        public void TeViewerVerify(XmlDocument doc)
+        {
+            System.Security.Cryptography.Xml.SignedXml signedXml = new System.Security.Cryptography.Xml.SignedXml(doc);
+            XmlNodeList nodeList = doc.GetElementsByTagName("ds:Signature");
+            if (nodeList.Count > 0)
+            {
+                try
+                {
+                    var temp = (XmlElement)nodeList[0];
+                    signedXml.LoadXml(temp);
+                    try
+                    {
+
+                        if (signedXml.CheckSignature())
+                        {
+                            //agregamos un nodo con el resultado del chequeo para el display
+                            XmlNode n = doc.SelectSingleNode("//titulo");
+                            XmlElement e = doc.CreateElement("firma_valida");
+                            e.InnerText = "1";
+                            n.AppendChild(e);
+                        }
+                        else
+                        {
+
+                            XmlNode n = doc.SelectSingleNode("//titulo");
+                            XmlElement e = doc.CreateElement("firma_valida");
+                            e.InnerText = "0";
+                            e.InnerText = "FIRMA_INVALIDA";
+                            n.AppendChild(e);
+
+                        }
+
+                        string xml = doc.InnerXml;
+                    }
+                    catch (CryptographicException ex)
+                    {
+                        throw ex;
+                    }
+                }
+                catch (CryptographicException ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                throw new CryptographicException();
+            }
+        }
+
         /**
         [HttpGet]
         [Route("Document")]
