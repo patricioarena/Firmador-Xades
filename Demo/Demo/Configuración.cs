@@ -58,7 +58,7 @@ namespace Demo
                 LoadViewList();
             }
             panel1.Refresh();
-            Console.WriteLine("cambie la prop visible del panel, puto");
+            Console.WriteLine("cambie la prop visible del panel");
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -186,12 +186,12 @@ namespace Demo
 
         private void button1_Leave(object sender, EventArgs e)
         {
-            Console.WriteLine("sali del boton, puto");
+            Console.WriteLine("sali del boton");
         }
 
         private void button1_Enter(object sender, EventArgs e)
         {
-            Console.WriteLine("entré al boton, puto");
+            Console.WriteLine("entré al boton");
         }
     }
 
