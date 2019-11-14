@@ -80,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\CustomException.cs" />
     <Compile Include="Results\ResponseApi.cs" />
+    <Compile Include="Services\HttpHelperRestConections.cs" />
     <Compile Include="Services\SelfSignedCertificateService.cs" />
     <Compile Include="Startup.cs" />
     <EmbeddedResource Include="Configuración.resx">

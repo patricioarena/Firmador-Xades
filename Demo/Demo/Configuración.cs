@@ -1,4 +1,5 @@
 ﻿using Demo.Model;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,10 +20,14 @@ namespace Demo
     {
         private readonly List<IDataNode> listDataNode = new List<IDataNode>();
         private static string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
+        private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        private static string name = "ApplicationName";
+        private static string path = (string)"ApplicationPath";
+        private static int ticks;
         public Signature()
         {
             InitializeComponent();
+            LoadCheckeds();
             panel1.Visible = true;
             panel2.Visible = true;
             panel3.Visible = false;
@@ -32,24 +37,21 @@ namespace Demo
         {
             label1.Text = String.Format("     Version: {0}", assemblyVersion);
         }
-
         private void ListView1MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListView listView = (ListView)sender;
             ListViewItem item = listView.FocusedItem;
             ViewCert(item);
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             panel2.Visible = !panel2.Visible;
             panel3.Visible = !panel3.Visible;
-            
+
             if (panel2.Visible == true)
             {
                 panel3.SendToBack();
                 panel2.BringToFront();
-                //LoadViewList();
             }
             if (panel2.Visible == false)
             {
@@ -60,7 +62,10 @@ namespace Demo
             panel1.Refresh();
             Console.WriteLine("cambie la prop visible del panel");
         }
-
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Buscando actualizaciones...");
+        }
         private void button3_Click(object sender, EventArgs e)
         {
             Close();
@@ -69,7 +74,6 @@ namespace Demo
             //this.MessagesOnChange();
             //this.Hide();
         }
-
         private void Form_Hide(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
@@ -79,14 +83,12 @@ namespace Demo
                 Hide();
             }
         }
-
         private void Form_Show(object sender, MouseEventArgs e)
         {
             Show();
             WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
         }
-
         private void ListView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
@@ -103,7 +105,6 @@ namespace Demo
 
             }
         }
-
         private void ObtainModel()
         {
             X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
@@ -122,7 +123,6 @@ namespace Demo
             }
 
         }
-
         private void LoadViewList()
         {
             listDataNode.Clear();
@@ -142,12 +142,12 @@ namespace Demo
 
                 if (item.isValid)
                 {
-                    subItem_flag.Text = "Valid";
+                    subItem_flag.Text = "Valido";
                     subItem_flag.ForeColor = Color.Green;
                 }
                 else
                 {
-                    subItem_flag.Text = "Invalid";
+                    subItem_flag.Text = "No valido";
                     subItem_flag.ForeColor = Color.Red;
                 }
 
@@ -156,7 +156,6 @@ namespace Demo
                 listViewItem.SubItems.Add(subItem_Thumbprint);
             }
         }
-
         private void ViewCert(ListViewItem item)
         {
             String Thumbprint = item.SubItems[2].Text;
@@ -166,7 +165,6 @@ namespace Demo
             X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == Thumbprint).FirstOrDefault();
             X509Certificate2UI.DisplayCertificate(certificate);
         }
-
         private void MessagesOnChange()
         {
             //if (Network.StatusPrincipalInterface().Equals(true))
@@ -183,15 +181,93 @@ namespace Demo
             //    notifyIcon.ShowBalloonTip(500);
             //}
         }
-
+        private void LoadCheckeds()
+        {
+            #region InicioAutomatico
+            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
+            {
+                List<string> names = registry.GetValueNames().ToList();
+                if (names.Contains(name).Equals(true))
+                {
+                    checkBox1.Checked = true;
+                }
+                else
+                {
+                    checkBox1.Checked = false;
+                }
+            }
+            #endregion
+            #region Actualizaciones automaticas
+            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
+            {
+                List<string> names = registry.GetValueNames().ToList();
+                if (names.Contains($"{name} Update").Equals(true))
+                {
+                    checkBox2.Checked = true;
+                    timer1.Start();
+                }
+                else
+                {
+                    checkBox2.Checked = false;
+                    timer1.Stop();
+                }
+            }
+            #endregion
+        }
         private void button1_Leave(object sender, EventArgs e)
         {
             Console.WriteLine("sali del boton");
         }
-
         private void button1_Enter(object sender, EventArgs e)
         {
             Console.WriteLine("entré al boton");
+        }
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            Console.WriteLine("Cuadrito ON");
+        }
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked == true)
+            {
+                Console.WriteLine($"checkBox1 => True {checkBox1}");
+                Registry.CurrentUser.CreateSubKey(keyName).SetValue(name, path, RegistryValueKind.String);
+            }
+            else
+            {
+                Console.WriteLine($"checkBox1 => False {checkBox1}");
+                Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue(name);
+            }
+
+
+        }
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked == true)
+            {
+                Console.WriteLine($"checkBox2 => True {checkBox2}");
+                Registry.CurrentUser.CreateSubKey(keyName).SetValue($"{name} Update", path, RegistryValueKind.String);
+                timer1.Start();
+            }
+            else
+            {
+                Console.WriteLine($"checkBox2 => False {checkBox2}");
+                Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue($"{name} Update");
+                ticks = 0;
+                timer1.Stop();
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            ticks++;
+            this.Text = ticks.ToString();
+            if (ticks == 100)
+            {
+                this.Text = "";
+                Console.WriteLine("Ejecutar ping!");
+                ticks = 0;
+            }
         }
     }
 
