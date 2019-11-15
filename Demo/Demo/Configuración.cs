@@ -20,8 +20,9 @@ namespace Demo
     {
         private readonly List<IDataNode> listDataNode = new List<IDataNode>();
         private static string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        private static string assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        private static string name = "ApplicationName";
+        private static string keyNameUPDATE = @"Software\Signature";
         private static string path = (string)"ApplicationPath";
         private static int ticks;
         public Signature()
@@ -52,11 +53,13 @@ namespace Demo
             {
                 panel3.SendToBack();
                 panel2.BringToFront();
+                listView1.Refresh();
             }
             if (panel2.Visible == false)
             {
                 panel2.SendToBack();
                 panel3.BringToFront();
+                listView1.Refresh();
                 LoadViewList();
             }
             panel1.Refresh();
@@ -187,7 +190,7 @@ namespace Demo
             using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
             {
                 List<string> names = registry.GetValueNames().ToList();
-                if (names.Contains(name).Equals(true))
+                if (names.Contains(assemblyName).Equals(true))
                 {
                     checkBox1.Checked = true;
                 }
@@ -198,10 +201,10 @@ namespace Demo
             }
             #endregion
             #region Actualizaciones automaticas
-            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
+            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyNameUPDATE))
             {
                 List<string> names = registry.GetValueNames().ToList();
-                if (names.Contains($"{name} Update").Equals(true))
+                if (names.Contains($"{assemblyName} Update").Equals(true))
                 {
                     checkBox2.Checked = true;
                     timer1.Start();
@@ -231,12 +234,12 @@ namespace Demo
             if (checkBox1.Checked == true)
             {
                 Console.WriteLine($"checkBox1 => True {checkBox1}");
-                Registry.CurrentUser.CreateSubKey(keyName).SetValue(name, path, RegistryValueKind.String);
+                Registry.CurrentUser.CreateSubKey(keyName).SetValue(assemblyName, path, RegistryValueKind.String);
             }
             else
             {
                 Console.WriteLine($"checkBox1 => False {checkBox1}");
-                Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue(name);
+                Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue(assemblyName);
             }
 
 
@@ -246,13 +249,13 @@ namespace Demo
             if (checkBox2.Checked == true)
             {
                 Console.WriteLine($"checkBox2 => True {checkBox2}");
-                Registry.CurrentUser.CreateSubKey(keyName).SetValue($"{name} Update", path, RegistryValueKind.String);
+                Registry.CurrentUser.CreateSubKey(keyNameUPDATE).SetValue($"{assemblyName} Update", path, RegistryValueKind.String);
                 timer1.Start();
             }
             else
             {
                 Console.WriteLine($"checkBox2 => False {checkBox2}");
-                Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue($"{name} Update");
+                Registry.CurrentUser.OpenSubKey(keyNameUPDATE, true).DeleteValue($"{assemblyName} Update");
                 ticks = 0;
                 timer1.Stop();
             }

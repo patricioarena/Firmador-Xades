@@ -4,6 +4,8 @@ using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,14 +19,27 @@ namespace Demo
         [STAThread]
         static void Main()
         {
-            int port = 8400;
-            SelfSignedCertificateService.Port = port;
-            SelfSignedCertificateService.Init();
+            bool alreadyRunning = false;
 
-            WebApp.Start<Startup>($"https://localhost:{port}/");
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Signature());
+            using (Mutex mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name.ToString() , out alreadyRunning))
+            {
+                if (alreadyRunning)
+                {
+                    int port = 8400;
+                    SelfSignedCertificateService.Port = port;
+                    SelfSignedCertificateService.Init();
+
+                    WebApp.Start<Startup>($"https://localhost:{port}/");
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Signature());
+                }
+                else
+                {
+                    MessageBox.Show("La aplicación ya se encuentra en ejecución");
+                }
+            }
+
         }
     }
 }
