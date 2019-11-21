@@ -20,6 +20,6 @@ C:\Users\nperez\Desktop\Frimador\Demo\Library\obj\Debug\Microsoft.Xades.pdb
 D:\Codigo\Firmador Xades\Demo\Library\bin\Debug\Microsoft.Xades.dll
 D:\Codigo\Firmador Xades\Demo\Library\bin\Debug\Microsoft.Xades.pdb
 D:\Codigo\Firmador Xades\Demo\Library\bin\Debug\XAdES.xml
+D:\Codigo\Firmador Xades\Demo\Library\obj\Debug\Microsoft.Xades.csprojAssemblyReference.cache
 D:\Codigo\Firmador Xades\Demo\Library\obj\Debug\Microsoft.Xades.dll
 D:\Codigo\Firmador Xades\Demo\Library\obj\Debug\Microsoft.Xades.pdb
-D:\Codigo\Firmador Xades\Demo\Library\obj\Debug\Microsoft.Xades.csprojAssemblyReference.cache
