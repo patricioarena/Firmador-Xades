@@ -3,14 +3,19 @@ using Demo.Services;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Demo
 {
+
+    #if DEBUG
     static class Program
     {
         /// <summary>
@@ -21,7 +26,7 @@ namespace Demo
         {
             bool alreadyRunning = false;
 
-            using (Mutex mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name.ToString() , out alreadyRunning))
+            using (Mutex mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name.ToString(), out alreadyRunning))
             {
                 if (alreadyRunning)
                 {
@@ -42,8 +47,66 @@ namespace Demo
 
         }
     }
-}
+#endif
+#if RELEASE
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            var wi = WindowsIdentity.GetCurrent();
+            var wp = new WindowsPrincipal(wi);
 
-//Error al agregar el certificado SSL.Error: 183 -> No se puede crear un archivo que ya existe.
-//Error al agregar el certificado SSL.Error: 1312 -> Installar el certificado en el asistente como "Equipo local" y en "Entidades de certificacion raiz de confianza"  y en "Personal":
-//netsh http add sslcert ipport=0.0.0.0:8088 certhash=4d5da0a8d8784b6146a1b3059667d1580eea9616 appid = "{6EA4FE96-C6B1-41A3-B3FD-F9CE949569DF}"
+            bool runAsAdmin = wp.IsInRole(WindowsBuiltInRole.Administrator);
+
+            if (!runAsAdmin)
+            {
+                // No es posible iniciar una aplicación ClickOnce como administrador directamente,
+                // así que en su lugar, iniciamos la aplicación como administrador en un nuevo proceso.
+                var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
+
+                // Las siguientes propiedades ejecutan el nuevo proceso como administrador
+                processInfo.UseShellExecute = true;
+                processInfo.Verb = "runas";
+
+                // Comienza el nuevo proceso
+                try
+                {
+                    Process.Start(processInfo);
+                }
+                catch (Exception)
+                {
+                }
+
+                // Cerrar el proceso actual
+                Application.Exit();
+            }
+            else
+            {
+                var alreadyRunning = false;
+                using (Mutex mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name.ToString(), out alreadyRunning))
+                {
+                    if (alreadyRunning)
+                    {
+                        int port = 8400;
+                        SelfSignedCertificateService.Port = port;
+                        SelfSignedCertificateService.Init();
+
+                        WebApp.Start<Startup>($"https://localhost:{port}/");
+                        Application.EnableVisualStyles();
+                        Application.SetCompatibleTextRenderingDefault(false);
+                        Application.Run(new Signature());
+                    }
+                    else
+                    {
+                        MessageBox.Show("La aplicación ya se encuentra en ejecución");
+                    }
+                }
+            }
+        }
+    }
+#endif
+}

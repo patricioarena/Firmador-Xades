@@ -329,6 +329,7 @@ namespace Demo.Services
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.Verb = "runas";
                 process.Start();
                 string output = process.StandardOutput.ReadToEnd();
                 Console.WriteLine(output);
@@ -346,6 +347,7 @@ namespace Demo.Services
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.Verb = "runas";
                 process.Start();
                 string output = process.StandardOutput.ReadToEnd();
                 Console.WriteLine(output);

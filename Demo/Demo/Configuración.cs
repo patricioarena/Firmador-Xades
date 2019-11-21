@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,9 +24,7 @@ namespace Demo
         private static string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         private static string assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        private static string keyNameUPDATE = @"Software\Signature";
-        private static string path = (string)"ApplicationPath";
-        private static int ticks;
+        private static string path = Assembly.GetExecutingAssembly().Location;
         public Signature()
         {
             InitializeComponent();
@@ -54,6 +54,7 @@ namespace Demo
                 panel3.SendToBack();
                 panel2.BringToFront();
                 listView1.Refresh();
+                LoadViewList();
             }
             if (panel2.Visible == false)
             {
@@ -64,10 +65,6 @@ namespace Demo
             }
             panel1.Refresh();
             Console.WriteLine("cambie la prop visible del panel");
-        }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Buscando actualizaciones...");
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -131,6 +128,7 @@ namespace Demo
             listDataNode.Clear();
             ObtainModel();
             listView1.Items.Clear();
+            listView1.Refresh();
             for (int i = 0; i < listDataNode.Count; i++)
             {
                 IDataNode item = listDataNode[i];
@@ -186,7 +184,6 @@ namespace Demo
         }
         private void LoadCheckeds()
         {
-            #region InicioAutomatico
             using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
             {
                 List<string> names = registry.GetValueNames().ToList();
@@ -199,23 +196,6 @@ namespace Demo
                     checkBox1.Checked = false;
                 }
             }
-            #endregion
-            #region Actualizaciones automaticas
-            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyNameUPDATE))
-            {
-                List<string> names = registry.GetValueNames().ToList();
-                if (names.Contains($"{assemblyName} Update").Equals(true))
-                {
-                    checkBox2.Checked = true;
-                    timer1.Start();
-                }
-                else
-                {
-                    checkBox2.Checked = false;
-                    timer1.Stop();
-                }
-            }
-            #endregion
         }
         private void button1_Leave(object sender, EventArgs e)
         {
@@ -224,10 +204,6 @@ namespace Demo
         private void button1_Enter(object sender, EventArgs e)
         {
             Console.WriteLine("entré al boton");
-        }
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
-            Console.WriteLine("Cuadrito ON");
         }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -244,34 +220,7 @@ namespace Demo
 
 
         }
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox2.Checked == true)
-            {
-                Console.WriteLine($"checkBox2 => True {checkBox2}");
-                Registry.CurrentUser.CreateSubKey(keyNameUPDATE).SetValue($"{assemblyName} Update", path, RegistryValueKind.String);
-                timer1.Start();
-            }
-            else
-            {
-                Console.WriteLine($"checkBox2 => False {checkBox2}");
-                Registry.CurrentUser.OpenSubKey(keyNameUPDATE, true).DeleteValue($"{assemblyName} Update");
-                ticks = 0;
-                timer1.Stop();
-            }
-        }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            ticks++;
-            this.Text = ticks.ToString();
-            if (ticks == 100)
-            {
-                this.Text = "";
-                Console.WriteLine("Ejecutar ping!");
-                ticks = 0;
-            }
-        }
     }
 
 }
