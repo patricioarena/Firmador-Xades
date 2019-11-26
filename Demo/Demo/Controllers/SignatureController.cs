@@ -131,7 +131,7 @@ namespace Demo.Controllers
                             _signatureDocument = service.Sign(null, parametros);
                         }
                     }
-                    _signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml");
+                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml");
                     XmlDocument xmlDocument = _signatureDocument.Document;
                     return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
                 }

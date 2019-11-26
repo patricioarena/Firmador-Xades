@@ -23,14 +23,14 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
+    <MapFileExtensions>false</MapFileExtensions>
     <InstallUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup\</InstallUrl>
-    <UpdateUrl>https://appsdev.fepba.gov.ar/xadessigner/setup/</UpdateUrl>
+    <UpdateUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup\</UpdateUrl>
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,7 +67,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
@@ -106,13 +106,14 @@
     </Compile>
     <Compile Include="MimeTypeInfo.cs" />
     <Compile Include="Model\DataNode.cs" />
+    <Compile Include="Model\DualCheck.cs" />
     <Compile Include="Model\ObjetoModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\CustomException.cs" />
     <Compile Include="Results\ResponseApi.cs" />
+    <Compile Include="Services\CertificateControl.cs" />
     <Compile Include="Services\HttpHelperRestConections.cs" />
-    <Compile Include="Services\SelfSignedCertificateService.cs" />
     <Compile Include="Startup.cs" />
     <EmbeddedResource Include="Configuración.resx">
       <DependentUpon>Configuración.cs</DependentUpon>
@@ -162,6 +163,10 @@
     <Folder Include="Site\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CertUtil\CertUtilCustom.csproj">
+      <Project>{7d14ee7f-8751-4a57-a95f-7314549c0c1a}</Project>
+      <Name>CertUtilCustom</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FirmaXadesNet\FirmaXadesNet.csproj">
       <Project>{84B87815-DD45-4C60-B343-C11D45847BDF}</Project>
       <Name>FirmaXadesNet</Name>

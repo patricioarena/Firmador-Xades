@@ -1,0 +1,14 @@
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\CertUtilCustom.exe.config
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\CertUtilCustom.exe.manifest
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\CertUtilCustom.application
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\CertUtilCustom.exe
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\CertUtilCustom.pdb
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\Newtonsoft.Json.dll
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Release\Newtonsoft.Json.xml
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.csprojAssemblyReference.cache
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.TrustInfo.xml
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.exe.manifest
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.application
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.csproj.CopyComplete
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.exe
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Release\CertUtilCustom.pdb

@@ -29,6 +29,19 @@ C:\Users\nperez\Desktop\Frimador\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.cspr
 C:\Users\nperez\Desktop\Frimador\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.csproj.CopyComplete
 C:\Users\nperez\Desktop\Frimador\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.dll
 C:\Users\nperez\Desktop\Frimador\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.pdb
+D:\Codigo\Nueva carpeta\Firmador%20XML%20xAdes\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.csprojAssemblyReference.cache
+D:\Codigo\Nueva carpeta\Firmador%20XML%20xAdes\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.dll
+D:\Codigo\Nueva carpeta\Firmador%20XML%20xAdes\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.pdb
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\bin\Debug\FirmaXadesNet.dll
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\bin\Debug\FirmaXadesNet.pdb
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\bin\Debug\BouncyCastle.Crypto.dll
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\bin\Debug\Microsoft.Xades.dll
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\bin\Debug\Microsoft.Xades.pdb
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\bin\Debug\BouncyCastle.Crypto.pdb
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.csprojAssemblyReference.cache
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.csproj.CopyComplete
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.dll
+D:\Codigo\Nueva carpeta\saaa\Demo\FirmaXadesNet\obj\Debug\FirmaXadesNet.pdb
 D:\Codigo\Firmador Xades\Demo\FirmaXadesNet\bin\Debug\FirmaXadesNet.dll
 D:\Codigo\Firmador Xades\Demo\FirmaXadesNet\bin\Debug\FirmaXadesNet.pdb
 D:\Codigo\Firmador Xades\Demo\FirmaXadesNet\bin\Debug\BouncyCastle.Crypto.dll

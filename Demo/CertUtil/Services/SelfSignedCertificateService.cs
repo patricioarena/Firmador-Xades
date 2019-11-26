@@ -9,16 +9,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Collections.Generic;
+using CertUtilCustom.Model;
 
-namespace Demo.Services
+namespace CertUtilCustom.Services
 {
-    public class DualCheck
-    {
-        public DualCheck() { }
-        public bool Root { get; set; }
-        public bool My { get; set; }
-    }
-
     public static class SelfSignedCertificateService
     {
         private static StoreName storeRoot = StoreName.Root;
@@ -29,7 +23,8 @@ namespace Demo.Services
         private static string Autenticación_del_servidor = "1.3.6.1.5.5.7.3.1";
         private static int keyLength = 4096;
         private static X509Certificate2 x509Certificate = null;
-        private static string assemblyGuid = AssemblyGuidString(typeof(Program).Assembly);
+        //private static string assemblyGuid = AssemblyGuidString(typeof(Program).Assembly);
+        private static string assemblyGuid = "6ea4fe96-c6b1-41a3-b3fd-f9ce949569df";
         private static string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Web Service Digital Signature\\Settings.json");
 
         public static int? Port = null;
@@ -265,11 +260,11 @@ namespace Demo.Services
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(cert);
                 store.Close();
-                Console.WriteLine($"Install Certificate in {storeName}");
+                //Console.WriteLine($"Install Certificate in {storeName}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Install Certificate in {storeName}: {ex.StackTrace}");
+                //Console.WriteLine($"Install Certificate in {storeName}: {ex.StackTrace}");
             }
         }
 
@@ -282,11 +277,11 @@ namespace Demo.Services
                 store.Open(OpenFlags.ReadWrite);
                 store.Remove(cert);
                 store.Close();
-                Console.WriteLine($"Uninstall Certificate in {storeName}");
+                //Console.WriteLine($"Uninstall Certificate in {storeName}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Uninstall Certificate in {storeName}: {ex.StackTrace}");
+                //Console.WriteLine($"Uninstall Certificate in {storeName}: {ex.StackTrace}");
             }
         }
 
@@ -329,10 +324,9 @@ namespace Demo.Services
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.Verb = "runas";
                 process.Start();
-                string output = process.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
+                //string output = process.StandardOutput.ReadToEnd();
+                //Console.WriteLine(output);
                 process.WaitForExit();
                 return process.ExitCode;
             }
@@ -347,10 +341,9 @@ namespace Demo.Services
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.Verb = "runas";
                 process.Start();
-                string output = process.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
+                //string output = process.StandardOutput.ReadToEnd();
+                //Console.WriteLine(output);
                 process.WaitForExit();
                 return process.ExitCode;
             }

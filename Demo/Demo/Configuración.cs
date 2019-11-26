@@ -114,8 +114,8 @@ namespace Demo
 
             foreach (X509Certificate2 cert in collection)
             {
-                string friendlyName = cert.FriendlyName;
                 string simpleName = cert.GetNameInfo(X509NameType.SimpleName, true);
+                string friendlyName = cert.FriendlyName.Equals("") ? simpleName : cert.FriendlyName;
                 string thumbprint = cert.Thumbprint;
                 bool isValid = cert.Verify();
                 IDataNode m = new DataNode(friendlyName, simpleName, thumbprint, isValid);

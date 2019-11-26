@@ -1,0 +1,9 @@
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Debug\CertUtil.exe.config
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Debug\CertUtil.exe
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Debug\CertUtil.pdb
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Debug\Newtonsoft.Json.dll
+D:\Codigo\Firmador Xades\Demo\CertUtil\bin\Debug\Newtonsoft.Json.xml
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Debug\CertUtil.csprojAssemblyReference.cache
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Debug\CertUtil.csproj.CopyComplete
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Debug\CertUtil.exe
+D:\Codigo\Firmador Xades\Demo\CertUtil\obj\Debug\CertUtil.pdb
