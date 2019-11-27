@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7D14EE7F-8751-4A57-A95F-7314549C0C1A}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>CertUtilCustom</RootNamespace>
     <AssemblyName>CertUtilCustom</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>

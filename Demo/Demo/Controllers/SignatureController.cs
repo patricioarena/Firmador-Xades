@@ -5,20 +5,15 @@ using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature;
 using FirmaXadesNet.Signature.Parameters;
 using FirmaXadesNet.Utils;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web.Http;
-using System.Web.Http.Results;
-using System.Web.Services;
 using System.Xml;
 
 namespace Demo.Controllers
@@ -66,6 +61,10 @@ namespace Demo.Controllers
         }
         #endregion
 
+
+        /// <summary>
+        /// Para probar el acceso a los certificados del almacen de certificados y recursos locales de la pc del usuario
+        /// </summary>
         [HttpGet]
         [Route("")]
         public IHttpActionResult Get()
@@ -80,6 +79,9 @@ namespace Demo.Controllers
             }
         }
 
+        /// <summary>
+        /// Firma el documento recibido
+        /// </summary>
         [HttpPost]
         [Route("Signature/{typeSignature}")]
         public IHttpActionResult Signature(string typeSignature, [FromBody] ObjetoModel model)
@@ -131,7 +133,7 @@ namespace Demo.Controllers
                             _signatureDocument = service.Sign(null, parametros);
                         }
                     }
-                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml");
+                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
                     XmlDocument xmlDocument = _signatureDocument.Document;
                     return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
                 }
@@ -146,21 +148,19 @@ namespace Demo.Controllers
         /// <summary>
         /// Verifica si existe una o mas firmas
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns>JSON</returns>
+        /// Xades Original :: 1
         [HttpPost]
         [Route("Verify/1")]
         public IHttpActionResult Verify1([FromBody] ObjetoModel model)
         {
             try
             {
-                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
-
                 byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
-
                 FirmaXadesNet.XadesService service = new FirmaXadesNet.XadesService();
                 JObject SignatureList = new JObject();
 
+                //Para hacer prubas usando un documento local en el escritorio 
+                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
                 //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
                 using (Stream stream = new MemoryStream(bytes))
                 {
@@ -182,26 +182,24 @@ namespace Demo.Controllers
             }
         }
 
+        /// <summary>
+        /// Verifica si existe una firma
+        /// </summary>
+        /// Xades Original :: 2
         [HttpPost]
         [Route("Verify/2")]
         public IHttpActionResult Verify2([FromBody] ObjetoModel model)
         {
             try
             {
-
-
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(model.Archivo);
-
-                //this.TeViewerVerify(doc);
-
-
-                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
-
                 byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
                 List<JObject> SignatureList = new List<JObject>();
-
                 Custom.FirmaXadesNet.XadesService2 service = new Custom.FirmaXadesNet.XadesService2();
+
+                //Para hacer prubas usando un documento local en el escritorio 
+                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
                 //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
                 using (Stream stream = new MemoryStream(bytes))
                 {
@@ -219,12 +217,7 @@ namespace Demo.Controllers
 
                         SignatureList.Add(jObject);
                     }
-
                     return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
-
-                    //JProperty jProperty = new JProperty("Oops!", "Nunca deberia llegar aqui!");
-                    //jObject.Add(jProperty);
-                    //return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", jObject));
                 }
             }
             catch (System.Exception ex)
@@ -233,6 +226,11 @@ namespace Demo.Controllers
             }
         }
 
+        #region Extra
+        /// <summary>
+        /// Verifica si existe una firma metodo extraido del proyecto TeViewer
+        /// </summary>
+        /**
         public void TeViewerVerify(XmlDocument doc)
         {
             System.Security.Cryptography.Xml.SignedXml signedXml = new System.Security.Cryptography.Xml.SignedXml(doc);
@@ -282,42 +280,7 @@ namespace Demo.Controllers
                 throw new CryptographicException();
             }
         }
-
-        /**
-        [HttpGet]
-        [Route("Document")]
-        public XmlElement Document()
-        {
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml("<?xml version=\"1.0\"?> \n" +
-                    "<books xmlns=\"http://www.contoso.com/books\"> \n" +
-                    "  <book genre=\"novel\" ISBN=\"1-861001-57-8\" publicationdate=\"1823-01-28\"> \n" +
-                    "    <title>Pride And Prejudice</title> \n" +
-                    "    <price>24.95</price> \n" +
-                    "  </book> \n" +
-                    "  <book genre=\"novel\" ISBN=\"1-861002-30-1\" publicationdate=\"1985-01-01\"> \n" +
-                    "    <title>The Handmaid's Tale</title> \n" +
-                    "    <price>29.95</price> \n" +
-                    "  </book> \n" +
-                    "</books>");
-            return xmlDocument.DocumentElement;
-        }
-
-        [HttpGet]
-        [Route("Contenido")]
-        public XmlElement GetContenido()
-        {
-            SignatureDocument[] firmas = null;
-
-            string pathFile = "D:\\Desktop\\estrellaFirmada.xml";
-            XmlDocument document = new XmlDocument();
-            document.Load(pathFile);
-
-            XmlNode xnList = document.SelectSingleNode("/DOCFIRMA/CONTENT");
-                 Console.WriteLine("Name: {0} ", xnList.InnerText);
-
-            return document.DocumentElement;
-        }
         */
+        #endregion Extra
     }
 }

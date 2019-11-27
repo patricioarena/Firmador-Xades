@@ -9,6 +9,10 @@ using Demo.Services;
 
 namespace Demo
 {
+    /// <summary>
+    /// Configuraciones pertenecientes a Microsoft Owin utilizado para 
+    /// server web embebido en aplicacion principal.
+    /// </summary>
     public class Startup
     {
         public void Configuration(IAppBuilder appBuilder)
@@ -17,7 +21,8 @@ namespace Demo
             FileServerOptions options = new FileServerOptions();
 
             options.EnableDirectoryBrowsing = true;
-            //options.FileSystem = new PhysicalFileSystem("./Site");
+            // Habilitar mostrar pagina web alojada en Site de la aplicacion principal
+            //options.FileSystem = new PhysicalFileSystem("./Site"); 
             options.StaticFileOptions.ServeUnknownFileTypes = true;
 
             config.Routes.MapHttpRoute(

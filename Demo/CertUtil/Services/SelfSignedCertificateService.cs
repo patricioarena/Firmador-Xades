@@ -13,6 +13,10 @@ using CertUtilCustom.Model;
 
 namespace CertUtilCustom.Services
 {
+    /// <summary>
+    /// Creacion, instalacion de certificado autofirmado y seteo de certificado 
+    /// a puerto especifico para utilizacion de https.
+    /// </summary>
     public static class SelfSignedCertificateService
     {
         private static StoreName storeRoot = StoreName.Root;
@@ -23,12 +27,15 @@ namespace CertUtilCustom.Services
         private static string Autenticación_del_servidor = "1.3.6.1.5.5.7.3.1";
         private static int keyLength = 4096;
         private static X509Certificate2 x509Certificate = null;
-        //private static string assemblyGuid = AssemblyGuidString(typeof(Program).Assembly);
-        private static string assemblyGuid = "6ea4fe96-c6b1-41a3-b3fd-f9ce949569df";
         private static string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Web Service Digital Signature\\Settings.json");
 
+        public static string assemblyGuid = null;
         public static int? Port = null;
 
+        /// <summary>
+        /// Crear archivo en AppData\Roaming\Web Service Digital Signature
+        /// El archivo sirve para hacer un control sobre el certificado.
+        /// </summary>
         public static void SetConfig()
         {
             if (!File.Exists(FileName))
@@ -46,7 +53,7 @@ namespace CertUtilCustom.Services
                     writer.WriteLine($"Thumbprint:{x509Certificate.Thumbprint}");
                 }
             }
-  
+
         }
 
         public static bool? Compare_x509_Thumbprint_With_Config(string Thumbprint)
@@ -85,8 +92,6 @@ namespace CertUtilCustom.Services
                     SetConfig();
                 }
                 SetConfig();
-                //Console.WriteLine("codeSet :" + codeSet);
-                //Console.WriteLine("codeUnset :" + codeUnset);
             }
             else if (dualCheck.Root.Equals(true) && dualCheck.My.Equals(true))
             {
@@ -106,8 +111,6 @@ namespace CertUtilCustom.Services
                             SetConfig();
                         }
                     }
-                    //Console.WriteLine("codeSet :" + codeSet);
-                    //Console.WriteLine("codeUnset :" + codeUnset);
                 }
             }
             else
@@ -143,27 +146,16 @@ namespace CertUtilCustom.Services
         {
             List<StoreName> list = new List<StoreName>();
             Type t = obj.GetType();
-            //Console.WriteLine("Type is: {0}", t.Name);
             PropertyInfo[] props = t.GetProperties();
-            //Console.WriteLine("Properties (N = {0}):", props.Length);
             foreach (var prop in props)
             {
                 if (prop.GetValue(obj).Equals(true))
                 {
-                    //Console.WriteLine("   {0} ({1}): {2}", prop.Name, prop.PropertyType.Name, prop.GetValue(obj));
                     StoreName enumName = (StoreName)Enum.Parse(typeof(StoreName), prop.Name);
                     list.Add(enumName);
                 }
             }
             return list;
-        }
-
-        private static string AssemblyGuidString(Assembly assembly)
-        {
-            object[] objects = assembly.GetCustomAttributes(typeof(GuidAttribute), false);
-            if (objects.Length > 0)
-                return ((GuidAttribute)objects[0]).Value;
-            return String.Empty;
         }
 
         private static string RandomString()
@@ -172,30 +164,6 @@ namespace CertUtilCustom.Services
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[new Random().Next(s.Length)]).ToArray());
-        }
-
-        public static void ViewDataCertificate()
-        {
-#pragma warning disable CS0618 // El tipo o el miembro están obsoletos
-            Console.WriteLine("Friendly Name: {0}{1}", x509Certificate.FriendlyName, Environment.NewLine);
-            Console.WriteLine("Name: {0}{1}", x509Certificate.GetName(), Environment.NewLine);
-#pragma warning restore CS0618 // El tipo o el miembro están obsoletos
-            Console.WriteLine("Simple Name: {0}{1}", x509Certificate.GetNameInfo(X509NameType.SimpleName, true), Environment.NewLine);
-            Console.WriteLine("Thumbprint: {0}{1}", x509Certificate.Thumbprint, Environment.NewLine);
-            Console.WriteLine("SerialNumber: {0}{1}", x509Certificate.SerialNumber, Environment.NewLine);
-            Console.WriteLine("Signature Algorithm: {0}{1}", x509Certificate.SignatureAlgorithm.FriendlyName, Environment.NewLine);
-            Console.WriteLine("Certificate Verified?: {0}{1}", x509Certificate.Verify(), Environment.NewLine);
-            Console.WriteLine("Length of Raw Data: {0}{1}", x509Certificate.RawData.Length, Environment.NewLine);
-
-            /*
-            Name: CN=firmador.test, OU=DESKTOP-ON7GE0B\ay_al@DESKTOP-ON7GE0B (Patricio Arena), O=mkcert development certificate
-            Simple Name: mkcert DESKTOP-ON7GE0B\ay_al@DESKTOP-ON7GE0B (Patricio Arena)
-            Thumbprint: 4D0357D0BD54BE2544B6F5D25DEE4C73CD11466F
-            SerialNumber: 4FC14139EB6A78E135F9D587933F5DD3
-            Signature Algorithm: sha256RSA
-            Certificate Archived?: False
-            Length of Raw Data: 1195
-            */
         }
 
         private static DualCheck CheckStores()
@@ -221,7 +189,6 @@ namespace CertUtilCustom.Services
                 dualCheck.Root = true;
                 dualCheck.My = false;
                 return dualCheck;
-
             }
             dualCheck.Root = true;
             dualCheck.My = true;
@@ -260,7 +227,6 @@ namespace CertUtilCustom.Services
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(cert);
                 store.Close();
-                //Console.WriteLine($"Install Certificate in {storeName}");
             }
             catch (Exception ex)
             {
@@ -277,7 +243,6 @@ namespace CertUtilCustom.Services
                 store.Open(OpenFlags.ReadWrite);
                 store.Remove(cert);
                 store.Close();
-                //Console.WriteLine($"Uninstall Certificate in {storeName}");
             }
             catch (Exception ex)
             {
@@ -325,8 +290,6 @@ namespace CertUtilCustom.Services
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
-                //string output = process.StandardOutput.ReadToEnd();
-                //Console.WriteLine(output);
                 process.WaitForExit();
                 return process.ExitCode;
             }
@@ -342,12 +305,49 @@ namespace CertUtilCustom.Services
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
-                //string output = process.StandardOutput.ReadToEnd();
-                //Console.WriteLine(output);
                 process.WaitForExit();
                 return process.ExitCode;
             }
         }
 
+        #region Extras
+        /// <summary>
+        /// Obtener identificador de propio ensamblado
+        /// </summary>
+        private static string AssemblyGuidString(Assembly assembly)
+        {
+            object[] objects = assembly.GetCustomAttributes(typeof(GuidAttribute), false);
+            if (objects.Length > 0)
+                return ((GuidAttribute)objects[0]).Value;
+            return String.Empty;
+        }
+
+        /// <summary>
+        /// Ver datos de un certificado
+        /// </summary>
+        public static void ViewDataCertificate()
+        {
+#pragma warning disable CS0618 // El tipo o el miembro están obsoletos
+            Console.WriteLine("Friendly Name: {0}{1}", x509Certificate.FriendlyName, Environment.NewLine);
+            Console.WriteLine("Name: {0}{1}", x509Certificate.GetName(), Environment.NewLine);
+#pragma warning restore CS0618 // El tipo o el miembro están obsoletos
+            Console.WriteLine("Simple Name: {0}{1}", x509Certificate.GetNameInfo(X509NameType.SimpleName, true), Environment.NewLine);
+            Console.WriteLine("Thumbprint: {0}{1}", x509Certificate.Thumbprint, Environment.NewLine);
+            Console.WriteLine("SerialNumber: {0}{1}", x509Certificate.SerialNumber, Environment.NewLine);
+            Console.WriteLine("Signature Algorithm: {0}{1}", x509Certificate.SignatureAlgorithm.FriendlyName, Environment.NewLine);
+            Console.WriteLine("Certificate Verified?: {0}{1}", x509Certificate.Verify(), Environment.NewLine);
+            Console.WriteLine("Length of Raw Data: {0}{1}", x509Certificate.RawData.Length, Environment.NewLine);
+
+            //Name: CN=firmador.test, OU=DESKTOP-ON7GE0B\ay_al@DESKTOP-ON7GE0B (Patricio Arena), O=mkcert development certificate
+            //Simple Name: mkcert DESKTOP-ON7GE0B\ay_al@DESKTOP-ON7GE0B (Patricio Arena)
+            //Thumbprint: 4D0357D0BD54BE2544B6F5D25DEE4C73CD11466F
+            //SerialNumber: 4FC14139EB6A78E135F9D587933F5DD3
+            //Signature Algorithm: sha256RSA
+            //Certificate Archived?: False
+            //Length of Raw Data: 1195
+
+        }
+
+        #endregion Extras
     }
 }

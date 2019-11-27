@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CertUtilCustom.exe" size="13824">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CertUtilCustom.exe" size="13312">
       <assemblyIdentity name="CertUtilCustom" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>WU1LyFMqepRxvcCbdKsGG3DVuLCqFVj+oiwseRn68zE=</dsig:DigestValue>
+        <dsig:DigestValue>qcXSofbpaLZsljT7oV13+R2Vhxq5FQ6rC9NcgJwahiE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

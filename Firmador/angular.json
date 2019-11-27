@@ -24,7 +24,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "web.config"
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css"
@@ -41,8 +42,8 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/signature/",
-              "deployUrl": "/signature/",
+              "baseHref": "/xadessigner/",
+              "deployUrl": "/xadessigner/",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

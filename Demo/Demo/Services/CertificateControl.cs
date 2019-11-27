@@ -13,6 +13,10 @@ using Demo.Model;
 
 namespace Demo.Services
 {
+
+    /// <summary>
+    /// Verificar la existencia del certificado en el equipo del usuario
+    /// </summary>
     public class CertificateControl
     {
         private static StoreName storeRoot = StoreName.Root;

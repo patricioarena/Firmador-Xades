@@ -12,7 +12,7 @@ import { promise } from 'protractor';
 })
 export class DigitalSignatureService {
 
-  apiurl = environment.API_URL;
+  apiurl = "https://localhost:8400/";
 
   // tslint:disable-next-line: no-shadowed-variable
   constructor(private HttpClient: HttpClient, private HttpToolsService: HttpToolsService) { }
