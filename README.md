@@ -20,7 +20,7 @@ Aplicacion para firma digital como servicio. La presente es una aplicacion de es
                                              |
                                           XAdES
 ```
-Para lograr esto se propuso crear una aplicacionque se instala en el equipo del usuario, la misma recibe el documento en un puerto, accede al almacen de certificados para seleccionar el certificado a utilizar y posteriormente realizar el proceso de firma.
+Para lograr esto se propuso crear una aplicacion la cual se instala en el equipo del usuario, la misma recibe el documento en un puerto, accede al almacen de certificados para seleccionar el certificado a utilizar y posteriormente realizar el proceso de firma.
 
 - Para la comunicacion entre la pagina web o aplicacion web con el servidor local embebido corriendo en la maquina del usuario se utiliza una conexion segura HTTPS. Para lograr esto la aplicacion     emite e instala un certificado autofirmado.
 - El certificado instalado es asosciado a la aplicacion y al puerto mediante netsh.
@@ -79,15 +79,21 @@ Para lograr esto se propuso crear una aplicacionque se instala en el equipo del 
 
 # Compilar y probar
 **Aplicacion de escritorio**
+- La aplicación final se divide en dos aplicaciones realmente, por un
+lado el firmador, aplicacion principal que expone los enpoint y por otro una aplicacion auxiliar que se encarga de controlar, emitir, instalar y setear a un puerto especifico el certificado autofirmado para utilizar transferencia segura entre la aplicacion web y la aplicacion de escritorio.
+
 - Para compilar y ejecutar por primera vez se debe realizar como administrador ya que la instalación del certificado autofirmado y ejecucion de comandos netsh requieren privilegios elevados.
-Se recomienda ejecutar siempre como administrador.
 
     #### Endpoints
 
     - https://localhost:8400/api/Signature/1 _Xades con ds:Object_
+        - Formato de respuesta : xml
     - https://localhost:8400/api/Signature/2 _Xades sin ds:Object_
+        - Formato de respuesta : xml
     - https://localhost:8400/api/Verify/1 _Xades con ds:Object_
+        - Formato de respuesta : JSON
     - https://localhost:8400/api/Verify/2 _Xades sin ds:Object_
+        - Formato de respuesta : JSON
 
 **Aplicacion web**
 - Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 8.2.11. a la cual se puede acceder en la direccion http://localhost:4200/home
