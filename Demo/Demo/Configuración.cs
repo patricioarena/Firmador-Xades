@@ -21,7 +21,6 @@ namespace Demo
     public partial class Signature : Form
     {
         private readonly List<IDataNode> listDataNode = new List<IDataNode>();
-        private static string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         private static string assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static string path = Assembly.GetExecutingAssembly().Location;
@@ -37,8 +36,25 @@ namespace Demo
 
         private void Configuración_Load(object sender, EventArgs e)
         {
-            label1.Text = String.Format("       Version: {0}", assemblyVersion);
+            label1.Text = String.Format("       Version: {0}", PublishVersion);
         }
+
+        public string PublishVersion
+        {
+            get
+            {
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+                {
+                    Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+                    return string.Format("{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
+                }
+                else
+                {
+                    return "Not Published";
+                }
+            }
+        }
+
         private void ListView1MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListView listView = (ListView)sender;
