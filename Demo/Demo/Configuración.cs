@@ -28,6 +28,7 @@ namespace Demo
         public Signature()
         {
             InitializeComponent();
+            this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
             LoadCheckeds();
             panel1.Visible = true;
             panel2.Visible = true;
@@ -36,7 +37,7 @@ namespace Demo
 
         private void Configuración_Load(object sender, EventArgs e)
         {
-            label1.Text = String.Format("     Version: {0}", assemblyVersion);
+            label1.Text = String.Format("       Version: {0}", assemblyVersion);
         }
         private void ListView1MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -69,9 +70,6 @@ namespace Demo
         private void button3_Click(object sender, EventArgs e)
         {
             Close();
-
-            //notifyIcon.Visible = true;
-            //this.MessagesOnChange();
             //this.Hide();
         }
         private void Form_Hide(object sender, EventArgs e)
@@ -79,7 +77,6 @@ namespace Demo
             if (WindowState == FormWindowState.Minimized)
             {
                 notifyIcon.Visible = true;
-                MessagesOnChange();
                 Hide();
             }
         }
@@ -166,22 +163,6 @@ namespace Demo
             X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == Thumbprint).FirstOrDefault();
             X509Certificate2UI.DisplayCertificate(certificate);
         }
-        private void MessagesOnChange()
-        {
-            //if (Network.StatusPrincipalInterface().Equals(true))
-            //{
-            //    this.notifyIcon.BalloonTipText = "« Adaptador de Red: Habilitado »";
-            //    this.notifyIcon.Text = "« Adaptador de Red: Habilitado »";
-            //    notifyIcon.ShowBalloonTip(500);
-
-            //}
-            //else
-            //{
-            //    this.notifyIcon.BalloonTipText = "« Adaptador de Red: Deshabilitado »";
-            //    this.notifyIcon.Text = "« Adaptador de Red: Deshabilitado »";
-            //    notifyIcon.ShowBalloonTip(500);
-            //}
-        }
         private void LoadCheckeds()
         {
             using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
@@ -209,18 +190,20 @@ namespace Demo
         {
             if (checkBox1.Checked == true)
             {
-                Console.WriteLine($"checkBox1 => True {checkBox1}");
+                //Console.WriteLine($"checkBox1 => True {checkBox1}");
                 Registry.CurrentUser.CreateSubKey(keyName).SetValue(assemblyName, path, RegistryValueKind.String);
             }
             else
             {
-                Console.WriteLine($"checkBox1 => False {checkBox1}");
+                //Console.WriteLine($"checkBox1 => False {checkBox1}");
                 Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue(assemblyName);
             }
-
-
         }
-
+        void listView1_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.NewWidth = this.listView1.Columns[e.ColumnIndex].Width;
+            e.Cancel = true;
+        }
     }
 
 }

@@ -1,4 +1,6 @@
-﻿namespace Demo
+﻿using System.Windows.Forms;
+
+namespace Demo
 {
     partial class Signature
     {
@@ -20,6 +22,24 @@
             base.Dispose(disposing);
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (e.CloseReason == CloseReason.WindowsShutDown) return;
+
+            // Confirm user wants to close
+            switch (MessageBox.Show(this, "¿Desea minimizar al área de notificaciones?", "...", MessageBoxButtons.YesNo))
+            {
+                case DialogResult.Yes:
+                    this.Hide();
+                    e.Cancel = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         #region Código generado por el Diseñador de Windows Forms
 
         /// <summary>
@@ -39,9 +59,10 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -49,12 +70,14 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.button1.Location = new System.Drawing.Point(13, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(368, 41);
             this.button1.TabIndex = 0;
             this.button1.Text = "Certificados";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             this.button1.Enter += new System.EventHandler(this.button1_Enter);
             this.button1.Leave += new System.EventHandler(this.button1_Leave);
@@ -94,16 +117,20 @@
             // 
             this.label1.BackColor = System.Drawing.Color.Gainsboro;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Image = global::Demo.Properties.Resources.favicon;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label1.Location = new System.Drawing.Point(13, 348);
             this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(5);
             this.label1.Size = new System.Drawing.Size(368, 47);
             this.label1.TabIndex = 2;
-            this.label1.Text = "     Versiòn: 1.0.0.0";
+            this.label1.Text = "     Versiòn: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(265, 354);
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.button3.Location = new System.Drawing.Point(270, 354);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(101, 36);
             this.button3.TabIndex = 4;
@@ -119,6 +146,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Location = new System.Drawing.Point(1, 54);
             this.panel1.Name = "panel1";
@@ -127,6 +155,8 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.listView1);
             this.panel3.Location = new System.Drawing.Point(1, 8);
             this.panel3.Name = "panel3";
@@ -134,10 +164,34 @@
             this.panel3.TabIndex = 7;
             this.panel3.Visible = false;
             // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label3.Location = new System.Drawing.Point(285, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(94, 24);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Verificación";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label2.Location = new System.Drawing.Point(11, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(274, 24);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Certificados";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.checkBox1);
-            this.panel2.Location = new System.Drawing.Point(3, 65);
+            this.panel2.Location = new System.Drawing.Point(1, 8);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(390, 273);
             this.panel2.TabIndex = 6;
@@ -159,8 +213,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(393, 404);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(392, 404);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label1);
@@ -195,7 +248,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 
