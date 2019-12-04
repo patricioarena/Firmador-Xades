@@ -128,10 +128,12 @@ namespace Demo
             foreach (X509Certificate2 cert in collection)
             {
                 string simpleName = cert.GetNameInfo(X509NameType.SimpleName, true);
-                string friendlyName = cert.FriendlyName.Equals("") ? simpleName : cert.FriendlyName;
+                List<KeyValuePair<string, string>> kvs = cert.Subject.Split(',').Select(x => new KeyValuePair<string, string>(x.Split('=')[0], x.Split('=')[1])).ToList();
+                string subject = kvs[0].Value;
+                string friendlyName = cert.Subject.Equals("") ? cert.FriendlyName : subject;
                 string thumbprint = cert.Thumbprint;
                 bool isValid = cert.Verify();
-                IDataNode m = new DataNode(friendlyName, simpleName, thumbprint, isValid);
+                IDataNode m = new DataNode(friendlyName, subject, thumbprint, isValid);
                 listDataNode.Add(m);
             }
 
