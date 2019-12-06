@@ -20,38 +20,44 @@ namespace Demo
 {
     public partial class Signature : Form
     {
-        private readonly List<IDataNode> listDataNode = new List<IDataNode>();
-        private static string assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
+        private static readonly List<IDataNode> listDataNode = new List<IDataNode>();
+        private static Color colorLinks = Color.Blue;
+        private static string assemblyName;
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static string path = Assembly.GetExecutingAssembly().Location;
+        private static string version;
+
         public Signature()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.PublishVersion();
+            this.LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
-            LoadCheckeds();
-            panel1.Visible = true;
-            panel2.Visible = true;
-            panel3.Visible = false;
+            this.panel1.Visible = true;
+            this.panel2.Visible = true;
+            this.panel3.Visible = false;
+
         }
 
         private void Configuración_Load(object sender, EventArgs e)
         {
-            label1.Text = String.Format("       Version: {0}", PublishVersion);
+            this.label1.Text = String.Format("      Version: {0}", version);
+            this.notifyIcon.Text = assemblyName;
+            this.Text = assemblyName;
         }
 
-        public string PublishVersion
+        public void PublishVersion()
         {
-            get
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
             {
-                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-                {
-                    Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
-                    return string.Format("{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
-                }
-                else
-                {
-                    return "Not Published";
-                }
+                assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
+                Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+                version = string.Format("{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
+            }
+            else
+            {
+                assemblyName = "Not Published";
+                version = "Not Published";
             }
         }
 
@@ -81,12 +87,11 @@ namespace Demo
                 LoadViewList();
             }
             panel1.Refresh();
-            Console.WriteLine("cambie la prop visible del panel");
+            //Console.WriteLine("cambie la prop visible del panel");
         }
         private void button3_Click(object sender, EventArgs e)
         {
             Close();
-            //this.Hide();
         }
         private void Form_Hide(object sender, EventArgs e)
         {
@@ -130,10 +135,10 @@ namespace Demo
                 string simpleName = cert.GetNameInfo(X509NameType.SimpleName, true);
                 List<KeyValuePair<string, string>> kvs = cert.Subject.Split(',').Select(x => new KeyValuePair<string, string>(x.Split('=')[0], x.Split('=')[1])).ToList();
                 string subject = kvs[0].Value;
-                string friendlyName = cert.Subject.Equals("") ? cert.FriendlyName : subject;
+                string friendlyName = cert.FriendlyName;
                 string thumbprint = cert.Thumbprint;
                 bool isValid = cert.Verify();
-                IDataNode m = new DataNode(friendlyName, subject, thumbprint, isValid);
+                IDataNode m = new DataNode(subject, friendlyName, thumbprint, isValid);
                 listDataNode.Add(m);
             }
 
@@ -151,7 +156,7 @@ namespace Demo
                 ListViewItem.ListViewSubItem subItem_flag = new ListViewItem.ListViewSubItem();
                 ListViewItem.ListViewSubItem subItem_Thumbprint = new ListViewItem.ListViewSubItem();
 
-                listViewItem.Text = item.Name;
+                listViewItem.Text = item.Subject;
                 subItem_Thumbprint.Text = item.Thumbprint;
                 subItem_flag.Font = new Font(listViewItem.Font, FontStyle.Bold);
                 listViewItem.UseItemStyleForSubItems = false;
@@ -198,11 +203,11 @@ namespace Demo
         }
         private void button1_Leave(object sender, EventArgs e)
         {
-            Console.WriteLine("sali del boton");
+            //Console.WriteLine("sali del boton");
         }
         private void button1_Enter(object sender, EventArgs e)
         {
-            Console.WriteLine("entré al boton");
+            //Console.WriteLine("entré al boton");
         }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -221,6 +226,46 @@ namespace Demo
         {
             e.NewWidth = this.listView1.Columns[e.ColumnIndex].Width;
             e.Cancel = true;
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.google.com/maps/place/Fiscal%C3%ADa+de+Estado/" +
+                "@-34.9149269,-57.9377341,17z/data=!3m1!4b1!4m5!3m4!1s0x95a2e619d798ea5f:0xaa78c0a6a7e5167!" +
+                "8m2!3d-34.9149269!4d-57.9355454");
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www2.fepba.gov.ar/");
+        }
+
+        private void label5_MouseLeave(object sender, EventArgs e)
+        {
+            label5.ForeColor = Color.Black;
+        }
+
+        private void label5_MouseMove(object sender, MouseEventArgs e)
+        {
+            label5.ForeColor = colorLinks;
+        }
+
+        ///
+        private void label6_MouseLeave(object sender, EventArgs e)
+        {
+            label6.ForeColor = Color.Black;
+        }
+
+        private void label6_MouseMove(object sender, MouseEventArgs e)
+        {
+            label6.ForeColor = colorLinks;
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
         }
     }
 

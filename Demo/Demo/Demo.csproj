@@ -30,7 +30,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>35</ApplicationRevision>
+    <ApplicationRevision>40</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -190,6 +190,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Site\Assets\baseline_business_black_18dp.png" />
+    <Content Include="Site\Assets\baseline_call_black_18dp.png" />
+    <Content Include="Site\Assets\baseline_home_black_18dp.png" />
+    <Content Include="Site\Assets\baseline_language_black_18dp.png" />
+    <Content Include="Site\Assets\baseline_map_black_18dp.png" />
+    <Content Include="Site\Assets\logo-cife-color-v2.png" />
     <Content Include="Site\Assets\logo-fiscalia.png" />
     <Content Include="Site\favicon.ico" />
   </ItemGroup>
