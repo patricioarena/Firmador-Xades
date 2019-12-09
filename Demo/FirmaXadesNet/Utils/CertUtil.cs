@@ -24,6 +24,7 @@
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -81,8 +82,9 @@ namespace FirmaXadesNet.Utils
                 {
                     title = "Firmar archivo";
                 }
-
-                X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(fcollection, title, message, X509SelectionFlag.SingleSelection);
+                //A X509Certificate2UI window always on top
+                IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
+                X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(fcollection, title, message, X509SelectionFlag.SingleSelection, windowHandle);
 
                 if (scollection != null && scollection.Count == 1)
                 {
