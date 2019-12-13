@@ -5,13 +5,17 @@ using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature;
 using FirmaXadesNet.Signature.Parameters;
 using FirmaXadesNet.Utils;
+using Microsoft.Xades;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Web.Http;
 using System.Xml;
@@ -22,6 +26,33 @@ namespace Demo.Controllers
     public class SignatureController : ApiController
     {
         #region private methods
+        public string GetSerialNumberAsDecimalString(X509Certificate2 certificate)
+        {
+            List<int> dec = new List<int> { 0 };
+
+            foreach (char c in certificate.SerialNumber)
+            {
+                int carry = Convert.ToInt32(c.ToString(), 16);
+
+                for (int i = 0; i < dec.Count; ++i)
+                {
+                    int val = dec[i] * 16 + carry;
+                    dec[i] = val % 10;
+                    carry = val / 10;
+                }
+
+                while (carry > 0)
+                {
+                    dec.Add(carry % 10);
+                    carry /= 10;
+                }
+            }
+
+            var chars = dec.Select(d => (char)('0' + d));
+            var cArr = chars.Reverse().ToArray();
+            return new string(cArr);
+        }
+
         private SignaturePolicyInfo ObtenerPolitica()
         {
             SignaturePolicyInfo spi = new SignaturePolicyInfo();
@@ -187,8 +218,8 @@ namespace Demo.Controllers
         /// </summary>
         /// Xades Original :: 2
         [HttpPost]
-        [Route("Verify/2")]
-        public IHttpActionResult Verify2([FromBody] ObjetoModel model)
+        [Route("Verify/2_Old")]
+        public IHttpActionResult Verify2_Old([FromBody] ObjetoModel model)
         {
             try
             {
@@ -205,6 +236,74 @@ namespace Demo.Controllers
                 {
                     SignatureDocument[] signatureDocument = service.Load(stream);
                     foreach (var aFirma in signatureDocument)
+                    {
+                        FirmaXadesNet.Validation.ValidationResult validation = service.Validate(aFirma);
+                        string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
+
+                        JObject jObject = new JObject();
+                        jObject.Add("Subject", Subject);
+                        jObject.Add("IsValid", validation.IsValid);
+                        jObject.Add("Message", validation.Message);
+
+
+                        SignatureList.Add(jObject);
+                    }
+                    return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("Verify/2")]
+        public IHttpActionResult Verify2([FromBody] ObjetoModel model)
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(model.Archivo);
+                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+                List<JObject> SignatureList = new List<JObject>();
+                Custom.FirmaXadesNet.XadesService2 service = new Custom.FirmaXadesNet.XadesService2();
+
+                SignatureParameters parametros = ObtenerParametrosFirma();
+                parametros.SignaturePolicyInfo = ObtenerPolitica();
+                parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
+                parametros.DataFormat = new DataFormat();
+                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(".xml");
+
+                SignatureDocument signatureDocument = new SignatureDocument();
+                signatureDocument.Document = doc;
+                string stringCert = service.GetCertificateOfDocument(signatureDocument);
+                string stringDigest = service.GetDigestValueOfDocument(signatureDocument);
+
+                Byte[] rawCertData = System.Convert.FromBase64String(stringCert);
+                X509Certificate2 x509Certificate2 = new X509Certificate2(rawCertData);
+
+                Cert cert = new Cert();
+                cert.IssuerSerial.X509IssuerName = x509Certificate2.IssuerName.Name;
+                cert.IssuerSerial.X509SerialNumber = GetSerialNumberAsDecimalString(x509Certificate2);
+
+                FirmaXadesNet.Crypto.DigestMethod SHA1 = new FirmaXadesNet.Crypto.DigestMethod("SHA1", "http://www.w3.org/2000/09/xmldsig#sha1", "1.3.14.3.2.26");
+                FirmaXadesNet.Crypto.DigestMethod SHA256 = new FirmaXadesNet.Crypto.DigestMethod("SHA256", "http://www.w3.org/2001/04/xmlenc#sha256", "2.16.840.1.101.3.4.2.1");
+                FirmaXadesNet.Crypto.DigestMethod SHA512 = new FirmaXadesNet.Crypto.DigestMethod("SHA512", "http://www.w3.org/2001/04/xmlenc#sha512", "2.16.840.1.101.3.4.2.3");
+        
+                DigestUtil.SetCertDigest(rawCertData, SHA256, cert.CertDigest);
+
+                var temp = Convert.ToBase64String(cert.CertDigest.DigestValue);
+
+
+
+                //Para hacer prubas usando un documento local en el escritorio 
+                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
+                //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
+                using (Stream stream = new MemoryStream(bytes))
+                {
+                    SignatureDocument[] signatureDocument_old = service.Load(stream);
+                    foreach (var aFirma in signatureDocument_old)
                     {
                         FirmaXadesNet.Validation.ValidationResult validation = service.Validate(aFirma);
                         string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;

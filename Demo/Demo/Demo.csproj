@@ -14,7 +14,7 @@
     <Deterministic>false</Deterministic>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup\</PublishUrl>
+    <PublishUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup_test\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -24,13 +24,13 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
-    <InstallUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup\</InstallUrl>
+    <InstallUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup_test\</InstallUrl>
     <UpdateUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup\</UpdateUrl>
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -123,6 +123,7 @@
     <Compile Include="Results\CustomException.cs" />
     <Compile Include="Results\ResponseApi.cs" />
     <Compile Include="Services\CertificateControl.cs" />
+    <Compile Include="Services\Class1.cs" />
     <Compile Include="Startup.cs" />
     <EmbeddedResource Include="Configuración.resx">
       <DependentUpon>Configuración.cs</DependentUpon>

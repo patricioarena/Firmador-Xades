@@ -412,6 +412,26 @@ namespace Custom.FirmaXadesNet
             return validator.ValidateSignature(sigDocument);
         }
 
+        public string GetDigestValueOfDocument(SignatureDocument signatureDocument)
+        {
+            XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(signatureDocument.Document.NameTable); //Create an XmlNamespaceManager to resolve namespace
+            xmlNamespaceManager.AddNamespace("ds", SignedXml.XmlDsigNamespaceUrl);
+            xmlNamespaceManager.AddNamespace("xades", XadesSignedXml.XadesNamespaceUri);
+
+            XmlNodeList xmlNodeList = signatureDocument.Document.DocumentElement.SelectNodes("ds:Signature/ds:SignedInfo/ds:Reference/ds:DigestValue", xmlNamespaceManager);
+            return xmlNodeList.Item(0).InnerText;
+        }
+
+        public string GetCertificateOfDocument(SignatureDocument signatureDocument)
+        {
+            XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(signatureDocument.Document.NameTable); //Create an XmlNamespaceManager to resolve namespace
+            xmlNamespaceManager.AddNamespace("ds", SignedXml.XmlDsigNamespaceUrl);
+            xmlNamespaceManager.AddNamespace("xades", XadesSignedXml.XadesNamespaceUri);
+
+            XmlNodeList xmlNodeList = signatureDocument.Document.DocumentElement.SelectNodes("ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate", xmlNamespaceManager);
+            return xmlNodeList.Item(0).InnerText;
+        }
+
         #endregion
 
         #endregion
@@ -803,10 +823,6 @@ namespace Custom.FirmaXadesNet
 
             sigDocument.XadesSignature.KeyInfo = keyInfo;
 
-            //Reference reference = new Reference();
-            //reference.Id = "ReferenceKeyInfo";
-            //reference.Uri = "#KeyInfoId-" + sigDocument.XadesSignature.Signature.Id;
-            //sigDocument.XadesSignature.AddReference(reference);
         }
 
 

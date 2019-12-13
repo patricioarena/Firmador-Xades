@@ -33,7 +33,7 @@ using FirmaXadesNet.Crypto;
 
 namespace FirmaXadesNet.Utils
 {
-    class DigestUtil
+    public class DigestUtil
     {
         #region Public methods
 

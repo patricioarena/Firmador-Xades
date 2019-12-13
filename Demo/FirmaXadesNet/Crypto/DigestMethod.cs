@@ -72,7 +72,7 @@ namespace FirmaXadesNet.Crypto
 
         #region Constructors
 
-        private DigestMethod(string name, string uri, string oid)
+        public DigestMethod(string name, string uri, string oid)
         {
             _name = name;
             _uri = uri;

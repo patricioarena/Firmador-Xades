@@ -86,14 +86,16 @@ lado el firmador, aplicacion principal que expone los enpoint y por otro una apl
 
     #### Endpoints
 
-    - https://localhost:8400/api/Signature/1 _Xades con ds:Object_
-        - Formato de respuesta : xml
-    - https://localhost:8400/api/Signature/2 _Xades sin ds:Object_
-        - Formato de respuesta : xml
-    - https://localhost:8400/api/Verify/1 _Xades con ds:Object_
-        - Formato de respuesta : JSON
-    - https://localhost:8400/api/Verify/2 _Xades sin ds:Object_
-        - Formato de respuesta : JSON
+    - [POST] https://localhost:8400/api/Signature/1 _Xades con ds:Object_
+        - Request : ObjectModel = { Archivo: String; Extension: String; }
+        - Response : XML
+    - [POST] https://localhost:8400/api/Signature/2 _Xades sin ds:Object_
+        - Request : ObjectModel = { Archivo: String; Extension: String; }
+        - Response : XML
+    - [GET] https://localhost:8400/api/Verify/1 _Xades con ds:Object_
+        - Response : JSON
+    - [GET] https://localhost:8400/api/Verify/2 _Xades sin ds:Object_
+        - Response : JSON
 
 **Aplicacion web**
 - Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 8.2.11. a la cual se puede acceder en la direccion http://localhost:4200/home
