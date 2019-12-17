@@ -123,7 +123,7 @@
     <Compile Include="Results\CustomException.cs" />
     <Compile Include="Results\ResponseApi.cs" />
     <Compile Include="Services\CertificateControl.cs" />
-    <Compile Include="Services\Class1.cs" />
+    <Compile Include="Services\VerifyMultiSignature.cs" />
     <Compile Include="Startup.cs" />
     <EmbeddedResource Include="Configuración.resx">
       <DependentUpon>Configuración.cs</DependentUpon>
