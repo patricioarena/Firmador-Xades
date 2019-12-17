@@ -139,7 +139,7 @@ namespace Demo.Controllers
                             _signatureDocument = service.Sign(null, parametros);
                         }
                     }
-                    _signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
+                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
                     XmlDocument xmlDocument = _signatureDocument.Document;
                     return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
                 }
@@ -216,25 +216,13 @@ namespace Demo.Controllers
                         VerifyMultiSignature verifyMultiSignature = new VerifyMultiSignature();
 
                         var aFirma = signatureDocument[i];
-                        var stringCert = service.GetCertificateOfDocument(aFirma);
-                        byte[] rawCert = Convert.FromBase64String(stringCert);
-                        var x509Certificate2 = new X509Certificate2(rawCert);
-                        var aDigest = ((System.Xml.XmlElement)aFirma.Document.GetElementsByTagName("ds:Signature").Item(i).FirstChild).InnerText;
-
-                        var isValid = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, aDigest);
-
-                        var Message = "Verificación de la firma satisfactoria";
-                        if (!isValid)
-                        {
-                            Message = "La verificación de la firma no ha sido satisfactoria";
-                        }
-
-                        string Subject = x509Certificate2.Subject;
+                        var x509Certificate2 = aFirma.XadesSignature.GetSigningCertificate();
+                        var validationResult = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, aFirma, i);
 
                         JObject jObject = new JObject();
-                        jObject.Add("Subject", Subject);
-                        jObject.Add("IsValid", isValid);
-                        jObject.Add("Message", Message);
+                        jObject.Add("Subject", x509Certificate2.Subject);
+                        jObject.Add("IsValid", validationResult.IsValid);
+                        jObject.Add("Message", validationResult.Message);
 
                         SignatureList.Add(jObject);
 

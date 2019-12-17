@@ -1,20 +1,13 @@
-﻿using FirmaXadesNet.Signature.Parameters;
-using FirmaXadesNet.Utils;
+﻿using FirmaXadesNet.Signature;
+using FirmaXadesNet.Validation;
 using Microsoft.Win32;
-using Microsoft.Xades;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Demo.Services
@@ -107,14 +100,18 @@ namespace Demo.Services
             return doc;
         }
 
-        public bool MatchesSignature(XmlDocument document, X509Certificate2 x509cert , string strDigestValue)
+        public ValidationResult MatchesSignature(XmlDocument document, X509Certificate2 x509cert, SignatureDocument signatureDocument, int index)
         {
+            ValidationResult result = new ValidationResult();
             XmlDocument doc = document;
             doc.PreserveWhitespace = true;
             SignedXml verifier = new SignedXml();
 
             //Next, the SignedXml class must be given the value of the signature it is to validate.This can be done by looking for elements with the tag name of Signature.See code below:
-            verifier.LoadXml(doc.GetElementsByTagName("ds:Signature")[0] as XmlElement);
+            XmlElement xmlElement = ((System.Xml.XmlElement)signatureDocument.Document.GetElementsByTagName("ds:Signature").Item(index));
+            string strDigestValue = ((System.Xml.XmlElement)signatureDocument.Document.GetElementsByTagName("ds:Signature").Item(index).FirstChild).InnerText;
+
+            verifier.LoadXml(xmlElement);
 
             X509Certificate2 x509 = x509cert;
             // Get the public key
@@ -131,8 +128,12 @@ namespace Demo.Services
             Type ta = Type.GetType(signatureDescription.KeyAlgorithm);
             Type tb = key.GetType();
             if ((ta != tb) && !ta.IsSubclassOf(tb) && !tb.IsSubclassOf(ta))
-                // Signature method key mismatch
-                return false;
+            {
+                result.IsValid = false;
+                result.Message = "La verificación de la firma no ha sido satisfactoria";
+
+                return result;
+            }
 
             HashAlgorithm hashAlgorithm = signatureDescription.CreateDigest();
             if (hashAlgorithm == null)
@@ -153,26 +154,28 @@ namespace Demo.Services
 
             // Verify the signature
             bool isSignatureOK = asymmetricSignatureDeformatter.VerifySignature(digestedSignedInfo, verifier.SignatureValue);
-            bool isDigestOK = this.VerifyDigest(doc, verifier, strDigestValue);
+            bool isDigestOK = this.VerifyDigest(doc, verifier, strDigestValue, index);
             if (isSignatureOK && isDigestOK)
             {
-                return true;
+                result.IsValid = true;
+                result.Message = "Verificación de la firma satisfactoria";
+
+                return result;
             }
-            return false;
+            result.IsValid = false;
+            result.Message = "La verificación de la firma no ha sido satisfactoria";
+
+            return result;
         }
 
-        public bool VerifyDigest(XmlDocument document, SignedXml aVerifier, string strDigestValue)
+        public bool VerifyDigest(XmlDocument document, SignedXml aVerifier, string strDigestValue, int index)
         {
             //https://youtu.be/jUzjilTxdzk //Nice music
             XmlDocument doc = document;
             doc.PreserveWhitespace = true;
 
-            int count = doc.GetElementsByTagName("ds:Signature").Count;
-
-            XmlNode xmlNode = doc.GetElementsByTagName("ds:Signature")[count-1];
+            XmlNode xmlNode = doc.GetElementsByTagName("ds:Signature")[index];
             doc.DocumentElement.RemoveChild(xmlNode);
-
-            var temp = doc;
 
             //create c14n instance and load in xml file
             XmlDsigC14NTransform c14n = new XmlDsigC14NTransform(false);

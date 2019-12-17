@@ -412,16 +412,6 @@ namespace Custom.FirmaXadesNet
             return validator.ValidateSignature(sigDocument);
         }
 
-        public string GetCertificateOfDocument(SignatureDocument signatureDocument)
-        {
-            XmlNamespaceManager xmlNamespaceManager = new XmlNamespaceManager(signatureDocument.Document.NameTable); //Create an XmlNamespaceManager to resolve namespace
-            xmlNamespaceManager.AddNamespace("ds", SignedXml.XmlDsigNamespaceUrl);
-            xmlNamespaceManager.AddNamespace("xades", XadesSignedXml.XadesNamespaceUri);
-
-            XmlNodeList xmlNodeList = signatureDocument.Document.DocumentElement.SelectNodes("ds:Signature/ds:KeyInfo/ds:X509Data/ds:X509Certificate", xmlNamespaceManager);
-            return xmlNodeList.Item(0).InnerText;
-        }
-
         #endregion
 
         #endregion
