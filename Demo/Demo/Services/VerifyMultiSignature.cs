@@ -99,6 +99,27 @@ namespace Demo.Services
             }
             return doc;
         }
+        internal static string ComputeHash(string DigestMethod, XmlDsigC14NTransform c14n)
+        {
+            Stream canonalisedStream = (Stream)c14n.GetOutput(typeof(Stream));
+
+            if (DigestMethod == "http://www.w3.org/2000/09/xmldsig#sha1")
+            {
+                return Convert.ToBase64String(new SHA1CryptoServiceProvider().ComputeHash(canonalisedStream));
+            }
+            else if (DigestMethod == "http://www.w3.org/2001/04/xmlenc#sha256")
+            {
+                return Convert.ToBase64String(new SHA256CryptoServiceProvider().ComputeHash(canonalisedStream));
+            }
+            else if (DigestMethod == "http://www.w3.org/2001/04/xmlenc#sha512")
+            {
+                return Convert.ToBase64String(new SHA512CryptoServiceProvider().ComputeHash(canonalisedStream));
+            }
+            else
+            {
+                throw new Exception("Unsupported digest method");
+            }
+        }
 
         public ValidationResult MatchesSignature(XmlDocument document, X509Certificate2 x509cert, SignatureDocument signatureDocument, int index)
         {
@@ -109,13 +130,10 @@ namespace Demo.Services
 
             //Next, the SignedXml class must be given the value of the signature it is to validate.This can be done by looking for elements with the tag name of Signature.See code below:
             XmlElement xmlElement = ((System.Xml.XmlElement)signatureDocument.Document.GetElementsByTagName("ds:Signature").Item(index));
-            string strDigestValue = ((System.Xml.XmlElement)signatureDocument.Document.GetElementsByTagName("ds:Signature").Item(index).FirstChild).InnerText;
-
             verifier.LoadXml(xmlElement);
 
-            X509Certificate2 x509 = x509cert;
             // Get the public key
-            AsymmetricAlgorithm key = x509.PublicKey.Key;
+            AsymmetricAlgorithm key = x509cert.PublicKey.Key;
             // =================================================================================
             if (key == null)
                 throw new ArgumentNullException("key");
@@ -141,7 +159,6 @@ namespace Demo.Services
 
             //====================================================
             byte[] digestedSignedInfo = null;
-
             string baseUri = (doc == null ? null : doc.BaseURI);
             XmlResolver resolver = new XmlSecureResolver(new XmlUrlResolver(), baseUri);
             XmlDocument docProcessed = PreProcessElementInput(verifier.SignedInfo.GetXml(), resolver, baseUri);
@@ -154,7 +171,7 @@ namespace Demo.Services
 
             // Verify the signature
             bool isSignatureOK = asymmetricSignatureDeformatter.VerifySignature(digestedSignedInfo, verifier.SignatureValue);
-            bool isDigestOK = this.VerifyDigest(doc, verifier, strDigestValue, index);
+            bool isDigestOK = this.VerifyDigest(doc, verifier, index);
             if (isSignatureOK && isDigestOK)
             {
                 result.IsValid = true;
@@ -168,40 +185,28 @@ namespace Demo.Services
             return result;
         }
 
-        public bool VerifyDigest(XmlDocument document, SignedXml aVerifier, string strDigestValue, int index)
+        public bool VerifyDigest(XmlDocument document, SignedXml aVerifier, int index)
         {
-            //https://youtu.be/jUzjilTxdzk //Nice music
             XmlDocument doc = document;
             doc.PreserveWhitespace = true;
-
-            XmlNode xmlNode = doc.GetElementsByTagName("ds:Signature")[index];
+            
+            string digestMethod = aVerifier.SignedInfo.GetXml().ParentNode.FirstChild.ChildNodes[2].ChildNodes[1].Attributes[0].Value;
+            string digestValue = aVerifier.SignedInfo.GetXml().InnerText;
+           
+            XmlNode xmlNode = doc.GetElementsByTagName("ds:Signature").Item(index);
             doc.DocumentElement.RemoveChild(xmlNode);
 
             //create c14n instance and load in xml file
             XmlDsigC14NTransform c14n = new XmlDsigC14NTransform(false);
-
-            // Loading the Assetion Node into the canonicalization
             c14n.LoadInput(doc);
 
-            //get canonalised stream
-            Stream canonalisedStream = (Stream)c14n.GetOutput(typeof(Stream));
-
-            //Creating SHA1 object to get Hash
-            SHA256 sHA256 = new SHA256CryptoServiceProvider();
-
-            Byte[] output = sHA256.ComputeHash(canonalisedStream);
-
-            //Getting the Base64 version of digest Value computed
-            string xmlDigestValue = Convert.ToBase64String(output);
+            //Getting the Base64 version of digest
+            string xmlDigestValue = ComputeHash(digestMethod, c14n);
 
             // If Computed and original digest value matches then return true else false.
-            if (xmlDigestValue == strDigestValue)
-            {
+            if (xmlDigestValue == digestValue)
                 return true;
-            }
-
             return false;
-
         }
     }
 }

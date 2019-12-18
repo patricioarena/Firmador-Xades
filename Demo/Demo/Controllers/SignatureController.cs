@@ -48,6 +48,7 @@ namespace Demo.Controllers
             var sc = new SignatureCommitment(SignatureCommitmentType.ProofOfOrigin);
             parametros.SignatureCommitments.Add(sc);
 
+            
             return parametros;
         }
 
@@ -210,14 +211,14 @@ namespace Demo.Controllers
                     SignatureDocument[] signatureDocument = service.Load(stream);
                     int count = signatureDocument.Length;
 
-                    for (int i = signatureDocument.Length - 1; i >= 0; i--)
+                    for (int index = signatureDocument.Length - 1; index >= 0; index--)
                     {
 
                         VerifyMultiSignature verifyMultiSignature = new VerifyMultiSignature();
 
-                        var aFirma = signatureDocument[i];
+                        var aFirma = signatureDocument[index];
                         var x509Certificate2 = aFirma.XadesSignature.GetSigningCertificate();
-                        var validationResult = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, aFirma, i);
+                        var validationResult = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, aFirma, index);
 
                         JObject jObject = new JObject();
                         jObject.Add("Subject", x509Certificate2.Subject);
