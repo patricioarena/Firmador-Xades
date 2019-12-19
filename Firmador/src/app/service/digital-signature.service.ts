@@ -28,8 +28,8 @@ export class DigitalSignatureService {
     return this.HttpClient.post( url, objeto, options).pipe(map(res => res as any));
   }
 
-  firma(objeto, tipoFirma) {
-    const url = `${this.apiurl}api/Signature/Signature/${tipoFirma}`;
+  firmaDigital(objeto, tipoFirma) {
+    const url = `${this.apiurl}api/Signature/Digital/Signature/${tipoFirma}`;
     return this.HttpClient.post( url, objeto, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
@@ -38,5 +38,13 @@ export class DigitalSignatureService {
     }).pipe(map(res => res as any));
   }
 
-
+  firmaElectronica(objeto, tipoFirma) {
+    const url = `${this.apiurl}api/Signature/Electronic/Signature/${tipoFirma}`;
+    return this.HttpClient.post( url, objeto, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .append('Access-Control-Allow-Origin', '*'),
+      responseType: 'text'
+    }).pipe(map(res => res as any));
+  }
 }

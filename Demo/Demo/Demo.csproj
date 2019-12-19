@@ -123,6 +123,7 @@
     <Compile Include="Results\CustomException.cs" />
     <Compile Include="Results\ResponseApi.cs" />
     <Compile Include="Services\CertificateControl.cs" />
+    <Compile Include="Services\OcspClient.cs" />
     <Compile Include="Services\VerifyMultiSignature.cs" />
     <Compile Include="Startup.cs" />
     <EmbeddedResource Include="Configuración.resx">
@@ -147,6 +148,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BouncyCastle">
+      <Version>1.7.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
       <Version>5.2.7</Version>
     </PackageReference>

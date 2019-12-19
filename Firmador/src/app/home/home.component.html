@@ -12,18 +12,18 @@
           </sub></h1>
       </div>
     </div>
-    <div class="col-mt-4 col-sm-3"  *ngIf="show" >
+    <div class="col-mt-4 col-sm-3" *ngIf="show">
       <button type="button" class="btn btn-success mt-4" (click)="downloadFile()">Descargar Documento Firmado&nbsp;<i
           class="fa fa-download fa-lg" aria-hidden="true"></i></button></div>
   </div>
 </div>
 <div class=" mt-4"></div>
-<div class="container" >
+<div class="container">
   <div class="form-group">
     <!-- <label for="Textarea1">Example textarea</label> -->
     <textarea class="form-control" id="Textarea1" rows="13" style="resize: none;" [(ngModel)]="text"></textarea>
   </div>
-  <select class="custom-select" (change)="changeType($event)" >
+  <select class="custom-select" (change)="changeType($event)">
     <option *ngFor="let aType of TiposDeFirma" [ngValue]="aType">{{aType.key}}</option>
   </select>
 </div>
@@ -31,8 +31,10 @@
 <br>
 <div class="container">
   <div class="text-center">
-    <button type="button" class="btn btn-primary waves-effect waves-light" (click)='Firmar()'><i
-        class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp;Firmar</button>
+    <button type="button" class="btn btn-primary waves-effect waves-light" (click)='FirmarDigital()'><i
+        class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp;Firmar Digital</button>
+    <button type="button" class="btn btn-default waves-effect waves-light" (click)='FirmarElectronica()'><i
+        class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp;Firmar Electronica</button>
     <!-- <button type="button" class="btn btn-default waves-effect waves-light"><i class="fa fa-pencil fa-fw"
         aria-hidden="true"></i>&nbsp;Co - Firmar</button> -->
     <button type="button" class="btn btn-warning waves-effect waves-light" (click)="Verificar()"><i
@@ -41,5 +43,3 @@
         aria-hidden="true"></i>&nbsp;Revocar Firma</button> -->
   </div>
 </div>
-
-

@@ -2,25 +2,22 @@
 using Demo.Results;
 using Demo.Services;
 using FirmaXadesNet;
+using FirmaXadesNet.Clients;
 using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature;
 using FirmaXadesNet.Signature.Parameters;
 using FirmaXadesNet.Utils;
-using Microsoft.Xades;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Web.Http;
 using System.Xml;
-using System.Xml.Linq;
+using Org.BouncyCastle.X509;
 
 namespace Demo.Controllers
 {
@@ -48,7 +45,6 @@ namespace Demo.Controllers
             var sc = new SignatureCommitment(SignatureCommitmentType.ProofOfOrigin);
             parametros.SignatureCommitments.Add(sc);
 
-            
             return parametros;
         }
 
@@ -78,20 +74,26 @@ namespace Demo.Controllers
         {
             try
             {
-                return Ok(new Signer(CertUtil.SelectCertificate()).Certificate);
+                X509Certificate2 x509Certificate2 = new Signer(CertUtil.SelectCertificate()).Certificate;
+ 
+                Services.OcspClient client = new Services.OcspClient();
+                Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(x509Certificate2);
+
+                var chain = CertUtil.GetCertChain(x509Certificate2);
+
+                return Ok(chain);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                throw;
+                return Ok(ex);
             }
         }
-
         /// <summary>
-        /// Firma el documento recibido
+        /// Firma el documento recibido (Firma Electronica)
         /// </summary>
         [HttpPost]
-        [Route("Signature/{typeSignature}")]
-        public IHttpActionResult Signature(string typeSignature, [FromBody] ObjetoModel model)
+        [Route("Electronic/Signature/{typeSignature}")]
+        public IHttpActionResult Electronic(string typeSignature, [FromBody] ObjetoModel model)
         {
             try
             {
@@ -124,7 +126,80 @@ namespace Demo.Controllers
                     return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
                 }
 
-                else if (this.Verify(aCert).Equals(true))
+                else if (this.Verify(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
+                {
+                    using (parametros.Signer = new Signer(aCert))
+                    {
+                        if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
+                        {
+                            using (Stream stream = new MemoryStream(bytes))
+                            {
+                                _signatureDocument = service.Sign(stream, parametros);
+                            }
+                        }
+                        else
+                        {
+                            _signatureDocument = service.Sign(null, parametros);
+                        }
+                    }
+                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
+                    XmlDocument xmlDocument = _signatureDocument.Document;
+                    return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
+                }
+                return Content(HttpStatusCode.OK, -2); // Certificado no valido
+            }
+            catch (System.Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        /// <summary>
+        /// Firma el documento recibido (Firma Digital)
+        /// </summary>
+        [HttpPost]
+        [Route("Digital/Signature/{typeSignature}")]
+        public IHttpActionResult Digital(string typeSignature, [FromBody] ObjetoModel model)
+        {
+            try
+            {
+                IService service = null;
+                //Xades Original :: 1
+                if (typeSignature.Equals("1"))
+                {
+                    service = new FirmaXadesNet.XadesService();
+                }
+                //Xades Custom :: 2
+                else
+                {
+                    service = new Custom.FirmaXadesNet.XadesService2();
+                }
+
+                SignatureParameters parametros = ObtenerParametrosFirma();
+                SignatureDocument _signatureDocument;
+
+                parametros.SignaturePolicyInfo = ObtenerPolitica();
+                parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
+                parametros.DataFormat = new DataFormat();
+                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
+
+                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+
+                X509Certificate2 aCert = CertUtil.SelectCertificate();
+
+                if (aCert == null)
+                {
+                    return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
+                }
+
+                Services.OcspClient client = new Services.OcspClient();
+                Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
+
+                if (resp != Services.CertificateStatus.Good)
+                {
+                    return Content(HttpStatusCode.OK, -2); // Certificado no valido
+                }
+
+                else if (this.Verify(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
                 {
                     using (parametros.Signer = new Signer(aCert))
                     {
@@ -181,7 +256,6 @@ namespace Demo.Controllers
                     }
                 }
                 return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", SignatureList));
-
             }
             catch (System.Exception ex)
             {
@@ -209,8 +283,6 @@ namespace Demo.Controllers
                 using (Stream stream = new MemoryStream(bytes))
                 {
                     SignatureDocument[] signatureDocument = service.Load(stream);
-                    int count = signatureDocument.Length;
-
                     for (int index = signatureDocument.Length - 1; index >= 0; index--)
                     {
 

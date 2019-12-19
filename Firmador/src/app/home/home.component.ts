@@ -43,13 +43,13 @@ export class HomeComponent implements OnInit {
       '</Tour>';
   }
 
-  Firmar() {
+  FirmarDigital() {
     this.show = false;
     // console.log("TextArea::text: " + this.text);
     this.objeto = new Objeto;
     this.objeto.Archivo = this.text;
     // this.objeto.Extension = '.xml';
-    this.searchDocumentService.firma(this.objeto, this.TipoDeFirma).subscribe(
+    this.searchDocumentService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe(
       resp => {
         if (resp === '-1') {
           // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
@@ -68,6 +68,30 @@ export class HomeComponent implements OnInit {
       });
   }
 
+  FirmarElectronica() {
+    this.show = false;
+    // console.log("TextArea::text: " + this.text);
+    this.objeto = new Objeto;
+    this.objeto.Archivo = this.text;
+    // this.objeto.Extension = '.xml';
+    this.searchDocumentService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe(
+      resp => {
+        if (resp === '-1') {
+          // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
+        }
+        else if (resp === '-2') {
+          this.notificationService.show('Certificado', 'Certificado no valido', 'info');
+        }
+        else {
+          this.responseFirma = resp;
+          this.show = true;
+        }
+      }, err => {
+        // console.log(JSON.parse(err.error).ExceptionMessage)
+        let message = JSON.parse(err.error).ExceptionMessage;
+        this.notificationService.show('Certificado', message, 'error');
+      });
+  }
 
   Verificar() {
     this.objeto = new Objeto;
