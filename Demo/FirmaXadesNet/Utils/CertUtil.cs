@@ -56,6 +56,17 @@ namespace FirmaXadesNet.Utils
             return chain;
         }
 
+        public static X509ChainStatus[] ChainVerify(X509Certificate2 certificate)
+        {
+            var chain = new X509Chain();
+            chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+            chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+            chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
+            chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+
+            chain.Build(certificate);
+            return chain.ChainStatus;
+        }
         /// <summary>
         /// Selecciona un certificado del almacén de certificados
         /// </summary>

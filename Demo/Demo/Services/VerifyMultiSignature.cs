@@ -1,6 +1,4 @@
-﻿using FirmaXadesNet.Signature;
-using FirmaXadesNet.Validation;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Globalization;
 using System.IO;
@@ -12,14 +10,27 @@ using System.Xml;
 
 namespace Demo.Services
 {
+    public class ValidationResult
+    {
+        public bool IsValid { get; set; }
+        public string Message { get; set; }
+
+        public ValidationResult() { }
+    }
     public class VerifyMultiSignature
     {
+        #region Private variables
         private static long? maxCharactersFromEntities = null;
         private static bool s_readMaxCharactersInDocument = false;
         private static long s_maxCharactersInDocument = 0;
-        public VerifyMultiSignature(){}
+        #endregion
 
-        private static long GetNetFxSecurityRegistryValue(string regValueName, long defaultValue)
+        #region Constructor
+        public VerifyMultiSignature() { }
+        #endregion
+
+        #region Internal methods
+        internal static long GetNetFxSecurityRegistryValue(string regValueName, long defaultValue)
         {
             try
             {
@@ -71,7 +82,6 @@ namespace Demo.Services
 
             return s_maxCharactersInDocument;
         }
-
         internal class MyXmlDocument : XmlDocument
         {
             protected override XmlAttribute CreateDefaultAttribute(string prefix, string localName, string namespaceURI)
@@ -120,8 +130,33 @@ namespace Demo.Services
                 throw new Exception("Unsupported digest method");
             }
         }
+        internal bool VerifyDigest(XmlDocument document, SignedXml aVerifier, int indexOfSignature)
+        {
+            XmlDocument doc = document;
+            doc.PreserveWhitespace = true;
 
-        public ValidationResult MatchesSignature(XmlDocument document, X509Certificate2 x509cert, SignatureDocument signatureDocument, int index)
+            string digestMethod = aVerifier.SignedInfo.GetXml().ParentNode.FirstChild.ChildNodes[2].ChildNodes[1].Attributes[0].Value;
+            string digestValue = aVerifier.SignedInfo.GetXml().InnerText;
+
+            XmlNode xmlNode = doc.GetElementsByTagName("ds:Signature").Item(indexOfSignature);
+            doc.DocumentElement.RemoveChild(xmlNode);
+
+            //create c14n instance and load in xml file
+            XmlDsigC14NTransform c14n = new XmlDsigC14NTransform(false);
+            c14n.LoadInput(doc);
+
+            //Getting the Base64 version of digest
+            string xmlDigestValue = ComputeHash(digestMethod, c14n);
+
+            // If Computed and original digest value matches then return true else false.
+            if (xmlDigestValue == digestValue)
+                return true;
+            return false;
+        }
+        #endregion
+
+        #region Public methods
+        public ValidationResult MatchesSignature(XmlDocument document, X509Certificate2 x509cert, int indexOfSignature)
         {
             ValidationResult result = new ValidationResult();
             XmlDocument doc = document;
@@ -129,7 +164,7 @@ namespace Demo.Services
             SignedXml verifier = new SignedXml();
 
             //Next, the SignedXml class must be given the value of the signature it is to validate.This can be done by looking for elements with the tag name of Signature.See code below:
-            XmlElement xmlElement = ((System.Xml.XmlElement)signatureDocument.Document.GetElementsByTagName("ds:Signature").Item(index));
+            XmlElement xmlElement = (System.Xml.XmlElement)document.GetElementsByTagName("ds:Signature").Item(indexOfSignature);
             verifier.LoadXml(xmlElement);
 
             // Get the public key
@@ -171,7 +206,7 @@ namespace Demo.Services
 
             // Verify the signature
             bool isSignatureOK = asymmetricSignatureDeformatter.VerifySignature(digestedSignedInfo, verifier.SignatureValue);
-            bool isDigestOK = this.VerifyDigest(doc, verifier, index);
+            bool isDigestOK = this.VerifyDigest(doc, verifier, indexOfSignature);
             if (isSignatureOK && isDigestOK)
             {
                 result.IsValid = true;
@@ -184,29 +219,6 @@ namespace Demo.Services
 
             return result;
         }
-
-        public bool VerifyDigest(XmlDocument document, SignedXml aVerifier, int index)
-        {
-            XmlDocument doc = document;
-            doc.PreserveWhitespace = true;
-            
-            string digestMethod = aVerifier.SignedInfo.GetXml().ParentNode.FirstChild.ChildNodes[2].ChildNodes[1].Attributes[0].Value;
-            string digestValue = aVerifier.SignedInfo.GetXml().InnerText;
-           
-            XmlNode xmlNode = doc.GetElementsByTagName("ds:Signature").Item(index);
-            doc.DocumentElement.RemoveChild(xmlNode);
-
-            //create c14n instance and load in xml file
-            XmlDsigC14NTransform c14n = new XmlDsigC14NTransform(false);
-            c14n.LoadInput(doc);
-
-            //Getting the Base64 version of digest
-            string xmlDigestValue = ComputeHash(digestMethod, c14n);
-
-            // If Computed and original digest value matches then return true else false.
-            if (xmlDigestValue == digestValue)
-                return true;
-            return false;
-        }
+        #endregion
     }
 }

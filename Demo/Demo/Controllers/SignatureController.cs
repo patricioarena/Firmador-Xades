@@ -74,14 +74,48 @@ namespace Demo.Controllers
         {
             try
             {
-                X509Certificate2 x509Certificate2 = new Signer(CertUtil.SelectCertificate()).Certificate;
- 
-                Services.OcspClient client = new Services.OcspClient();
-                Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(x509Certificate2);
+                X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
 
-                var chain = CertUtil.GetCertChain(x509Certificate2);
+                int cant = 0;
+                X509Chain ch = new X509Chain();
+                ch.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+                ch.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+                ch.Build(certificate);
+                //Console.WriteLine("Chain Information");
+                //Console.WriteLine("Chain revocation flag: {0}", ch.ChainPolicy.RevocationFlag);
+                //Console.WriteLine("Chain revocation mode: {0}", ch.ChainPolicy.RevocationMode);
+                //Console.WriteLine("Chain verification flag: {0}", ch.ChainPolicy.VerificationFlags);
+                //Console.WriteLine("Chain verification time: {0}", ch.ChainPolicy.VerificationTime);
+                //Console.WriteLine("Chain status length: {0}", ch.ChainStatus.Length);
+                //Console.WriteLine("Chain application policy count: {0}", ch.ChainPolicy.ApplicationPolicy.Count);
+                //Console.WriteLine("Chain certificate policy count: {0} {1}", ch.ChainPolicy.CertificatePolicy.Count, Environment.NewLine);
 
-                return Ok(chain);
+                //Output chain element information.
+                Console.WriteLine("Chain Element Information");
+                Console.WriteLine("Number of chain elements: {0}", ch.ChainElements.Count);
+                Console.WriteLine("Chain elements synchronized? {0} {1}", ch.ChainElements.IsSynchronized, Environment.NewLine);
+
+                foreach (X509ChainElement element in ch.ChainElements)
+                {
+                    Console.WriteLine("Element issuer name: {0}", element.Certificate.Issuer);
+                    Console.WriteLine("Element certificate valid until: {0}", element.Certificate.NotAfter);
+                    Console.WriteLine("Element certificate is valid: {0}", element.Certificate.Verify());
+                    Console.WriteLine("Element error status length: {0}", element.ChainElementStatus.Length);
+                    Console.WriteLine("Element information: {0}", element.Information);
+                    Console.WriteLine("Number of element extensions: {0}{1}", element.Certificate.Extensions.Count, Environment.NewLine);
+
+                    if (ch.ChainStatus.Length > 1)
+                    {
+                        for (int index = 0; index < element.ChainElementStatus.Length; index++)
+                        {
+                            Console.WriteLine(element.ChainElementStatus[index].Status);
+                            Console.WriteLine(element.ChainElementStatus[index].StatusInformation);
+                        }
+                    }
+                }
+
+
+                return Ok("");
             }
             catch (System.Exception ex)
             {
@@ -215,7 +249,7 @@ namespace Demo.Controllers
                             _signatureDocument = service.Sign(null, parametros);
                         }
                     }
-                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
+                    _signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
                     XmlDocument xmlDocument = _signatureDocument.Document;
                     return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
                 }
@@ -278,19 +312,25 @@ namespace Demo.Controllers
                 doc.LoadXml(model.Archivo);
                 byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
                 List<JObject> SignatureList = new List<JObject>();
+
+                //Servicio correspondiente a la libreria que uso y modifique un poco
                 Custom.FirmaXadesNet.XadesService2 service = new Custom.FirmaXadesNet.XadesService2();
 
                 using (Stream stream = new MemoryStream(bytes))
                 {
-                    SignatureDocument[] signatureDocument = service.Load(stream);
+                    // Esto es propio de la libreia que uso crea un arreglo de documentos firmados [[documento,firma 1]
+                    // [documento,firma 2]] 
+                    SignatureDocument[] signatureDocument = service.Load(stream); 
+
+                    //Recorro las firmas de atras para adelante
                     for (int index = signatureDocument.Length - 1; index >= 0; index--)
                     {
 
                         VerifyMultiSignature verifyMultiSignature = new VerifyMultiSignature();
 
                         var aFirma = signatureDocument[index];
-                        var x509Certificate2 = aFirma.XadesSignature.GetSigningCertificate();
-                        var validationResult = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, aFirma, index);
+                        var x509Certificate2 = aFirma.XadesSignature.GetSigningCertificate(); //Obtener certificado del documento firmado
+                        var validationResult = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, index);
 
                         JObject jObject = new JObject();
                         jObject.Add("Subject", x509Certificate2.Subject);
