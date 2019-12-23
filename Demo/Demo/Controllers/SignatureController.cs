@@ -75,47 +75,7 @@ namespace Demo.Controllers
             try
             {
                 X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
-
-                int cant = 0;
-                X509Chain ch = new X509Chain();
-                ch.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
-                ch.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-                ch.Build(certificate);
-                //Console.WriteLine("Chain Information");
-                //Console.WriteLine("Chain revocation flag: {0}", ch.ChainPolicy.RevocationFlag);
-                //Console.WriteLine("Chain revocation mode: {0}", ch.ChainPolicy.RevocationMode);
-                //Console.WriteLine("Chain verification flag: {0}", ch.ChainPolicy.VerificationFlags);
-                //Console.WriteLine("Chain verification time: {0}", ch.ChainPolicy.VerificationTime);
-                //Console.WriteLine("Chain status length: {0}", ch.ChainStatus.Length);
-                //Console.WriteLine("Chain application policy count: {0}", ch.ChainPolicy.ApplicationPolicy.Count);
-                //Console.WriteLine("Chain certificate policy count: {0} {1}", ch.ChainPolicy.CertificatePolicy.Count, Environment.NewLine);
-
-                //Output chain element information.
-                Console.WriteLine("Chain Element Information");
-                Console.WriteLine("Number of chain elements: {0}", ch.ChainElements.Count);
-                Console.WriteLine("Chain elements synchronized? {0} {1}", ch.ChainElements.IsSynchronized, Environment.NewLine);
-
-                foreach (X509ChainElement element in ch.ChainElements)
-                {
-                    Console.WriteLine("Element issuer name: {0}", element.Certificate.Issuer);
-                    Console.WriteLine("Element certificate valid until: {0}", element.Certificate.NotAfter);
-                    Console.WriteLine("Element certificate is valid: {0}", element.Certificate.Verify());
-                    Console.WriteLine("Element error status length: {0}", element.ChainElementStatus.Length);
-                    Console.WriteLine("Element information: {0}", element.Information);
-                    Console.WriteLine("Number of element extensions: {0}{1}", element.Certificate.Extensions.Count, Environment.NewLine);
-
-                    if (ch.ChainStatus.Length > 1)
-                    {
-                        for (int index = 0; index < element.ChainElementStatus.Length; index++)
-                        {
-                            Console.WriteLine(element.ChainElementStatus[index].Status);
-                            Console.WriteLine(element.ChainElementStatus[index].StatusInformation);
-                        }
-                    }
-                }
-
-
-                return Ok("");
+                return Ok(certificate);
             }
             catch (System.Exception ex)
             {
@@ -156,9 +116,7 @@ namespace Demo.Controllers
                 X509Certificate2 aCert = CertUtil.SelectCertificate();
 
                 if (aCert == null)
-                {
                     return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
-                }
 
                 else if (this.Verify(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
                 {
@@ -221,17 +179,15 @@ namespace Demo.Controllers
                 X509Certificate2 aCert = CertUtil.SelectCertificate();
 
                 if (aCert == null)
-                {
                     return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
-                }
 
                 Services.OcspClient client = new Services.OcspClient();
                 Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
+                JObject T = client.x509ChainVerify(aCert);
 
-                if (resp != Services.CertificateStatus.Good)
-                {
+                if(T.Count > 0 || resp != Services.CertificateStatus.Good)
                     return Content(HttpStatusCode.OK, -2); // Certificado no valido
-                }
+                    //return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Chain Error", T));
 
                 else if (this.Verify(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
                 {

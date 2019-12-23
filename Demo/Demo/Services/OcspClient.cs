@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Asn1.X509;
@@ -291,6 +292,46 @@ namespace Demo.Services
             ocspRequestGenerator.SetRequestExtensions(new X509Extensions(oids, values));
 
             return ocspRequestGenerator.Generate();
+        }
+
+        public JObject x509ChainVerify(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate)
+        {
+            JObject Error = new JObject();
+            System.Security.Cryptography.X509Certificates.X509Chain x509Chain = new System.Security.Cryptography.X509Certificates.X509Chain();
+            x509Chain.ChainPolicy.RevocationFlag = System.Security.Cryptography.X509Certificates.X509RevocationFlag.EntireChain;
+            x509Chain.ChainPolicy.RevocationMode = System.Security.Cryptography.X509Certificates.X509RevocationMode.Online;
+            x509Chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
+            x509Chain.ChainPolicy.VerificationFlags = System.Security.Cryptography.X509Certificates.X509VerificationFlags.NoFlag;
+            x509Chain.Build(certificate);
+
+            int certNumber = 0;
+            foreach (System.Security.Cryptography.X509Certificates.X509ChainElement element in x509Chain.ChainElements)
+            {
+                certNumber = certNumber + 1;
+                JObject CertError = new JObject();
+                bool isValid = element.Certificate.Verify();
+                if (element.Certificate.Verify().Equals(false))
+                {
+                    CertError.Add("Issuer", element.Certificate.Issuer.ToString());
+                    CertError.Add("ValidUntil", element.Certificate.NotAfter.ToString());
+                    CertError.Add("SerialNumber", element.Certificate.SerialNumber.ToString());
+                    CertError.Add("Thumbprint", element.Certificate.Thumbprint.ToString());
+                    CertError.Add("IsValid", isValid.ToString());
+                    Error.Add($"CertNumber({certNumber})", CertError);
+                }
+
+                if (x509Chain.ChainStatus.Length > 0)
+                {
+                    for (int index = 0; index < element.ChainElementStatus.Length; index++)
+                    {
+                        JObject ChainElementStatus = new JObject();
+                        ChainElementStatus.Add("Status", element.ChainElementStatus[index].Status.ToString());
+                        ChainElementStatus.Add("StatusInformation", element.ChainElementStatus[index].StatusInformation.ToString());
+                        CertError.Add($"ChainElementStatus({index})", ChainElementStatus);
+                    }
+                }
+            }
+            return Error;
         }
     }
 }
