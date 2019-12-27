@@ -9,9 +9,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Collections.Generic;
-using Demo.Model;
+using Helper.Model;
 
-namespace Demo.Services
+namespace Helper.Services
 {
 
     /// <summary>

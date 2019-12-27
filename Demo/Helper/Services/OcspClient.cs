@@ -10,7 +10,8 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Ocsp;
 using Org.BouncyCastle.X509;
-namespace Demo.Services
+
+namespace Helper.Services
 {
     public enum CertificateStatus { Good = 0, Revoked = 1, Unknown = 2 };
 

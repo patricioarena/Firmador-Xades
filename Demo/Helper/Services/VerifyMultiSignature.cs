@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 
-namespace Demo.Services
+namespace Helper.Services
 {
     public class ValidationResult
     {
@@ -142,7 +142,7 @@ namespace Demo.Services
             doc.DocumentElement.RemoveChild(xmlNode);
 
             //create c14n instance and load in xml file
-            XmlDsigC14NTransform c14n = new XmlDsigC14NTransform(false);
+            XmlDsigC14NTransform c14n = new XmlDsigC14NTransform(true);
             c14n.LoadInput(doc);
 
             //Getting the Base64 version of digest

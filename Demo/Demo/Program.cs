@@ -1,5 +1,5 @@
-﻿using Demo.Model;
-using Demo.Services;
+﻿using Helper.Model;
+using Helper.Services;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;

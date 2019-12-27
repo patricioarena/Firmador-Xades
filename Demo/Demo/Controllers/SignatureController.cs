@@ -1,6 +1,6 @@
-﻿using Demo.Model;
+﻿using Helper.Model;
 using Demo.Results;
-using Demo.Services;
+using Helper.Services;
 using FirmaXadesNet;
 using FirmaXadesNet.Clients;
 using FirmaXadesNet.Crypto;
@@ -181,11 +181,11 @@ namespace Demo.Controllers
                 if (aCert == null)
                     return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
 
-                Services.OcspClient client = new Services.OcspClient();
-                Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
+                Helper.Services.OcspClient client = new Helper.Services.OcspClient();
+                Helper.Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
                 JObject T = client.x509ChainVerify(aCert);
 
-                if(T.Count > 0 || resp != Services.CertificateStatus.Good)
+                if(T.Count > 0 || resp != Helper.Services.CertificateStatus.Good)
                     return Content(HttpStatusCode.OK, -2); // Certificado no valido
                     //return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Chain Error", T));
 
@@ -205,7 +205,7 @@ namespace Demo.Controllers
                             _signatureDocument = service.Sign(null, parametros);
                         }
                     }
-                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
+                    _signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
                     XmlDocument xmlDocument = _signatureDocument.Document;
                     return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
                 }
