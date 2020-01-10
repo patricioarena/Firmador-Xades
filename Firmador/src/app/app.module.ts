@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -22,18 +22,18 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './service/notification.service';
-
-const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent }
-];
+import { RoutingModule } from './modules/routing.module';
+import { TitleService } from './service/title.service';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-
+    FooterComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,9 +47,9 @@ const routes: Routes = [
     ModalModule.forRoot(),
     NgxSpinnerModule,
     TooltipModule.forRoot(),
-    RouterModule.forRoot(routes)
+    RoutingModule
   ],
-  providers: [ DigitalSignatureService, NgxSpinnerService, NotificationService],
+  providers: [ DigitalSignatureService, NgxSpinnerService, NotificationService, TitleService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

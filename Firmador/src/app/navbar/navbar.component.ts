@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { TitleService } from '../service/title.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,11 +7,12 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @Input() title:string;
+  title: String;
 
-  constructor() { }
+  constructor(private titleService: TitleService ) { }
 
   ngOnInit() {
+    this.title = this.titleService.APP_TITLE;
   }
 
 }

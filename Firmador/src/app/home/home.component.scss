@@ -110,3 +110,43 @@ body {
   color: #fff;
 }
 
+.textPreview{
+  font-size: 12px;
+  font-family: monospace;
+  white-space: pre;
+}
+
+
+section {
+  position: relative;
+  background-color: rgba(155, 168, 174, 0.3);
+  padding-top:20px;
+  padding-bottom:20px;
+  margin-top:15px;
+  margin-bottom:80px;
+  text-align: center;
+  height: 96px;
+}
+
+/* Common style for pseudo-elements */
+section::before,
+section::after {
+  position: absolute;
+  content: '';
+  pointer-events: none;
+}
+
+/* Triangles */
+.ss-style-triangles::before,
+.ss-style-triangles::after {
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  -webkit-transform: translateX(-50%) rotate(45deg);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.ss-style-triangles::before {
+  top: -15px;
+  background: #ecf0f5;
+}

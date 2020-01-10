@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TitleService } from './service/title.service';
+// import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -6,12 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Digital Signature';
-
-
-  constructor() {
-    this.title = 'Digital Signature';
+  public constructor(private titleService: TitleService ) {
+    // this.setTitle("CertiFisc");
+    this.titleService.init("CertiFisc");
   }
 
+  // public setTitle( newTitle: string ) {
+  //   this.titleService.setTitle( newTitle );
+  // }
 }
 

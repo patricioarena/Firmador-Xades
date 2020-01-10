@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DigitalSignatureService } from '../service/digital-signature.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Objeto } from 'src/app/modelos/Objeto';
@@ -6,6 +6,7 @@ import { saveAs } from 'file-saver';
 import { resolve } from 'path';
 import { error } from 'util';
 import { NotificationService } from '../service/notification.service';
+import { TitleService } from '../service/title.service';
 
 @Component({
   selector: 'app-home',
@@ -14,24 +15,29 @@ import { NotificationService } from '../service/notification.service';
 })
 
 export class HomeComponent implements OnInit {
+  title: String;
   TiposDeFirma: any = [
-                        {'key': 'Xades CIFE - Sin ds:Object' , 'value': '2' },
-                        {'key': 'Xades Cartagena (Union Europea) - Con ds:Object' , 'value': '1' }
-                      ];
-
+    { 'key': 'Xades CIFE - Sin ds:Object', 'value': '2' },
+    { 'key': 'Xades Cartagena (Union Europea) - Con ds:Object', 'value': '1' }
+  ];
   TipoDeFirma: String = '2';
   text: String;
+  textPreview: String = '';
   objeto: Objeto;
   show = false;
+  showPreview = false;
   fileUrl;
   responseFirma;
 
   constructor(
     public searchDocumentService: DigitalSignatureService,
     public spinner: NgxSpinnerService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private titleServive: TitleService
+  ) { }
 
   ngOnInit() {
+    this.title = this.titleServive.APP_TITLE;
     this.text = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n' +
       '<Tour>\n' +
       '   <NombreTour> The Offspring y Bad Religion </NombreTour> \n' +
@@ -45,6 +51,8 @@ export class HomeComponent implements OnInit {
 
   FirmarDigital() {
     this.show = false;
+    this.showPreview = false;
+    this.textPreview = '';
     // console.log("TextArea::text: " + this.text);
     this.objeto = new Objeto;
     this.objeto.Archivo = this.text;
@@ -70,6 +78,8 @@ export class HomeComponent implements OnInit {
 
   FirmarElectronica() {
     this.show = false;
+    this.showPreview = false;
+    this.textPreview = '';
     // console.log("TextArea::text: " + this.text);
     this.objeto = new Objeto;
     this.objeto.Archivo = this.text;
@@ -109,7 +119,7 @@ export class HomeComponent implements OnInit {
         }
         else if (arr[0].IsValid === false) {
           this.notificationService.show('Firmas', JSON.stringify(arr[0].Message), 'error');
-        }else{
+        } else {
 
         }
 
@@ -125,11 +135,16 @@ export class HomeComponent implements OnInit {
     saveAs(blob, 'Document.xml');
   }
 
+  preview() {
+    this.showPreview = true;
+    this.textPreview = this.responseFirma;
+  }
+
   changeType(event) {
     let key = event.target.value;
-    let value = this.TiposDeFirma.find( function(item) { return item.key == key } ).value;
+    let value = this.TiposDeFirma.find(function (item) { return item.key == key }).value;
     this.TipoDeFirma = value;
-    console.log(`event.target.value:: ${typeof(key)} :: ${key} :: ${value}`);
+    console.log(`event.target.value:: ${typeof (key)} :: ${key} :: ${value}`);
   }
 
 }
