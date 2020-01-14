@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
+import { take } from 'rxjs/internal/operators/take';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,30 @@ export class NotificationService {
     this.options.timeOut = 1500;
   }
 
-  show(title, message, type) {
-    this.toastr.show(message, title, this.options, 'toast-' + type);
+  showSuccess(title, message) {
+    this.toastr.success(title, message, this.options)
+      .onTap
+      .pipe(take(1))
+      .subscribe(() => this.toasterClickedHandler());
   }
+
+  showError(title, message) {
+    this.toastr.error(title, message, this.options)
+      .onTap
+      .pipe(take(1))
+      .subscribe(() => this.toasterClickedHandler());
+  }
+
+  showInfo(title, message) {
+    this.toastr.info(title, message, this.options)
+      .onTap
+      .pipe(take(1))
+      .subscribe(() => this.toasterClickedHandler());
+  }
+
+  toasterClickedHandler() {
+    console.log('Toastr clicked');
+  }
+
 }
+

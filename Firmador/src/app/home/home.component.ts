@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   text: String;
   textPreview: String = '';
   objeto: Objeto;
-  show = false;
+  isEnabled = false;
   showPreview = false;
   fileUrl;
   responseFirma;
@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   FirmarDigital() {
-    this.show = false;
+    this.isEnabled = false;
     this.showPreview = false;
     this.textPreview = '';
     // console.log("TextArea::text: " + this.text);
@@ -63,21 +63,21 @@ export class HomeComponent implements OnInit {
           // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
         }
         else if (resp === '-2') {
-          this.notificationService.show('Certificado', 'Certificado no valido', 'info');
+          this.notificationService.showInfo('Certificado', 'Certificado no valido');
         }
         else {
           this.responseFirma = resp;
-          this.show = true;
+          this.isEnabled = true;
         }
       }, err => {
         // console.log(JSON.parse(err.error).ExceptionMessage)
         let message = JSON.parse(err.error).ExceptionMessage;
-        this.notificationService.show('Certificado', message, 'error');
+        this.notificationService.showError('Certificado', message);
       });
   }
 
   FirmarElectronica() {
-    this.show = false;
+    this.isEnabled = false;
     this.showPreview = false;
     this.textPreview = '';
     // console.log("TextArea::text: " + this.text);
@@ -90,16 +90,16 @@ export class HomeComponent implements OnInit {
           // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
         }
         else if (resp === '-2') {
-          this.notificationService.show('Certificado', 'Certificado no valido', 'info');
+          this.notificationService.showInfo('Certificado', 'Certificado no valido');
         }
         else {
           this.responseFirma = resp;
-          this.show = true;
+          this.isEnabled = true;
         }
       }, err => {
         // console.log(JSON.parse(err.error).ExceptionMessage)
         let message = JSON.parse(err.error).ExceptionMessage;
-        this.notificationService.show('Certificado', message, 'error');
+        this.notificationService.showInfo('Certificado', message);
       });
   }
 
@@ -115,10 +115,11 @@ export class HomeComponent implements OnInit {
         console.table(arr);
         // console.log(JSON.stringify(arr.data))
         if (arr[0].IsValid === true) {
-          this.notificationService.show('Firmas', JSON.stringify(arr[0].Message), 'success');
+          this.notificationService.showSuccess('Ver Firmas', JSON.stringify(arr[0].Message));
+
         }
         else if (arr[0].IsValid === false) {
-          this.notificationService.show('Firmas', JSON.stringify(arr[0].Message), 'error');
+          this.notificationService.showError('Firmas', JSON.stringify(arr[0].Message));
         } else {
 
         }
@@ -126,7 +127,7 @@ export class HomeComponent implements OnInit {
       }, err => {
         // console.log(err.error.ExceptionMessage)
         let message = err.error.ExceptionMessage;
-        this.notificationService.show('Firmas', message, 'error');
+        this.notificationService.showError('Firmas', message);
       });
   }
 
@@ -148,3 +149,4 @@ export class HomeComponent implements OnInit {
   }
 
 }
+

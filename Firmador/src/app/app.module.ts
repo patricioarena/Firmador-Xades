@@ -26,6 +26,7 @@ import { RoutingModule } from './modules/routing.module';
 import { TitleService } from './service/title.service';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { HeaderComponent } from './header/header.component';
     HeaderComponent,
   ],
   imports: [
+    ClipboardModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,

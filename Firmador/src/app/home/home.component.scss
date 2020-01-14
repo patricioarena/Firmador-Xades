@@ -6,6 +6,7 @@
   -btn-info: #33b5e5;
   -btn-warning: #fb3;
   -btn-danger: #ff3547;
+  -btn-grey: #8dacc5;
 }
 
 body {
@@ -108,6 +109,27 @@ body {
 .btn-danger {
   background-color: #ff3547!important;
   color: #fff;
+}
+
+.btn-grey {
+  background-color: #8dacc5!important;
+  color: #fff;
+  width:auto;
+  height:auto;
+  padding:5px 5px;
+  text-align:center;
+}
+
+.copy {
+  position: relative;;
+  float: right;
+  top: 3.2em;
+}
+
+.download{
+  position: relative;;
+  float: right;
+  top: 3.2em;
 }
 
 .textPreview{
