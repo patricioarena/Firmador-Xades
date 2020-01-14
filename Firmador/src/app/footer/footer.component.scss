@@ -1,7 +1,8 @@
 footer {
-  position: sticky;
+  position: relative;
   width: 100%;
-  bottom: 0px;
+  bottom: 0em;
+  top: 6em;
   background-color: #ddd;
   border-top: 1px solid #bbb;
   opacity: 80%;

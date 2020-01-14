@@ -148,5 +148,8 @@ export class HomeComponent implements OnInit {
     console.log(`event.target.value:: ${typeof (key)} :: ${key} :: ${value}`);
   }
 
+  copyMessage() {
+    this.notificationService.showInfo('','Documento copiado');
+  }
 }
 
