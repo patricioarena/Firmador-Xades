@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   showPreview = false;
   fileUrl;
   responseFirma;
+  signatureInDocument;
 
   constructor(
     public searchDocumentService: DigitalSignatureService,
@@ -113,10 +114,10 @@ export class HomeComponent implements OnInit {
         let arr = JSON.parse(JSON.stringify(resp.data));
         console.log(JSON.stringify(arr));
         console.table(arr);
-        // console.log(JSON.stringify(arr.data))
-        if (arr[0].IsValid === true) {
-          this.notificationService.showSuccess('Ver Firmas', JSON.stringify(arr[0].Message));
 
+        if (arr[0].IsValid === true) {
+          this.signatureInDocument = arr;
+          this.notificationService.showSuccess('Ver Firmas', JSON.stringify(arr[0].Message), arr);
         }
         else if (arr[0].IsValid === false) {
           this.notificationService.showError('Firmas', JSON.stringify(arr[0].Message));
@@ -151,5 +152,6 @@ export class HomeComponent implements OnInit {
   copyMessage() {
     this.notificationService.showInfo('','Documento copiado');
   }
+
 }
 

@@ -27,6 +27,7 @@ import { TitleService } from './service/title.service';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     HomeComponent,
     FooterComponent,
     HeaderComponent,
+    ModalComponent
   ],
   imports: [
     ClipboardModule,
@@ -52,6 +54,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     RoutingModule
   ],
   providers: [ DigitalSignatureService, NgxSpinnerService, NotificationService, TitleService ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ ModalComponent ]
 })
 export class AppModule { }
