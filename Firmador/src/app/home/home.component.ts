@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   showPreview = false;
   fileUrl;
   responseFirma;
-  signatureInDocument;
+  // signatureInDocument;
 
   constructor(
     public searchDocumentService: DigitalSignatureService,
@@ -62,17 +62,15 @@ export class HomeComponent implements OnInit {
       resp => {
         if (resp === '-1') {
           // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
-        }
-        else if (resp === '-2') {
+        } else if (resp === '-2') {
           this.notificationService.showInfo('Certificado', 'Certificado no valido');
-        }
-        else {
+        } else {
           this.responseFirma = resp;
           this.isEnabled = true;
         }
       }, err => {
         // console.log(JSON.parse(err.error).ExceptionMessage)
-        let message = JSON.parse(err.error).ExceptionMessage;
+        const message = JSON.parse(err.error).ExceptionMessage;
         this.notificationService.showError('Certificado', message);
       });
   }
@@ -89,17 +87,15 @@ export class HomeComponent implements OnInit {
       resp => {
         if (resp === '-1') {
           // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
-        }
-        else if (resp === '-2') {
+        } else if (resp === '-2') {
           this.notificationService.showInfo('Certificado', 'Certificado no valido');
-        }
-        else {
+        } else {
           this.responseFirma = resp;
           this.isEnabled = true;
         }
       }, err => {
         // console.log(JSON.parse(err.error).ExceptionMessage)
-        let message = JSON.parse(err.error).ExceptionMessage;
+        const message = JSON.parse(err.error).ExceptionMessage;
         this.notificationService.showInfo('Certificado', message);
       });
   }
@@ -111,23 +107,28 @@ export class HomeComponent implements OnInit {
     this.searchDocumentService.verificar(this.objeto, this.TipoDeFirma).subscribe(
       resp => {
 
-        let arr = JSON.parse(JSON.stringify(resp.data));
-        console.log(JSON.stringify(arr));
-        console.table(arr);
+        const data = JSON.parse(JSON.stringify(resp.data));
+        const cantTotalDeFirmas = data.length;
+        let firmasValidas = 0;
+        let firmasInvalidas = 0;
 
-        if (arr[0].IsValid === true) {
-          this.signatureInDocument = arr;
-          this.notificationService.showSuccess('Ver Firmas', JSON.stringify(arr[0].Message), arr);
-        }
-        else if (arr[0].IsValid === false) {
-          this.notificationService.showError('Firmas', JSON.stringify(arr[0].Message));
+        data.forEach(element => {
+          if (data[data.indexOf(element)].IsValid === true) {
+            firmasValidas = firmasValidas + 1;
+          }
+        });
+
+        firmasInvalidas = cantTotalDeFirmas - firmasValidas;
+
+        if (cantTotalDeFirmas === firmasValidas) {
+          // this.signatureInDocument = data;
+          this.notificationService.showVerify('Verificación de firmas satisfactoria', `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
         } else {
-
+          this.notificationService.showNoVerify('Verificación de firmas no satisfactoria', `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
         }
-
       }, err => {
         // console.log(err.error.ExceptionMessage)
-        let message = err.error.ExceptionMessage;
+        const message = err.error.ExceptionMessage;
         this.notificationService.showError('Firmas', message);
       });
   }
@@ -143,14 +144,14 @@ export class HomeComponent implements OnInit {
   }
 
   changeType(event) {
-    let key = event.target.value;
-    let value = this.TiposDeFirma.find(function (item) { return item.key == key }).value;
+    const key = event.target.value;
+    const value = this.TiposDeFirma.find(function (item) { return item.key === key; }).value;
     this.TipoDeFirma = value;
-    console.log(`event.target.value:: ${typeof (key)} :: ${key} :: ${value}`);
+    // console.log(`event.target.value:: ${typeof (key)} :: ${key} :: ${value}`);
   }
 
   copyMessage() {
-    this.notificationService.showInfo('','Documento copiado');
+    this.notificationService.showInfo('', 'Documento copiado');
   }
 
 }

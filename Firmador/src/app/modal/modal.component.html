@@ -1,5 +1,5 @@
 
-  <div class="modal-body">
+  <div class="modal-body ">
 
     <div class="modal-header">
       <h4 class="modal-title pull-left"> {{ title }} </h4>
@@ -20,12 +20,12 @@
       <tbody>
         <tr *ngFor="let aDate of data; index as i">
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ aDate.Subject }}</td>
+          <td>{{ arrCN[i] }}</td>
           <td *ngIf="aDate.IsValid == true">
-            <img src="assets/icon/Valid.png" alt="Valido" height="25" width="25">
+            <img src="assets/icon/check.png" alt="Valido" height="25" width="25">
           </td>
           <td *ngIf="aDate.IsValid != true">
-            <img src="assets/icon/InValid.png" alt="Invalido" height="25" width="25">
+            <img src="assets/icon/uncheck.png" alt="Invalido" height="25" width="25">
           </td>
           <td>{{ aDate.Message }}</td>
         </tr>

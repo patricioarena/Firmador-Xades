@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
 import { take } from 'rxjs/internal/operators/take';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from '../modal/modal.component';
+import { settings } from 'cluster';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,15 @@ export class NotificationService {
     this.options.timeOut = 1500;
   }
 
-  showSuccess(title, message, arr) {
+  showVerify(title, message, arr) {
     this.toastr.success(title, message, this.options)
+      .onTap
+      .pipe(take(1))
+      .subscribe(() => this.openModal('Firmas en el documento', arr));
+  }
+
+  showNoVerify(title, message, arr) {
+    this.toastr.error(title, message, this.options)
       .onTap
       .pipe(take(1))
       .subscribe(() => this.openModal('Firmas en el documento', arr));
@@ -42,16 +49,40 @@ export class NotificationService {
   }
 
   toasterClickedHandler() {
-    console.log('Toastr clicked');
+    // console.log('Toastr clicked');
   }
 
-  openModal(title:String, arr) {
+  openModal(title: String, arr) {
+    const auxArrCN = this.makeArray(arr);
     this.modalRef = this.modalService.show(ModalComponent,  {
+      class: 'modal-lg',
       initialState: {
         title: title,
-        data: arr
+        data: arr,
+        arrCN: auxArrCN
       }
     });
+  }
+
+
+
+  subjectTOArray(arr: any, index: number) {
+    let aux = arr[index].Subject;
+    aux = aux.replace(/=/g, '":"');
+    aux = JSON.stringify(aux);
+    aux = aux.replace(/\\/g, '');
+    aux = aux.replace(/\, /g, '","');
+    aux = JSON.parse('{' + aux + '}');
+    return aux;
+  }
+
+  makeArray(arr: any) {
+    const aux = [];
+    arr.forEach(element => {
+      const temp = this.subjectTOArray(arr, arr.indexOf(element));
+      aux.push(temp.CN);
+    });
+    return aux;
   }
 
 }

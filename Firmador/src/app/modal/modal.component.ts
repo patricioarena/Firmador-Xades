@@ -10,6 +10,7 @@ export class ModalComponent implements OnInit {
 
   title: String;
   data: any = [];
+  arrCN: any = [];
   
   constructor(
     public modalRef: BsModalRef
