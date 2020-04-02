@@ -31,7 +31,7 @@ namespace Demo
                 defaults: new { id = RouteParameter.Optional },
                 constraints: new { id = "\\d+" }
             );
-            config.EnableCors();
+
             config.MapHttpAttributeRoutes();
             appBuilder.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             appBuilder.UseFileServer(options);

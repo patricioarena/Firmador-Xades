@@ -799,7 +799,7 @@ namespace Custom.FirmaXadesNet
             KeyInfo keyInfo = new KeyInfo();
             keyInfo.Id = "KeyInfoId-" + sigDocument.XadesSignature.Signature.Id;
             keyInfo.AddClause(new KeyInfoX509Data((X509Certificate)parameters.Signer.Certificate));
-            keyInfo.AddClause(new RSAKeyValue((RSA)parameters.Signer.SigningKey));
+            //keyInfo.AddClause(new RSAKeyValue((RSA)parameters.Signer.SigningKey));
 
             sigDocument.XadesSignature.KeyInfo = keyInfo;
 
