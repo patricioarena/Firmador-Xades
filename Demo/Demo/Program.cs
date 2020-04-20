@@ -51,7 +51,7 @@ namespace Demo
 
                         if (!runAsAdmin)
                         {
-                            var dir = Assembly.GetExecutingAssembly().Location.Replace("Demo.exe", "") + "CertUtilCustom.exe";
+                            var dir = Assembly.GetExecutingAssembly().Location.Replace("CertiFisc.exe", "") + "CertUtilCustom.exe";
                             using (Process process = new Process())
                             {
                                 process.StartInfo.Arguments = arguments;
