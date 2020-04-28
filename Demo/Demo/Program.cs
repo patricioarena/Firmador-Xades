@@ -19,12 +19,43 @@ namespace Demo
 {
     static class Program
     {
-        private static string AssemblyGuidString(Assembly assembly)
+        private static int port = 8400;
+        private static string urlApi = $"https://localhost:{ Program.port }/";
+
+        public static string AssemblyGuidString(Assembly assembly)
         {
             object[] objects = assembly.GetCustomAttributes(typeof(GuidAttribute), false);
             if (objects.Length > 0)
                 return ((GuidAttribute)objects[0]).Value;
             return String.Empty;
+        }
+
+        public static int ExecuteCertUtilCustom()
+        {
+            int exitCode;
+            string arguments = Program.AssemblyGuidString(typeof(Program).Assembly) + " " + Program.port;
+            string assamblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString()+".exe";
+            var dir = Assembly.GetExecutingAssembly().Location.Replace(assamblyName, "") + "CertUtilCustom.exe";
+            using (Process process = new Process())
+            {
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.FileName = dir;
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.Verb = "runas";
+                process.Start();
+                process.WaitForExit();
+                exitCode = process.ExitCode;
+            }
+            return exitCode;
+        }
+
+        public static void Start()
+        {
+            WebApp.Start<Startup>(urlApi);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Signature());
         }
 
         [STAThread]
@@ -44,38 +75,19 @@ namespace Demo
                         WindowsIdentity wi = WindowsIdentity.GetCurrent();
                         WindowsPrincipal wp = new WindowsPrincipal(wi);
 
-                        string assemblyGuid = AssemblyGuidString(typeof(Program).Assembly);
-                        string arguments = assemblyGuid + " " + port;
-                        bool runAsAdmin = wp.IsInRole(WindowsBuiltInRole.Administrator);
-                        int exitCode;
-
-                        if (!runAsAdmin)
+                        if (!wp.IsInRole(WindowsBuiltInRole.Administrator))
                         {
-                            var dir = Assembly.GetExecutingAssembly().Location.Replace("CertiFisc.exe", "") + "CertUtilCustom.exe";
-                            using (Process process = new Process())
-                            {
-                                process.StartInfo.Arguments = arguments;
-                                process.StartInfo.FileName = dir;
-                                process.StartInfo.UseShellExecute = true;
-                                process.StartInfo.CreateNoWindow = true;
-                                process.StartInfo.Verb = "runas";
-                                process.Start();
-                                process.WaitForExit();
-                                exitCode = process.ExitCode;
-
-                            }
+                            Program.ExecuteCertUtilCustom();
                         }
-                        WebApp.Start<Startup>($"https://localhost:{port}/");
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Signature());
+                        else
+                        {
+                            Program.ExecuteCertUtilCustom();
+                        }
+                        Program.Start();
                     }
                     else
                     {
-                        WebApp.Start<Startup>($"https://localhost:{port}/");
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Signature());
+                        Program.Start();
                     }
                 }
                 else

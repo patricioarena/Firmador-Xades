@@ -57,12 +57,6 @@
     <Compile Include="Services\VerifyMultiSignature.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CertUtil\CertUtilCustom.csproj">
-      <Project>{7D14EE7F-8751-4A57-A95F-7314549C0C1A}</Project>
-      <Name>CertUtilCustom</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,9 +19,17 @@ namespace CertUtilCustom
         {
             IntPtr hWnd = GetConsoleWindow();
             ShowWindow(hWnd, 0);
-            SelfSignedCertificateService.assemblyGuid = args[0];
-            SelfSignedCertificateService.Port = Int32.Parse(args[1]);
-            SelfSignedCertificateService.Init();
+            try
+            {
+                SelfSignedCertificateService.assemblyGuid = args[0];
+                SelfSignedCertificateService.Port = Int32.Parse(args[1]);
+                SelfSignedCertificateService.Init();
+            }
+            catch (Exception)
+            {
+                SelfSignedCertificateService.Init();
+            }
+
         }
     }
 }

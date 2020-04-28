@@ -1,4 +1,5 @@
 ﻿using Helper.Model;
+using Helper.Services;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Demo
             this.panel1.Visible = true;
             this.panel2.Visible = true;
             this.panel3.Visible = false;
-
+            this.CheckSSLCertificateInStores();
         }
 
         private void Configuración_Load(object sender, EventArgs e)
@@ -58,6 +59,19 @@ namespace Demo
             {
                 assemblyName = "Not Published";
                 version = "Not Published";
+            }
+        }
+
+        private void CheckSSLCertificateInStores()
+        {
+            DualCheck dual = CertificateControl.CheckStores();
+            if (dual.My.Equals(false) || dual.Root.Equals(false))
+            {
+                this.label8.Text = "False";
+            }
+            else
+            {
+                this.label8.Text = "True";
             }
         }
 
@@ -201,6 +215,7 @@ namespace Demo
                 }
             }
         }
+
         private void button1_Leave(object sender, EventArgs e)
         {
             //Console.WriteLine("sali del boton");
@@ -267,6 +282,17 @@ namespace Demo
             WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.CheckSSLCertificateInStores();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Program.ExecuteCertUtilCustom();
+        }
+
     }
 
 }
