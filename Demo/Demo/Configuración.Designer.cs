@@ -26,18 +26,18 @@ namespace Demo
         {
             base.OnFormClosing(e);
 
-            if (e.CloseReason == CloseReason.WindowsShutDown) return;
+            if ((e.CloseReason == CloseReason.WindowsShutDown) || (e.CloseReason == CloseReason.TaskManagerClosing))
+                return;
 
             // Confirm user wants to close
-            switch (MessageBox.Show(this, "¿Desea minimizar al área de notificaciones?", "...", MessageBoxButtons.YesNo))
+            DialogResult result = MessageBox.Show(this, "¿Desea minimizar al área de notificaciones?", "Minimizar", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                case DialogResult.Yes:
-                    this.Hide();
-                    e.Cancel = true;
-                    break;
-                default:
-                    break;
+                this.Hide();
+                this.notifyIcon.Visible = true;
+                e.Cancel = true;
             }
+            
         }
 
         #region Código generado por el Diseñador de Windows Forms

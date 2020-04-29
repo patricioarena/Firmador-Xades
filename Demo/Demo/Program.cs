@@ -67,7 +67,6 @@ namespace Demo
             {
                 if (alreadyRunning)
                 {
-                    int port = 8400;
                     DualCheck dual = CertificateControl.CheckStores();
 
                     if (dual.My.Equals(false) || dual.Root.Equals(false))
