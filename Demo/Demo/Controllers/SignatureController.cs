@@ -39,7 +39,7 @@ namespace Demo.Controllers
         private SignatureParameters ObtenerParametrosFirma()
         {
             SignatureParameters parametros = new SignatureParameters();
-            parametros.SignatureMethod = SignatureMethod.RSAwithSHA512;
+            parametros.SignatureMethod = SignatureMethod.RSAwithSHA256;
             parametros.SigningDate = DateTime.Now;
 
             var sc = new SignatureCommitment(SignatureCommitmentType.ProofOfOrigin);
@@ -82,6 +82,17 @@ namespace Demo.Controllers
                 return Ok(ex);
             }
         }
+
+        /// <summary>
+        /// Para probar que la aplicacion esta corriendo desde otras aplicaciones que consuman la api de esta misma
+        /// </summary>
+        [HttpGet]
+        [Route("isAlive")]
+        public IHttpActionResult isAlive()
+        {
+            return Content(HttpStatusCode.OK, true, Configuration.Formatters.JsonFormatter);
+        }
+
         /// <summary>
         /// Firma el documento recibido (Firma Electronica)
         /// </summary>
