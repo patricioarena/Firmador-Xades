@@ -1,50 +1,69 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse, } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { HttpToolsService } from './http-tools.service';
-import { Objeto } from '../modelos/Objeto';
-import { promise } from 'protractor';
+import { HttpClient, HttpHeaders, } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
+export enum TiposDeFirma {
+  Xades_BES_Con_ds_Object = 1,
+  Xades_BES_Sin_ds_Object = 2
+}
+
+export class XmlModel {
+  Archivo: String;
+  Extension: String;
+
+  constructor(objeto?: any) {
+    this.Archivo = objeto && objeto.Archivo || '';
+    this.Extension = objeto && objeto.Extension || '.xml';
+  }
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DigitalSignatureService {
 
-  apiurl = "https://localhost:8400/";
+  private _apiurl = 'https://localhost:8400/';
+
+  public get apiurl() {
+    return this._apiurl;
+  }
 
   // tslint:disable-next-line: no-shadowed-variable
-  constructor(private HttpClient: HttpClient, private HttpToolsService: HttpToolsService) { }
+  constructor(private HttpClient: HttpClient) { }
 
-  private extractData(res) {
-    const body = res.data;
-    return body || {};
-  }
-
-   verificar(objeto, tipoFirma) {
-    const options = this.HttpToolsService.setHeaders();
+  public verificar(objeto: XmlModel, tipoFirma: TiposDeFirma) {
     const url = `${this.apiurl}api/Signature/Verify/${tipoFirma}`;
-    return this.HttpClient.post( url, objeto, options).pipe(map(res => res as any));
+    return this.HttpClient.post(url, objeto, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .append('Access-Control-Allow-Origin', '*')
+    }).pipe(
+      map(res => res as any)
+    );
   }
 
-  firmaDigital(objeto, tipoFirma) {
+  public firmaDigital(objeto: XmlModel, tipoFirma: TiposDeFirma) {
     const url = `${this.apiurl}api/Signature/Digital/Signature/${tipoFirma}`;
-    return this.HttpClient.post( url, objeto, {
+    return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .append('Access-Control-Allow-Origin', '*'),
       responseType: 'text'
-    }).pipe(map(res => res as any));
+    }).pipe(
+      map(res => res as any)
+    );
   }
 
-  firmaElectronica(objeto, tipoFirma) {
+  public firmaElectronica(objeto: XmlModel, tipoFirma: TiposDeFirma) {
     const url = `${this.apiurl}api/Signature/Electronic/Signature/${tipoFirma}`;
-    return this.HttpClient.post( url, objeto, {
+    return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .append('Access-Control-Allow-Origin', '*'),
       responseType: 'text'
-    }).pipe(map(res => res as any));
+    }).pipe(
+      map(res => res as any)
+    );
   }
 }

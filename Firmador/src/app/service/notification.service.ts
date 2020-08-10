@@ -3,7 +3,6 @@ import { ToastrService, IndividualConfig } from 'ngx-toastr';
 import { take } from 'rxjs/internal/operators/take';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalComponent } from '../modal/modal.component';
-import { settings } from 'cluster';
 
 @Injectable({
   providedIn: 'root'

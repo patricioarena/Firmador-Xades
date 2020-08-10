@@ -1,10 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { DigitalSignatureService } from '../service/digital-signature.service';
+import { Component, OnInit } from '@angular/core';
+import { DigitalSignatureService, TiposDeFirma, XmlModel } from '../service/digital-signature.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Objeto } from 'src/app/modelos/Objeto';
 import { saveAs } from 'file-saver';
-import { resolve } from 'path';
-import { error } from 'util';
 import { NotificationService } from '../service/notification.service';
 import { TitleService } from '../service/title.service';
 
@@ -17,21 +14,20 @@ import { TitleService } from '../service/title.service';
 export class HomeComponent implements OnInit {
   title: String;
   TiposDeFirma: any = [
-    { 'key': 'Xades CIFE - Sin ds:Object', 'value': '2' },
-    { 'key': 'Xades Cartagena (Union Europea) - Con ds:Object', 'value': '1' }
+    { 'key': 'Xades-BES - Sin ds:Object', 'value': TiposDeFirma.Xades_BES_Sin_ds_Object },
+    { 'key': 'Xades-BES - Con ds:Object', 'value': TiposDeFirma.Xades_BES_Con_ds_Object }
   ];
-  TipoDeFirma: String = '2';
+  TipoDeFirma = TiposDeFirma.Xades_BES_Sin_ds_Object;
   text: String;
   textPreview: String = '';
-  objeto: Objeto;
+  objeto: XmlModel;
   isEnabled = false;
   showPreview = false;
   fileUrl;
   responseFirma;
-  // signatureInDocument;
 
   constructor(
-    public searchDocumentService: DigitalSignatureService,
+    public signatureService: DigitalSignatureService,
     public spinner: NgxSpinnerService,
     private notificationService: NotificationService,
     private titleServive: TitleService
@@ -44,6 +40,7 @@ export class HomeComponent implements OnInit {
       '   <NombreTour> The Offspring y Bad Religion </NombreTour> \n' +
       '   <Fecha> 24/10/2019 19:00:00 </Fecha>\n' +
       '   <Videos>\n' +
+      // tslint:disable-next-line: max-line-length
       '       <video nombre="Bad Religion - 21st century digital boy - Luna Park - 24/10/2019">https://www.youtube.com/watch?v=iDVeAAvFb3U</video> \n' +
       '       <video nombre="The Offspring - Americana - Luna Park - 24/10/2019">https://www.youtube.com/watch?v=Zd7bAu7hVZQ</video> \n' +
       '   </Videos>\n' +
@@ -54,14 +51,11 @@ export class HomeComponent implements OnInit {
     this.isEnabled = false;
     this.showPreview = false;
     this.textPreview = '';
-    // console.log("TextArea::text: " + this.text);
-    this.objeto = new Objeto;
+    this.objeto = new XmlModel;
     this.objeto.Archivo = this.text;
-    // this.objeto.Extension = '.xml';
-    this.searchDocumentService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe(
+    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe(
       resp => {
         if (resp === '-1') {
-          // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
         } else if (resp === '-2') {
           this.notificationService.showInfo('Certificado', 'Certificado no valido');
         } else {
@@ -69,7 +63,6 @@ export class HomeComponent implements OnInit {
           this.isEnabled = true;
         }
       }, err => {
-        // console.log(JSON.parse(err.error).ExceptionMessage)
         const message = JSON.parse(err.error).ExceptionMessage;
         this.notificationService.showError('Certificado', message);
       });
@@ -79,14 +72,11 @@ export class HomeComponent implements OnInit {
     this.isEnabled = false;
     this.showPreview = false;
     this.textPreview = '';
-    // console.log("TextArea::text: " + this.text);
-    this.objeto = new Objeto;
+    this.objeto = new XmlModel;
     this.objeto.Archivo = this.text;
-    // this.objeto.Extension = '.xml';
-    this.searchDocumentService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe(
+    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe(
       resp => {
         if (resp === '-1') {
-          // this.notificationService.show('Certificado', 'Certificado no valido', 'info');
         } else if (resp === '-2') {
           this.notificationService.showInfo('Certificado', 'Certificado no valido');
         } else {
@@ -94,17 +84,15 @@ export class HomeComponent implements OnInit {
           this.isEnabled = true;
         }
       }, err => {
-        // console.log(JSON.parse(err.error).ExceptionMessage)
         const message = JSON.parse(err.error).ExceptionMessage;
         this.notificationService.showInfo('Certificado', message);
       });
   }
 
   Verificar() {
-    this.objeto = new Objeto;
+    this.objeto = new XmlModel;
     this.objeto.Archivo = this.text;
-    // this.objeto.Extension = '.xml';
-    this.searchDocumentService.verificar(this.objeto, this.TipoDeFirma).subscribe(
+    this.signatureService.verificar(this.objeto, this.TipoDeFirma).subscribe(
       resp => {
 
         const data = JSON.parse(JSON.stringify(resp.data));
@@ -121,13 +109,13 @@ export class HomeComponent implements OnInit {
         firmasInvalidas = cantTotalDeFirmas - firmasValidas;
 
         if (cantTotalDeFirmas === firmasValidas) {
-          // this.signatureInDocument = data;
+          // tslint:disable-next-line: max-line-length
           this.notificationService.showVerify('Verificación de firmas satisfactoria', `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
         } else {
+          // tslint:disable-next-line: max-line-length
           this.notificationService.showNoVerify('Verificación de firmas no satisfactoria', `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
         }
       }, err => {
-        // console.log(err.error.ExceptionMessage)
         const message = err.error.ExceptionMessage;
         this.notificationService.showError('Firmas', message);
       });
@@ -147,7 +135,6 @@ export class HomeComponent implements OnInit {
     const key = event.target.value;
     const value = this.TiposDeFirma.find(function (item) { return item.key === key; }).value;
     this.TipoDeFirma = value;
-    // console.log(`event.target.value:: ${typeof (key)} :: ${key} :: ${value}`);
   }
 
   copyMessage() {
