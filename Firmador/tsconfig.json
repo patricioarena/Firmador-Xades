@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "digital-signature": [
+        "dist/digital-signature"
+      ],
+      "digital-signature/*": [
+        "dist/digital-signature/*"
+      ]
+    }
   }
 }

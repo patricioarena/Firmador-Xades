@@ -29,7 +29,7 @@
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css"
-           ],
+            ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js"
             ]
@@ -93,7 +93,7 @@
             "styles": [
               "src/styles.css",
               "node_modules/ngx-toastr/toastr.css"
-           ],
+            ],
             "scripts": [],
             "assets": [
               "src/favicon.ico",
@@ -136,6 +136,41 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "DigitalSignature": {
+      "root": "projects/digital-signature",
+      "sourceRoot": "projects/digital-signature/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/digital-signature/tsconfig.lib.json",
+            "project": "projects/digital-signature/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/digital-signature/src/test.ts",
+            "tsConfig": "projects/digital-signature/tsconfig.spec.json",
+            "karmaConfig": "projects/digital-signature/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/digital-signature/tsconfig.lib.json",
+              "projects/digital-signature/tsconfig.spec.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]
