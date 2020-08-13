@@ -1,4 +1,4 @@
-import { Component, NgModule } from "@angular/core";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { BrowserModule, Title } from "@angular/platform-browser";
 
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
@@ -7,6 +7,7 @@ import { TooltipModule } from "ngx-bootstrap/tooltip";
 
 import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "./app.component";
+import { FooterComponent } from "./footer/footer.component";
 import { HomeComponent } from "./home/home.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 
@@ -14,7 +15,7 @@ import { FormsModule } from "@angular/forms";
 import { FileUploadModule } from "ng2-file-upload";
 
 import { HttpClientModule } from "@angular/common/http";
-// import { DigitalSignatureService } from "./service/digital-signature.service";
+import { DigitalSignatureModule } from "digital-signature";
 
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -22,7 +23,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ClipboardModule } from "ngx-clipboard";
 import { ToastrModule } from "ngx-toastr";
-import { FooterComponent } from "./footer/footer.component";
+import { from } from "rxjs";
 import { HeaderComponent } from "./header/header.component";
 import { ModalComponent } from "./modal/modal.component";
 import { RoutingModule } from "./modules/routing.module";
@@ -37,6 +38,7 @@ import { TitleService } from "./service/title.service";
     FooterComponent,
     HeaderComponent,
     ModalComponent,
+
   ],
   imports: [
     ClipboardModule,
@@ -52,9 +54,14 @@ import { TitleService } from "./service/title.service";
     NgxSpinnerModule,
     TooltipModule.forRoot(),
     RoutingModule,
+    DigitalSignatureModule,
   ],
-  // DigitalSignatureService
-  providers: [NgxSpinnerService, NotificationService, TitleService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    NgxSpinnerService,
+    NotificationService,
+    TitleService,
+  ],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent],
 })
