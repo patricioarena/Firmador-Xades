@@ -21,6 +21,8 @@
     ],
     "paths": {
       "digital-signature": [
+        "dist/digital-signature",
+        "dist/digital-signature/digital-signature",
         "dist/digital-signature"
       ],
       "digital-signature/*": [

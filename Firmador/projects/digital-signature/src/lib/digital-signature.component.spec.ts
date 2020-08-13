@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DigitalSignatureComponent } from "./digital-signature.component";
+import { DigitalSignatureComponent } from './digital-signature.component';
 
-describe("DigitalSignatureComponent", () => {
+describe('DigitalSignatureComponent', () => {
   let component: DigitalSignatureComponent;
   let fixture: ComponentFixture<DigitalSignatureComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DigitalSignatureComponent],
+      declarations: [ DigitalSignatureComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("DigitalSignatureComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

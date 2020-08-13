@@ -1,12 +1,16 @@
-import { TestBed } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
 
-import { DigitalSignatureService } from "./digital-signature.service";
+import { DigitalSignatureService } from './digital-signature.service';
 
-describe("DigitalSignatureService", () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+describe('DigitalSignatureService', () => {
+  let service: DigitalSignatureService;
 
-  it("should be created", () => {
-    const service: DigitalSignatureService = TestBed.get(DigitalSignatureService);
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(DigitalSignatureService);
+  });
+
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 });
