@@ -14,7 +14,10 @@ import { FormsModule } from "@angular/forms";
 import { FileUploadModule } from "ng2-file-upload";
 
 import { HttpClientModule } from "@angular/common/http";
-// import { DigitalSignatureService } from './service/digital-signature.service';
+// import { DigitalSignatureService } from "./service/digital-signature.service";
+
+import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ClipboardModule } from "ngx-clipboard";
@@ -46,11 +49,12 @@ import { TitleService } from "./service/title.service";
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    NgxSpinnerModule,
     TooltipModule.forRoot(),
     RoutingModule,
   ],
-  // providers: [DigitalSignatureService, NgxSpinnerService, NotificationService, TitleService],
-  providers: [NotificationService, TitleService],
+  // DigitalSignatureService
+  providers: [NgxSpinnerService, NotificationService, TitleService],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent],
 })
