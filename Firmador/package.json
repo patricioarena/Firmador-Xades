@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "bl": "ng build digital-signature"
+    "bl": "ng build digital-signature && ng serve"
   },
   "private": true,
   "dependencies": {
@@ -57,3 +57,4 @@
     "typescript": "^3.6.4"
   }
 }
+
