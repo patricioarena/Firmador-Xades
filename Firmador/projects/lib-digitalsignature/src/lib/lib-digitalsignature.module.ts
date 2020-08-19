@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
-import { DigitalSignatureComponent } from './digital-signature.component';
+import { DigitalSignatureComponent } from './lib-digitalsignature.component';
 
 @NgModule({
   declarations: [DigitalSignatureComponent],

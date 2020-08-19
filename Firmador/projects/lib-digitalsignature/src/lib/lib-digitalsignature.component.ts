@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { saveAs } from "file-saver";
-import { DigitalSignatureService, TiposDeFirma, XmlModel } from "./digital-signature.service";
+import { DigitalSignatureService, TiposDeFirma, XmlModel } from "./lib-digitalsignature.service";
 
 @Component({
-  selector: "lib-digital-signature",
-  templateUrl: "./digital-signature.component.html",
-  styleUrls: ["./digital-signature.component.scss"],
+  selector: "lib-digitalsignature",
+  templateUrl: "./lib-digitalsignature.component.html",
+  styleUrls: ["./lib-digitalsignature.component.scss"],
 })
 
 export class DigitalSignatureComponent implements OnInit {

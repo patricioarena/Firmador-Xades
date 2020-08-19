@@ -149,37 +149,37 @@
       }
     },
     "DigitalSignature": {
-      "root": "projects/digital-signature",
-      "sourceRoot": "projects/digital-signature/src",
+      "root": "projects/lib-digitalsignature",
+      "sourceRoot": "projects/lib-digitalsignature/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/digital-signature/tsconfig.lib.json",
-            "project": "projects/digital-signature/ng-package.json"
-          }
-        ,          "configurations": {
+            "tsConfig": "projects/lib-digitalsignature/tsconfig.lib.json",
+            "project": "projects/lib-digitalsignature/ng-package.json"
+          },
+          "configurations": {
             "production": {
-              "tsConfig": "projects/digital-signature/tsconfig.lib.prod.json"
+              "tsConfig": "projects/lib-digitalsignature/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/digital-signature/src/test.ts",
-            "tsConfig": "projects/digital-signature/tsconfig.spec.json",
-            "karmaConfig": "projects/digital-signature/karma.conf.js"
+            "main": "projects/lib-digitalsignature/src/test.ts",
+            "tsConfig": "projects/lib-digitalsignature/tsconfig.spec.json",
+            "karmaConfig": "projects/lib-digitalsignature/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/digital-signature/tsconfig.lib.json",
-              "projects/digital-signature/tsconfig.spec.json"
+              "projects/lib-digitalsignature/tsconfig.lib.json",
+              "projects/lib-digitalsignature/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -188,38 +188,38 @@
         }
       }
     },
-    "digital-signature": {
+    "lib-digitalsignature": {
       "projectType": "library",
-      "root": "projects/digital-signature",
-      "sourceRoot": "projects/digital-signature/src",
+      "root": "projects/lib-digitalsignature",
+      "sourceRoot": "projects/lib-digitalsignature/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/digital-signature/tsconfig.lib.json",
-            "project": "projects/digital-signature/ng-package.json"
+            "tsConfig": "projects/lib-digitalsignature/tsconfig.lib.json",
+            "project": "projects/lib-digitalsignature/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/digital-signature/tsconfig.lib.prod.json"
+              "tsConfig": "projects/lib-digitalsignature/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/digital-signature/src/test.ts",
-            "tsConfig": "projects/digital-signature/tsconfig.spec.json",
-            "karmaConfig": "projects/digital-signature/karma.conf.js"
+            "main": "projects/lib-digitalsignature/src/test.ts",
+            "tsConfig": "projects/lib-digitalsignature/tsconfig.spec.json",
+            "karmaConfig": "projects/lib-digitalsignature/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/digital-signature/tsconfig.lib.json",
-              "projects/digital-signature/tsconfig.spec.json"
+              "projects/lib-digitalsignature/tsconfig.lib.json",
+              "projects/lib-digitalsignature/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -231,3 +231,4 @@
   },
   "defaultProject": "searchApp"
 }
+

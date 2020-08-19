@@ -20,15 +20,14 @@
       "dom"
     ],
     "paths": {
-      "digital-signature": [
-        "dist/digital-signature",
-        "dist/digital-signature/digital-signature",
-        "dist/digital-signature"
+      "lib-digitalsignature": [
+        "dist/lib-digitalsignature",
+        "dist/lib-digitalsignature/lib-digitalsignature",
+        "dist/lib-digitalsignature"
       ],
-      "digital-signature/*": [
-        "dist/digital-signature/*"
+      "lib-digitalsignature/*": [
+        "dist/lib-digitalsignature/*"
       ]
     }
   }
 }
-

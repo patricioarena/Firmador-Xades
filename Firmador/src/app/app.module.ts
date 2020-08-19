@@ -15,7 +15,7 @@ import { FormsModule } from "@angular/forms";
 import { FileUploadModule } from "ng2-file-upload";
 
 import { HttpClientModule } from "@angular/common/http";
-import { DigitalSignatureModule } from "digital-signature";
+import { DigitalSignatureModule } from "lib-digitalsignature";
 
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner";

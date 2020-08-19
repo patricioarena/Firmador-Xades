@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DigitalSignatureComponent } from './digital-signature.component';
+import { DigitalSignatureComponent } from './lib-digitalsignature.component';
 
 describe('DigitalSignatureComponent', () => {
   let component: DigitalSignatureComponent;
@@ -8,9 +8,9 @@ describe('DigitalSignatureComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DigitalSignatureComponent ]
+      declarations: [DigitalSignatureComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

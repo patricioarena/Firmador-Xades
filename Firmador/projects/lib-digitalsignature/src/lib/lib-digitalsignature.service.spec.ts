@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DigitalSignatureService } from './digital-signature.service';
+import { DigitalSignatureService } from './lib-digitalsignature.service';
 
 describe('DigitalSignatureService', () => {
   let service: DigitalSignatureService;
