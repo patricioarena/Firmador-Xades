@@ -1,6 +1,6 @@
 {
   "name": "lib-digitalsignature",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A library for interaction with digital signature program",
   "private": false,
   "readme": "README.md",
@@ -9,6 +9,9 @@
   "author": {
     "name": "Patricio E. Arena (TotallyInformation)",
     "url": ""
+  },
+  "scripts": {
+    "blp": "ng build lib-digitalsignature --prod"
   },
   "keywords": [
     "digital-signature",
@@ -27,5 +30,4 @@
   "dependencies": {
     "tslib": "^1.10.0"
   }
-
 }
