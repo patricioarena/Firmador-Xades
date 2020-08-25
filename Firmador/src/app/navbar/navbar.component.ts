@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TitleService } from '../service/title.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,10 +8,10 @@ import { TitleService } from '../service/title.service';
 export class NavbarComponent implements OnInit {
   title: String;
 
-  constructor(private titleService: TitleService ) { }
+  constructor( ) { }
 
   ngOnInit() {
-    this.title = this.titleService.APP_TITLE;
+
   }
 
 }

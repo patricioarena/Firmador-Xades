@@ -8,9 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "bl": "ng build lib-digitalsignature && ng serve",
-    "blp": "ng build lib-digitalsignature --prod"
-
+    "build-prod": "ng build lib-digitalsignature --prod",
+    "increment-lib-version": "cd projects/lib-digitalsignature && yarn version --no-git-tag-version",
+    "deploy-lib": "yarn increment-lib-version && yarn build-prod && echo \"execute npm publish in dist/lib-digitalsignature\""
   },
   "private": true,
   "dependencies": {

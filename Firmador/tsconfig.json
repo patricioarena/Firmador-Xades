@@ -20,14 +20,13 @@
       "dom"
     ],
     "paths": {
-      "lib-digitalsignature": [
-        "dist/lib-digitalsignature",
-        "dist/lib-digitalsignature/lib-digitalsignature",
-        "dist/lib-digitalsignature"
-      ],
-      "lib-digitalsignature/*": [
-        "dist/lib-digitalsignature/*"
-      ]
+      "@angular/core": ["node_modules/@angular/core"],
+      "rxjs/*": ["node_modules/rxjs/*"]
     }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "sctrictMetadataEmit": true
   }
 }
