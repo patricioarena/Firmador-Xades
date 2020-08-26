@@ -15,7 +15,7 @@ If everything went well, you should see the next page.
 
 ## Example of use
 1) Select digital signature or electronic signature
-2) Select certificate -> Acept
+2) Select certificate -> Accept
   - If necessary introduce your credentials for use of certificate
 
 <p>
