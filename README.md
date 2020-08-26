@@ -74,7 +74,7 @@ Para lograr esto se propuso crear una aplicacion la cual se instala en el equipo
 # Dependencias
 1.   NET Framework 4.8
 2.   NodeJS v10.16.3
-3.	 Angular 8.2.11
+3.	 Angular 9.1.12
 
 
 # Compilar y probar
@@ -92,14 +92,19 @@ lado el firmador, aplicacion principal que expone los enpoint y por otro una apl
     - [POST] https://localhost:8400/api/Signature/2 _Xades sin ds:Object_
         - Request : ObjectModel = { Archivo: String; Extension: String; }
         - Response : XML
-    - [GET] https://localhost:8400/api/Verify/1 _Xades con ds:Object_
+    - [POST] https://localhost:8400/api/Verify/1 _Xades con ds:Object_
+        - Request : ObjectModel = { Archivo: String; Extension: String; }
         - Response : JSON
-    - [GET] https://localhost:8400/api/Verify/2 _Xades sin ds:Object_
+    - [POST] https://localhost:8400/api/Verify/2 _Xades sin ds:Object_
+        - Request : ObjectModel = { Archivo: String; Extension: String; }
         - Response : JSON
+    - [GET] https://localhost:8400/api/isAlive
+        - Response : true or Error
 
 **Aplicacion web**
-- Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 8.2.11. a la cual se puede acceder en la direccion http://localhost:4200/home
-
+- Compilar y utilizar la pagina web dentro del directorio `/Firmador`. **Es necesario compilar la libreria**
+    - Situarce en `/Firmador` y Ejecutar `ng build lib-digitalsignature --prod` al finalizar la compilación utilizar `ng serve` con normalidad.
+- Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 9.1.12. a la cual se puede acceder en la direccion https://localhost:4200/home
 
 # Referencias
 El proyecto esta basado en la libreria https://github.com/ctt-gob-es/FirmaXadesNet45 y fue agregada funcionalidad para cumplir con las necesidades del negocio actual, el objetivo era crear una aplicacion que permita firmar documentos que estan alojados en un servidor web pero utilizando los recursos del equipo local del usuario.
