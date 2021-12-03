@@ -117,10 +117,11 @@ lado el firmador, aplicacion principal que expone los enpoint y por otro una apl
         - Response : true or Error
 
 **Aplicacion web**
+- Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 9.1.12
 - Compilar y utilizar la pagina web que se encuentra dentro del directorio `/Firmador`. **Es necesario compilar la libreria**
     - Situarce en `/Firmador` y ejecutar `npm install` o `yarn install` para instalar los paquetes necesarios, esto dependera de su gestor de paquetes node.
     - Una vez que los paquetes se han instalado ejecutar `ng build lib-digitalsignature --prod` al finalizar la compilación utilizar `ng serve` con normalidad.
-- Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 9.1.12. a la cual se puede acceder en la direccion https://localhost:4200/home
+    - Acceder en la direccion https://localhost:4200/home
 
 # Referencias
 El proyecto esta basado en la libreria https://github.com/ctt-gob-es/FirmaXadesNet45 y fue agregada funcionalidad para cumplir con las necesidades del negocio actual, el objetivo era crear una aplicacion que permita firmar documentos que estan alojados en un servidor web pero utilizando los recursos del equipo local del usuario.
