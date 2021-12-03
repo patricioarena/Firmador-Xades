@@ -118,7 +118,8 @@ lado el firmador, aplicacion principal que expone los enpoint y por otro una apl
 
 **Aplicacion web**
 - Compilar y utilizar la pagina web que se encuentra dentro del directorio `/Firmador`. **Es necesario compilar la libreria**
-    - Situarce en `/Firmador` y Ejecutar `ng build lib-digitalsignature --prod` al finalizar la compilación utilizar `ng serve` con normalidad.
+    - Situarce en `/Firmador` y ejecutar `npm install` o `yarn install` para instalar los paquetes necesarios, esto dependera de su gestor de paquetes node.
+    - Una vez que los paquetes se han instalado ejecutar `ng build lib-digitalsignature --prod` al finalizar la compilación utilizar `ng serve` con normalidad.
 - Para realizar las pruebas de firma y verificación se creo una inferfaz web en Angular 9.1.12. a la cual se puede acceder en la direccion https://localhost:4200/home
 
 # Referencias
