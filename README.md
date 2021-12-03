@@ -99,6 +99,9 @@ lado el firmador, aplicacion principal que expone los enpoint y por otro una apl
 
 - Para compilar y ejecutar por primera vez se debe realizar como administrador ya que la instalación del certificado autofirmado y ejecucion de comandos netsh requieren privilegios elevados.
 
+- La aplicacion de escritorio esta realizada C# y es del tipo Windows Forms por lo que puede realizarce la compilación mediante [visual studio](https://docs.microsoft.com/en-us/visualstudio/ide/create-csharp-winform-visual-studio?view=vs-2019) o [linea de comandos](https://docs.microsoft.com/es-mx/dotnet/desktop/winforms/how-to-create-a-windows-forms-application-from-the-command-line?view=netframeworkdesktop-4.8).
+
+
     #### Endpoints
 
     - [POST] https://localhost:8400/api/Signature/1 _Xades con ds:Object_
@@ -126,3 +129,11 @@ lado el firmador, aplicacion principal que expone los enpoint y por otro una apl
 # Referencias
 El proyecto esta basado en la libreria https://github.com/ctt-gob-es/FirmaXadesNet45 y fue agregada funcionalidad para cumplir con las necesidades del negocio actual, el objetivo era crear una aplicacion que permita firmar documentos que estan alojados en un servidor web pero utilizando los recursos del equipo local del usuario.
 - https://www.w3.org/TR/2003/NOTE-XAdES-20030220/
+
+
+# Información útil
+Compilar Windows Forms con visual studio 2019 : https://docs.microsoft.com/en-us/visualstudio/ide/create-csharp-winform-visual-studio?view=vs-2019
+
+Compilar Windows Forms por medio de linea de comandos : https://docs.microsoft.com/es-mx/dotnet/desktop/winforms/how-to-create-a-windows-forms-application-from-the-command-line?view=netframeworkdesktop-4.8
+
+Compilar y desplegar Angular : https://docs.angular.lat/start/start-deployment
