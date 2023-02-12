@@ -14,13 +14,14 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace Demo
 {
     static class Program
     {
-        private static int port = 8400;
-        private static string urlApi = $"https://localhost:{ Program.port }/";
+        private static int port = Int32.Parse(ConfigurationManager.AppSettings["WebApp.Port"]);
+        private static string baseUrl = ConfigurationManager.AppSettings["WebApp.BaseUrl"];
 
         public static string AssemblyGuidString(Assembly assembly)
         {
@@ -52,7 +53,7 @@ namespace Demo
 
         public static void Start()
         {
-            WebApp.Start<Startup>(urlApi);
+            WebApp.Start<Startup>($"{Program.baseUrl}:{Program.port}/");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Signature());
@@ -62,7 +63,6 @@ namespace Demo
         static void Main()
         {
             bool alreadyRunning = false;
-
             using (Mutex mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name.ToString(), out alreadyRunning))
             {
                 if (alreadyRunning)

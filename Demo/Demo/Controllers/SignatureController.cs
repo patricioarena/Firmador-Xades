@@ -18,6 +18,7 @@ using System.Text;
 using System.Web.Http;
 using System.Xml;
 using Org.BouncyCastle.X509;
+using System.Configuration;
 
 namespace Demo.Controllers
 {
@@ -27,13 +28,12 @@ namespace Demo.Controllers
         #region private methods
         private SignaturePolicyInfo ObtenerPolitica()
         {
-            SignaturePolicyInfo spi = new SignaturePolicyInfo();
-
-            spi.PolicyIdentifier = "urn:oid:2.16.724.1.3.1.1.2.1.8";
-            spi.PolicyHash = "V8lVVNGDCPen6VELRD1Ja8HARFk=";
-            spi.PolicyUri = "http://administracionelectronica.gob.es/es/ctt/politicafirma/politica_firma_AGE_v1_8.pdf";
-
-            return spi;
+            return new SignaturePolicyInfo()
+            {
+                PolicyIdentifier = ConfigurationManager.AppSettings["SignaturePolicyInfo.PolicyIdentifier"],
+                PolicyHash = ConfigurationManager.AppSettings["SignaturePolicyInfo.PolicyHash"],
+                PolicyUri = ConfigurationManager.AppSettings["SignaturePolicyInfo.PolicyUri"],
+            };
         }
 
         private SignatureParameters ObtenerParametrosFirma()

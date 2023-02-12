@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, isDevMode, OnInit } from "@angular/core";
 import { DigitalSignatureModule, DigitalSignatureService, TiposDeFirma, XmlModel } from "dist/lib-digitalsignature";
 
 import { saveAs } from "file-saver";
@@ -62,8 +62,7 @@ export class HomeComponent implements OnInit {
     this.textPreview = "";
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
-    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe(
-      (resp) => {
+    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe((resp) => {
         // tslint:disable-next-line: no-empty
         if (resp === "-1") {
         } else if (resp === "-2") {
@@ -84,8 +83,8 @@ export class HomeComponent implements OnInit {
     this.textPreview = "";
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
-    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe(
-      (resp) => {
+    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe((resp) => {
+        isDevMode() && console.log({resp});
         // tslint:disable-next-line: no-empty
         if (resp === "-1") {
         } else if (resp === "-2") {
@@ -103,8 +102,7 @@ export class HomeComponent implements OnInit {
   public Verificar() {
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
-    this.signatureService.verificar(this.objeto, this.TipoDeFirma).subscribe(
-      (resp) => {
+    this.signatureService.verificar(this.objeto, this.TipoDeFirma).subscribe((resp) => {
 
         const data = JSON.parse(JSON.stringify(resp.data));
         const cantTotalDeFirmas = data.length;
