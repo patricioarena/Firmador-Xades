@@ -60,6 +60,9 @@ namespace Demo
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
@@ -76,9 +79,6 @@ namespace Demo
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -193,6 +193,35 @@ namespace Demo
             this.panel2.Size = new System.Drawing.Size(390, 273);
             this.panel2.TabIndex = 6;
             this.panel2.Visible = false;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(175, 247);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 15;
+            this.button4.Text = "Active SSL";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(113, 254);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "SSL State";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(32, 248);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "SSL Check";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // panel4
             // 
@@ -378,35 +407,6 @@ namespace Demo
             this.label1.TabIndex = 2;
             this.label1.Text = "     Versiòn: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(32, 248);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "SSL Check";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(113, 254);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "SSL State";
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(175, 247);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 15;
-            this.button4.Text = "Active SSL";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Signature
             // 

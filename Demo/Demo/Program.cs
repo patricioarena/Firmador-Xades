@@ -20,8 +20,8 @@ namespace Demo
 {
     static class Program
     {
-        private static int port = Int32.Parse(ConfigurationManager.AppSettings["WebApp.Port"]);
-        private static string baseUrl = ConfigurationManager.AppSettings["WebApp.BaseUrl"];
+        private static int port = Properties.Settings.Default.WebAppPort;
+        private static string baseUrl = Properties.Settings.Default.WebAppBaseUrl;
 
         public static string AssemblyGuidString(Assembly assembly)
         {

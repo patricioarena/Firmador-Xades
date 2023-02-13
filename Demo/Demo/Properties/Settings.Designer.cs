@@ -12,7 +12,7 @@ namespace Demo.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,6 +20,52 @@ namespace Demo.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8400")]
+        public int WebAppPort {
+            get {
+                return ((int)(this["WebAppPort"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost")]
+        public string WebAppBaseUrl {
+            get {
+                return ((string)(this["WebAppBaseUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("urn:oid:2.16.724.1.3.1.1.2.1.8")]
+        public string SignaturePolicyInfoPolicyIdentifier {
+            get {
+                return ((string)(this["SignaturePolicyInfoPolicyIdentifier"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("V8lVVNGDCPen6VELRD1Ja8HARFk=")]
+        public string SignaturePolicyInfoPolicyHash {
+            get {
+                return ((string)(this["SignaturePolicyInfoPolicyHash"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://administracionelectronica.gob.es/es/ctt/politicafirma/politica_firma_AGE_v" +
+            "1_8.pdf")]
+        public string SignaturePolicyInfoPolicyUri {
+            get {
+                return ((string)(this["SignaturePolicyInfoPolicyUri"]));
             }
         }
     }
