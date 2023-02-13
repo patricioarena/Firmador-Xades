@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Collections.Generic;
 using Helper.Model;
+using System.Configuration;
 
 namespace Helper.Services
 {
@@ -22,7 +23,7 @@ namespace Helper.Services
         private static StoreName storeRoot = StoreName.Root;
         private static StoreName storeMy = StoreName.My;
         private static StoreLocation storeLocation = StoreLocation.LocalMachine;
-        private static string CertificateName = "Web Service Digital Signature";
+        private static string CertificateName = Properties.Settings.Default.CertificateName;
 
         public static DualCheck CheckStores()
         {

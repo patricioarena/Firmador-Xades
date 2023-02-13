@@ -39,7 +39,7 @@ using System.Xml;
 namespace Custom.FirmaXadesNet
 {
 
-    public class XadesService2 : IService
+    public class XadesService_CIFE : IService
     {
 
         #region Private variables
