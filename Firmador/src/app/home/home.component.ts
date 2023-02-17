@@ -83,6 +83,9 @@ export class HomeComponent implements OnInit {
     this.textPreview = "";
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
+
+    isDevMode() && console.log(this.objeto);
+
     this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe((resp) => {
         isDevMode() && console.log({resp});
         // tslint:disable-next-line: no-empty
@@ -150,4 +153,7 @@ export class HomeComponent implements OnInit {
     this.notificationService.showInfo("", "Documento copiado");
   }
 
+  public isAlive() {
+    this.signatureService.isAlive().subscribe(()=>{})
+  }
 }

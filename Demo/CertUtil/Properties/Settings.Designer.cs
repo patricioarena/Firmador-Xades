@@ -41,15 +41,12 @@ namespace CertUtilCustom.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1.3.6.1.5.5.7.3.1")]
         public string AuthenticationServer {
             get {
                 return ((string)(this["AuthenticationServer"]));
-            }
-            set {
-                this["AuthenticationServer"] = value;
             }
         }
     }
