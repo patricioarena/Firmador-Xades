@@ -113,6 +113,7 @@
     <Compile Include="Configuración.Designer.cs">
       <DependentUpon>Configuración.cs</DependentUpon>
     </Compile>
+    <Compile Include="Enums\StatusSignProcess.cs" />
     <Compile Include="Enums\TypeService.cs" />
     <Compile Include="Enums\TypeSignature.cs" />
     <Compile Include="MimeTypeInfo.cs" />

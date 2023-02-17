@@ -127,8 +127,10 @@ namespace Demo.Controllers
             }
         }
 
-        private IHttpActionResult CoreDecision(string typeSignature, ObjetoModel model, bool comprobaciónPorOCSP)
+        private IHttpActionResult CoreDecision(string typeSignature, ObjetoModel model, bool usarComprobaciónPorOCSP)
         {
+            XmlElement xmlElement = null;
+
             if (String.IsNullOrEmpty(typeSignature))
                 throw new CustomException(CustomException.ErrorsEnum.TypeSignatureNull);
 
@@ -150,16 +152,11 @@ namespace Demo.Controllers
                     break;
             }
 
-            object value = SignatureHandler(model, service, comprobaciónPorOCSP);
-            Type type = value.GetType();
+            int code = SignatureHandler(model, service, usarComprobaciónPorOCSP, out xmlElement);
+            if (code == ((int)StatusSignProcess.Good))
+                return Content(HttpStatusCode.OK, xmlElement, Configuration.Formatters.XmlFormatter);
+            return Content(HttpStatusCode.OK, code);
 
-            if (type.Equals(typeof(int)))
-                return Content(HttpStatusCode.OK, value);
-
-            if (type.Equals(typeof(XmlDocument)))
-                return Content(HttpStatusCode.OK, value);
-
-            return null;
         }
 
         private List<JObject> CheckSignatures(ObjetoModel model)
@@ -229,13 +226,13 @@ namespace Demo.Controllers
         {
             try
             {
-                aCert.Verify().Equals(true);
-                var key = (RSACryptoServiceProvider)aCert.PrivateKey;
+                if (!aCert.HasPrivateKey)
+                    return false;
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
         }
 
@@ -272,10 +269,12 @@ namespace Demo.Controllers
             }
         }
 
-        private object SignatureHandler(ObjetoModel model, IService service, bool comprobaciónPorOCSP)
+        private int SignatureHandler(ObjetoModel model, IService service, bool usarComprobaciónPorOCSP, out XmlElement OutXmlElement)
         {
             try
             {
+                OutXmlElement = null;
+
                 if (service == null)
                     throw new CustomException(CustomException.ErrorsEnum.ServiceNull);
 
@@ -297,19 +296,10 @@ namespace Demo.Controllers
                 if (aCert == null)
                     return (int)CustomException.ErrorsEnum.NoCert;
 
-                #region Comprobación por OCSP
-                if (comprobaciónPorOCSP)
-                {
-                    Helper.Services.OcspClient client = new Helper.Services.OcspClient();
-                    Helper.Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
-                    JObject T = client.x509ChainVerify(aCert);
+                if (usarComprobaciónPorOCSP)
+                    comprobaciónPorOCSP(aCert);
 
-                    if (T.Count > 0 || resp != Helper.Services.CertificateStatus.Good)
-                        return (int)CustomException.ErrorsEnum.InvalidCert; 
-                }
-                #endregion
-
-                else if (this.VerifyX509Certificate(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
+                if (VerifyX509Certificate(aCert)) // Certificado tiene una clave privada, sirve para firmar
                 {
                     using (parametros.Signer = new Signer(aCert))
                     {
@@ -327,14 +317,27 @@ namespace Demo.Controllers
                     }
                     //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
                     XmlDocument xmlDocument = _signatureDocument.Document;
-                    return xmlDocument.DocumentElement;
+                    OutXmlElement = xmlDocument.DocumentElement;
+                    return (int)StatusSignProcess.Good;
                 }
+
                 return (int)CustomException.ErrorsEnum.InvalidCert;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        private int comprobaciónPorOCSP(X509Certificate2 aCert)
+        {
+            Helper.Services.OcspClient client = new Helper.Services.OcspClient();
+            Helper.Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
+            JObject T = client.x509ChainVerify(aCert);
+
+            if (T.Count > 0 || resp != Helper.Services.CertificateStatus.Good)
+                return (int)CustomException.ErrorsEnum.InvalidCert;
+            return 0;
         }
 
  
