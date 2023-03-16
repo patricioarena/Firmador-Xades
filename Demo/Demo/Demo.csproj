@@ -177,6 +177,10 @@
       <Project>{7d14ee7f-8751-4a57-a95f-7314549c0c1a}</Project>
       <Name>CertUtilCustom</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FirmarPDFLibrary\FirmarPDFLibrary.csproj">
+      <Project>{6450785D-B68B-4091-916D-C38F111F4BFB}</Project>
+      <Name>FirmarPDFLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FirmaXadesNet\FirmaXadesNet.csproj">
       <Project>{84B87815-DD45-4C60-B343-C11D45847BDF}</Project>
       <Name>FirmaXadesNet</Name>

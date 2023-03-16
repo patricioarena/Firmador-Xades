@@ -1,4 +1,7 @@
-﻿using Helper.Model;
+﻿using FirmarPDFLibrary;
+using FirmaXadesNet.Crypto;
+using FirmaXadesNet.Utils;
+using Helper.Model;
 using Helper.Services;
 using Microsoft.Win32;
 using System;
@@ -293,6 +296,40 @@ namespace Demo
             Program.ExecuteCertUtilCustom();
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
+
+                    if (!this.VerifyX509Certificate(certificate))
+                        MessageBox.Show("No posee certificados personal con clave privada");
+                    else
+                    {
+                        PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true);
+
+                        MessageBox.Show("Proceso finalizado");
+                    }
+                }
+            }
+        }
+
+        // Copia de metodo en controlller
+        private bool VerifyX509Certificate(X509Certificate2 aCert)
+        {
+            try
+            {
+                if (!aCert.HasPrivateKey)
+                    return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
 }
