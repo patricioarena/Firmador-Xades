@@ -63,18 +63,18 @@ export class HomeComponent implements OnInit {
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
     this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe((resp) => {
-        // tslint:disable-next-line: no-empty
-        if (resp === "-1") {
-        } else if (resp === "-2") {
-          this.notificationService.showInfo("Certificado", "Certificado no valido");
-        } else {
-          this.responseFirma = resp;
-          this.isEnabled = true;
-        }
-      }, (err) => {
-        const message = JSON.parse(err.error).ExceptionMessage;
-        this.notificationService.showError("Certificado", message);
-      });
+      // tslint:disable-next-line: no-empty
+      if (resp === "-1") {
+      } else if (resp === "-2") {
+        this.notificationService.showInfo("Certificado", "Certificado no valido");
+      } else {
+        this.responseFirma = resp;
+        this.isEnabled = true;
+      }
+    }, (err) => {
+      const message = JSON.parse(err.error).ExceptionMessage;
+      this.notificationService.showError("Certificado", message);
+    });
   }
 
   public FirmarElectronica() {
@@ -87,19 +87,19 @@ export class HomeComponent implements OnInit {
     isDevMode() && console.log(this.objeto);
 
     this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe((resp) => {
-        isDevMode() && console.log({resp});
-        // tslint:disable-next-line: no-empty
-        if (resp === "-1") {
-        } else if (resp === "-2") {
-          this.notificationService.showInfo("Certificado", "Certificado no valido");
-        } else {
-          this.responseFirma = resp;
-          this.isEnabled = true;
-        }
-      }, (err) => {
-        const message = JSON.parse(err.error).ExceptionMessage;
-        this.notificationService.showInfo("Certificado", message);
-      });
+      isDevMode() && console.log({ resp });
+      // tslint:disable-next-line: no-empty
+      if (resp === "-1") {
+      } else if (resp === "-2") {
+        this.notificationService.showInfo("Certificado", "Certificado no valido");
+      } else {
+        this.responseFirma = resp;
+        this.isEnabled = true;
+      }
+    }, (err) => {
+      const message = JSON.parse(err.error).ExceptionMessage;
+      this.notificationService.showInfo("Certificado", message);
+    });
   }
 
   public Verificar() {
@@ -107,30 +107,30 @@ export class HomeComponent implements OnInit {
     this.objeto.Archivo = this.text;
     this.signatureService.verificar(this.objeto, this.TipoDeFirma).subscribe((resp) => {
 
-        const data = JSON.parse(JSON.stringify(resp.data));
-        const cantTotalDeFirmas = data.length;
-        let firmasValidas = 0;
-        let firmasInvalidas = 0;
+      const data = JSON.parse(JSON.stringify(resp.data));
+      const cantTotalDeFirmas = data.length;
+      let firmasValidas = 0;
+      let firmasInvalidas = 0;
 
-        data.forEach((element) => {
-          if (data[data.indexOf(element)].IsValid === true) {
-            firmasValidas = firmasValidas + 1;
-          }
-        });
-
-        firmasInvalidas = cantTotalDeFirmas - firmasValidas;
-
-        if (cantTotalDeFirmas === firmasValidas) {
-          // tslint:disable-next-line: max-line-length
-          this.notificationService.showVerify("Verificación de firmas satisfactoria", `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
-        } else {
-          // tslint:disable-next-line: max-line-length
-          this.notificationService.showNoVerify("Verificación de firmas no satisfactoria", `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
+      data.forEach((element) => {
+        if (data[data.indexOf(element)].IsValid === true) {
+          firmasValidas = firmasValidas + 1;
         }
-      }, (err) => {
-        const message = err.error.ExceptionMessage;
-        this.notificationService.showError("Firmas", message);
       });
+
+      firmasInvalidas = cantTotalDeFirmas - firmasValidas;
+
+      if (cantTotalDeFirmas === firmasValidas) {
+        // tslint:disable-next-line: max-line-length
+        this.notificationService.showVerify("Verificación de firmas satisfactoria", `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
+      } else {
+        // tslint:disable-next-line: max-line-length
+        this.notificationService.showNoVerify("Verificación de firmas no satisfactoria", `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
+      }
+    }, (err) => {
+      const message = err.error.ExceptionMessage;
+      this.notificationService.showError("Firmas", message);
+    });
   }
 
   public downloadFile() {
@@ -154,6 +154,10 @@ export class HomeComponent implements OnInit {
   }
 
   public isAlive() {
-    this.signatureService.isAlive().subscribe(()=>{})
+    this.signatureService.isAlive().subscribe(() => { })
+  }
+
+  public pdfSignature() {
+    this.signatureService.pdfSignature().subscribe(() => { })
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "lib-digitalsignature",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "A library for interaction with digital signature program",
   "private": false,
   "readme": "README.md",

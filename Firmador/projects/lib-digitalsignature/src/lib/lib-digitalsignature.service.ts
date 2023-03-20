@@ -82,4 +82,16 @@ export class DigitalSignatureService {
     }).pipe(map((res) => res as any));
   }
 
+  public pdfSignature() {
+    const url = `${this.apiurl}api/Signature/PDF/Signature`;
+    return this.HttpClient.get(url, {
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .append("Access-Control-Allow-Origin", "*"),
+      responseType: "blob"
+      // tslint:disable-next-line: object-literal-sort-keys
+      , observe: "response",
+    }).pipe(map((res) => res as any));
+  }
+
 }
