@@ -1,90 +1,114 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using SysX509 = System.Security.Cryptography.X509Certificates;
-using System.Text;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Org.BouncyCastle.X509;
-using System.Security.Cryptography.Pkcs;
 using iTextSharp.text.pdf.security;
-using Org.BouncyCastle.Crypto.Tls;
-using System.Runtime.Remoting.Messaging;
-using Org.BouncyCastle.Asn1.X509;
-using System.Security.Policy;
+using BX509 = Org.BouncyCastle.X509;
+using System.Text;
 
 namespace FirmarPDFLibrary
 {
     public class PDF
     {
-        public static void SignHashed(string source, string target, X509Certificate2 certificate, string reason, string location, bool addVisibleSign)
+        public static bool IsValidPDFA(string source)
         {
-            string fieldName = "cifeSignature-" + Guid.NewGuid().ToString(); 
-            
-            X509CertificateParser objCP = new X509CertificateParser();
-            Org.BouncyCastle.X509.X509Certificate[] objChain = new Org.BouncyCastle.X509.X509Certificate[] { objCP.ReadCertificate(certificate.RawData) };
-
-            PdfReader reader = new PdfReader(source);
-
-            AcroFields fields = reader.AcroFields;
-            bool tieneFirma = fields.GetSignatureNames().Count > 0;
-
-            using (FileStream outFile = new FileStream(target, FileMode.Create))
+            try
             {
-                using (PdfStamper stamper = PdfStamper.CreateSignature(reader, outFile, '\0', null, true))
-                {
-    
-                    PdfSignatureAppearance appearance = stamper.SignatureAppearance;
+                PdfReader reader = new PdfReader(source);
+                byte[] metadata = reader.Metadata;
 
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "cife_logo.png");
-                    appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.GRAPHIC_AND_DESCRIPTION;
-                    appearance.SignatureGraphic = iTextSharp.text.Image.GetInstance(imagePath);
-                    appearance.SignatureGraphic = Image.GetInstance(imagePath);
+                if (metadata == null)
+                    return false;
 
-                    if (addVisibleSign)
-                    {
-                        appearance.SetVisibleSignature(new Rectangle(50, 50, 300, 100), reader.NumberOfPages,  fieldName);
-                    }
+                string sXmlMetadata = Encoding.Default.GetString(metadata);
+                var xmlDoc = new System.Xml.XmlDocument();
+                xmlDoc.LoadXml(sXmlMetadata);
+                var nodesPart = xmlDoc.GetElementsByTagName("pdfaid:part");
+                var nodesConformance = xmlDoc.GetElementsByTagName("pdfaid:conformance");
 
-                    appearance.Reason = reason;
-                    appearance.Location = location;
-                    appearance.Acro6Layers = true;
-                    
-
-                    IExternalSignature signature = new X509Certificate2Signature(certificate, "SHA-1");
-                    MakeSignature.SignDetached(appearance, signature, objChain, null, null, null, 0, CryptoStandard.CMS);
-                }
+                if (nodesPart != null || nodesConformance != null)
+                    return true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
-        /// <summary>
-        /// Crea la firma CMS/PKCS #7
-        /// </summary>
-        private static byte[] SignMsg(byte[] Message, SysX509.X509Certificate2 SignerCertificate, bool Detached)
+        public static bool SignHashed(string source, string target, X509Certificate2 certificate, string reason, string location, bool addVisibleSign)
         {
-            //Creamos el contenedor
-            ContentInfo contentInfo = new ContentInfo(Message);
+            try
+            {
+                PdfSignatureAppearance appearance = null;
+                PdfReader reader = new PdfReader(source);
 
-            //Instanciamos el objeto SignedCms con el contenedor
-            SignedCms objSignedCms = new SignedCms(contentInfo, Detached);
+                AcroFields fields = reader.AcroFields;
+                X509CertificateParser objCP = new X509CertificateParser();
+                BX509.X509Certificate[] objChain = new BX509.X509Certificate[] { objCP.ReadCertificate(certificate.RawData) };
 
-            //Creamos el "firmante"
-            CmsSigner objCmsSigner = new CmsSigner(SignerCertificate);
+                string fieldName = Guid.NewGuid().ToString();
 
-            // Include the following line if the top certificate in the
-            // smartcard is not in the trusted list.
-            objCmsSigner.IncludeOption = SysX509.X509IncludeOption.EndCertOnly;
+                float width = 100.0F;
+                float height = 45.0F;
+                float left = 45.0F;
+                float right = 120.0F;
 
-            //  Sign the CMS/PKCS #7 message. The second argument is
-            //  needed to ask for the pin.
-            objSignedCms.ComputeSignature(objCmsSigner, false);
+                float x = 80.0f;
 
-            //Encodeamos el mensaje CMS/PKCS #7
-            return objSignedCms.Encode();
+                if (fields.GetSignatureNames().Count > 0)
+                {
+                    var signatureName = fields.GetSignatureNames().Last();
+                    var signaturePositions = fields.GetFieldPositions(signatureName);
+                    var signaturePosition = signaturePositions[0];
+
+                    left = signaturePosition.position.Left + x;
+                    right = signaturePosition.position.Right + x;
+
+                    var pageSizeRight = reader.GetPageSize(reader.NumberOfPages).Right;
+
+                    if (pageSizeRight < right)
+                    {
+                        addVisibleSign = false; // Si no hay espacio para poner la firma visible, se oculta la firma
+                    }
+                }
+
+                using (FileStream outFile = new FileStream(target, FileMode.Create))
+                {
+                    using (PdfStamper stamper = PdfStamper.CreateSignature(reader, outFile, '\0', null, true))
+                    {
+                        appearance = stamper.SignatureAppearance;
+
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "logo.png");
+                        appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.GRAPHIC_AND_DESCRIPTION;
+                        appearance.SignatureGraphic = Image.GetInstance(imagePath);
+
+                        if (addVisibleSign)
+                            appearance.SetVisibleSignature(new Rectangle(left, height, right, width), reader.NumberOfPages, fieldName);
+
+                        appearance.Reason = reason;
+                        appearance.Location = location;
+                        appearance.Acro6Layers = true;
+
+
+                        IExternalSignature signature = new X509Certificate2Signature(certificate, "SHA-1");
+                        MakeSignature.SignDetached(appearance, signature, objChain, null, null, null, 0, CryptoStandard.CMS);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
+
+
     }
+
 }

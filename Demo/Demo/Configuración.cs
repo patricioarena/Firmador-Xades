@@ -30,6 +30,9 @@ namespace Demo
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static string path = Assembly.GetExecutingAssembly().Location;
         private static string version;
+        private static string mapsUrl = Properties.Settings.Default.FiscaliaEnGoogleMAps;
+        private static string fiscaliaWeb = Properties.Settings.Default.FiscaliaWeb;
+
 
         public Signature()
         {
@@ -248,14 +251,12 @@ namespace Demo
 
         private void label5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.google.com/maps/place/Fiscal%C3%ADa+de+Estado/" +
-                "@-34.9149269,-57.9377341,17z/data=!3m1!4b1!4m5!3m4!1s0x95a2e619d798ea5f:0xaa78c0a6a7e5167!" +
-                "8m2!3d-34.9149269!4d-57.9355454");
+            System.Diagnostics.Process.Start(mapsUrl);
         }
 
         private void label6_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www2.fepba.gov.ar/");
+            System.Diagnostics.Process.Start(fiscaliaWeb);
         }
 
         private void label5_MouseLeave(object sender, EventArgs e)
@@ -300,18 +301,23 @@ namespace Demo
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                if(!PDF.IsValidPDFA(openFileDialog1.FileName))
+                    MessageBox.Show("Se requiere un PDF/A.", "Error",    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
                 {
-                    X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
-
-                    if (!this.VerifyX509Certificate(certificate))
-                        MessageBox.Show("No posee certificados personal con clave privada");
-                    else
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                     {
-                        PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true);
+                        X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
 
-                        MessageBox.Show("Proceso finalizado");
+                        if (!this.VerifyX509Certificate(certificate))
+                            MessageBox.Show("El certificado no tiene asociada una clave privada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else
+                        {
+                            if(PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true))
+                                MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK,  MessageBoxIcon.Information);
+                        }
                     }
+
                 }
             }
         }

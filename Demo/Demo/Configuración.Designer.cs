@@ -83,10 +83,6 @@ namespace Demo
             this.label1 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.saveFileDialog1.FileName = Guid.NewGuid().ToString();
-            this.saveFileDialog1.Filter = "Archivos PDF|*.pdf";
-            this.saveFileDialog1.Title = "Guardar archivo PDF";
-            this.saveFileDialog1.DefaultExt = ".pdf";
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -205,11 +201,11 @@ namespace Demo
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(291, 113);
+            this.button5.Location = new System.Drawing.Point(279, 248);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 16;
-            this.button5.Text = "Test PDF";
+            this.button5.Text = "Firmar PDF";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -370,11 +366,11 @@ namespace Demo
             // 
             // checkBox1
             // 
-            this.checkBox1.Location = new System.Drawing.Point(270, 253);
+            this.checkBox1.Location = new System.Drawing.Point(279, 104);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(106, 17);
+            this.checkBox1.Size = new System.Drawing.Size(106, 33);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Inicio automático";
+            this.checkBox1.Text = "Iniciar con Windows";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -429,7 +425,16 @@ namespace Demo
             // 
             // openFileDialog1
             // 
+            this.openFileDialog1.DefaultExt = "pdf";
             this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Archivos PDF|*.pdf";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "pdf";
+            this.saveFileDialog1.FileName = "8b0ee826-94d5-4625-b900-054ae12e2570";
+            this.saveFileDialog1.Filter = "Archivos PDF|*.pdf";
+            this.saveFileDialog1.Title = "Guardar archivo PDF";
             // 
             // Signature
             // 

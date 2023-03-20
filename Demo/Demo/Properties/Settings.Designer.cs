@@ -68,5 +68,25 @@ namespace Demo.Properties {
                 return ((string)(this["SignaturePolicyInfoPolicyUri"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.google.com/maps/place/Fiscal%C3%ADa+de+Estado/@-34.9149269,-57.937734" +
+            "1,17z/data=!3m1!4b1!4m5!3m4!1s0x95a2e619d798ea5f:0xaa78c0a6a7e5167!8m2!3d-34.914" +
+            "9269!4d-57.9355454")]
+        public string FiscaliaEnGoogleMAps {
+            get {
+                return ((string)(this["FiscaliaEnGoogleMAps"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www2.fepba.gov.ar/")]
+        public string FiscaliaWeb {
+            get {
+                return ((string)(this["FiscaliaWeb"]));
+            }
+        }
     }
 }

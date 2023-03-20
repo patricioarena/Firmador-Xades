@@ -56,6 +56,16 @@ namespace Demo.Controllers
         }
 
         /// <summary>
+        /// Pdf
+        /// </summary>
+        [HttpGet]
+        [Route("pdf")]
+        public void pdf()
+        {
+
+        }
+
+        /// <summary>
         /// Firma el documento recibido (Firma Electronica)
         /// </summary>
         [HttpPost]
@@ -340,6 +350,6 @@ namespace Demo.Controllers
             return 0;
         }
 
- 
+
     }
 }
