@@ -21,6 +21,7 @@ using Org.BouncyCastle.X509;
 using System.Configuration;
 using Demo.Enums;
 using System.Web.Services.Description;
+using System.Threading;
 
 namespace Demo.Controllers
 {
@@ -56,13 +57,20 @@ namespace Demo.Controllers
         }
 
         /// <summary>
-        /// Pdf
+        /// Firmar PDF/A 
         /// </summary>
         [HttpGet]
-        [Route("pdf")]
-        public void pdf()
+        [Route("PDF/Signature")]
+        public void PDFSignatureHandler()
         {
+            Thread _thread = new Thread((ThreadStart)(() => {
+                Signature.GetInstance().PDFSignatureHandler();
+            }));
 
+            // Ejecute su código desde un hilo que se une al hilo de STA
+            _thread.SetApartmentState(ApartmentState.STA);
+            _thread.Start();
+            _thread.Join();
         }
 
         /// <summary>

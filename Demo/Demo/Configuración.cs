@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,7 +33,7 @@ namespace Demo
         private static string version;
         private static string mapsUrl = Properties.Settings.Default.FiscaliaEnGoogleMAps;
         private static string fiscaliaWeb = Properties.Settings.Default.FiscaliaWeb;
-
+        private static Signature _instance;
 
         public Signature()
         {
@@ -45,6 +46,18 @@ namespace Demo
             this.panel3.Visible = false;
             this.CheckSSLCertificateInStores();
         }
+
+ 
+
+        public static Signature GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new Signature();
+            }
+            return _instance;
+        }
+
 
         private void Configuración_Load(object sender, EventArgs e)
         {
@@ -299,10 +312,15 @@ namespace Demo
 
         private void button5_Click(object sender, EventArgs e)
         {
+            PDFSignatureHandler();
+        }
+
+        public void PDFSignatureHandler()
+        {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if(!PDF.IsValidPDFA(openFileDialog1.FileName))
-                    MessageBox.Show("Se requiere un PDF/A.", "Error",    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!PDF.IsValidPDFA(openFileDialog1.FileName))
+                    MessageBox.Show("Se requiere un PDF/A.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else
                 {
                     if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -313,8 +331,8 @@ namespace Demo
                             MessageBox.Show("El certificado no tiene asociada una clave privada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         else
                         {
-                            if(PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true))
-                                MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK,  MessageBoxIcon.Information);
+                            if (PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true))
+                                MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
 

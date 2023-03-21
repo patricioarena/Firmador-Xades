@@ -56,7 +56,7 @@ namespace Demo
             WebApp.Start<Startup>($"{Program.baseUrl}:{Program.port}/");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Signature());
+            Application.Run(Signature.GetInstance());
         }
 
         [STAThread]
