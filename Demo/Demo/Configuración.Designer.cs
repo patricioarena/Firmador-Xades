@@ -57,7 +57,6 @@ namespace Demo
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button3 = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,14 +91,11 @@ namespace Demo
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.customButton1 = new Demo.CustomButton();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.customButton4 = new Demo.CustomButton();
-            this.customButton3 = new Demo.CustomButton();
-            this.customButton2 = new Demo.CustomButton();
             this.panel11 = new System.Windows.Forms.Panel();
             this.panel12 = new System.Windows.Forms.Panel();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
@@ -107,10 +103,20 @@ namespace Demo
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.customButton1 = new Demo.CustomButton();
+            this.customButton6 = new Demo.CustomButton();
+            this.customButton4 = new Demo.CustomButton();
+            this.customButton3 = new Demo.CustomButton();
+            this.customButton2 = new Demo.CustomButton();
+            this.customButton7 = new Demo.CustomButton();
+            this.customButton5 = new Demo.CustomButton();
+            this.customButton8 = new Demo.CustomButton();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel10.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -121,6 +127,7 @@ namespace Demo
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             this.panel12.SuspendLayout();
@@ -159,19 +166,6 @@ namespace Demo
             this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader2.Width = 90;
             // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(297, 388);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(101, 36);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Salir";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // notifyIcon
             // 
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip1;
@@ -195,10 +189,12 @@ namespace Demo
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.customButton8);
+            this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.panel3);
-            this.panel1.Location = new System.Drawing.Point(491, 17);
+            this.panel1.Location = new System.Drawing.Point(445, 172);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(389, 360);
+            this.panel1.Size = new System.Drawing.Size(411, 346);
             this.panel1.TabIndex = 5;
             // 
             // panel3
@@ -206,7 +202,7 @@ namespace Demo
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.listView1);
-            this.panel3.Location = new System.Drawing.Point(1, 8);
+            this.panel3.Location = new System.Drawing.Point(9, 8);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(390, 273);
             this.panel3.TabIndex = 7;
@@ -238,10 +234,10 @@ namespace Demo
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.customButton7);
             this.panel2.Controls.Add(this.panel10);
             this.panel2.Controls.Add(this.panel9);
             this.panel2.Controls.Add(this.panel8);
-            this.panel2.Controls.Add(this.button3);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
@@ -260,6 +256,7 @@ namespace Demo
             // 
             this.panel10.BackColor = System.Drawing.Color.Transparent;
             this.panel10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel10.Controls.Add(this.customButton5);
             this.panel10.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.panel10.Location = new System.Drawing.Point(357, 38);
             this.panel10.Name = "panel10";
@@ -271,7 +268,7 @@ namespace Demo
             // 
             this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel9.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.panel9.Location = new System.Drawing.Point(12, 287);
+            this.panel9.Location = new System.Drawing.Point(12, 352);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(386, 1);
             this.panel9.TabIndex = 18;
@@ -334,7 +331,7 @@ namespace Demo
             this.label5.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
             this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Location = new System.Drawing.Point(56, 299);
+            this.label5.Location = new System.Drawing.Point(56, 399);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(339, 34);
             this.label5.TabIndex = 4;
@@ -370,7 +367,7 @@ namespace Demo
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Image = global::Demo.Properties.Resources.favicon;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(0, 383);
+            this.label1.Location = new System.Drawing.Point(0, 483);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5);
             this.label1.Size = new System.Drawing.Size(411, 47);
@@ -382,7 +379,7 @@ namespace Demo
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::Demo.Properties.Resources.logo_fiscalia;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 240);
+            this.pictureBox1.Location = new System.Drawing.Point(13, 267);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(192, 41);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -393,7 +390,7 @@ namespace Demo
             // pictureBox4
             // 
             this.pictureBox4.Image = global::Demo.Properties.Resources.map;
-            this.pictureBox4.Location = new System.Drawing.Point(38, 307);
+            this.pictureBox4.Location = new System.Drawing.Point(38, 407);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(18, 18);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -403,7 +400,7 @@ namespace Demo
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Demo.Properties.Resources.logo_cife_color_v2;
-            this.pictureBox2.Location = new System.Drawing.Point(291, 240);
+            this.pictureBox2.Location = new System.Drawing.Point(291, 267);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(105, 41);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -417,7 +414,7 @@ namespace Demo
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.pictureBox5);
             this.panel4.Controls.Add(this.label6);
-            this.panel4.Location = new System.Drawing.Point(13, 294);
+            this.panel4.Location = new System.Drawing.Point(13, 394);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(385, 78);
             this.panel4.TabIndex = 12;
@@ -514,7 +511,7 @@ namespace Demo
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F);
             this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Location = new System.Drawing.Point(1032, 473);
+            this.label4.Location = new System.Drawing.Point(1202, 674);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(152, 34);
             this.label4.TabIndex = 3;
@@ -524,7 +521,7 @@ namespace Demo
             // 
             // checkBox1
             // 
-            this.checkBox1.Location = new System.Drawing.Point(63, 316);
+            this.checkBox1.Location = new System.Drawing.Point(57, 407);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(106, 33);
             this.checkBox1.TabIndex = 0;
@@ -548,6 +545,7 @@ namespace Demo
             // panel7
             // 
             this.panel7.Controls.Add(this.panel2);
+            this.panel7.Controls.Add(this.panel5);
             this.panel7.Controls.Add(this.panel1);
             this.panel7.Location = new System.Drawing.Point(39, 12);
             this.panel7.Name = "panel7";
@@ -555,33 +553,10 @@ namespace Demo
             this.panel7.TabIndex = 18;
             this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint);
             // 
-            // customButton1
-            // 
-            this.customButton1.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton1.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton1.BorderColor = System.Drawing.Color.Silver;
-            this.customButton1.BorderRadius = 5;
-            this.customButton1.BorderSize = 1;
-            this.customButton1.FlatAppearance.BorderSize = 0;
-            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton1.Icon = null;
-            this.customButton1.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
-            this.customButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton1.Location = new System.Drawing.Point(265, 389);
-            this.customButton1.Name = "customButton1";
-            this.customButton1.Size = new System.Drawing.Size(105, 33);
-            this.customButton1.TabIndex = 19;
-            this.customButton1.Text = "Salir";
-            this.customButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.customButton1.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton1.UseVisualStyleBackColor = false;
-            this.customButton1.Click += new System.EventHandler(this.customButton1_Click);
-            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.customButton1);
+            this.panel5.Controls.Add(this.panel6);
             this.panel5.Controls.Add(this.pictureBox10);
             this.panel5.Controls.Add(this.pictureBox9);
             this.panel5.Controls.Add(this.label13);
@@ -592,11 +567,22 @@ namespace Demo
             this.panel5.Controls.Add(this.panel11);
             this.panel5.Controls.Add(this.panel12);
             this.panel5.Controls.Add(this.label14);
-            this.panel5.Location = new System.Drawing.Point(925, 29);
+            this.panel5.Location = new System.Drawing.Point(18, 17);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(411, 430);
+            this.panel5.Size = new System.Drawing.Size(411, 530);
             this.panel5.TabIndex = 19;
             this.panel5.Visible = false;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.Transparent;
+            this.panel6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel6.Controls.Add(this.customButton6);
+            this.panel6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.panel6.Location = new System.Drawing.Point(357, 38);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(54, 51);
+            this.panel6.TabIndex = 21;
             // 
             // pictureBox10
             // 
@@ -628,79 +614,11 @@ namespace Demo
             this.label13.TabIndex = 20;
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // customButton4
-            // 
-            this.customButton4.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton4.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton4.BorderColor = System.Drawing.Color.Silver;
-            this.customButton4.BorderRadius = 5;
-            this.customButton4.BorderSize = 1;
-            this.customButton4.FlatAppearance.BorderSize = 0;
-            this.customButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton4.Icon = null;
-            this.customButton4.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
-            this.customButton4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton4.Location = new System.Drawing.Point(251, 136);
-            this.customButton4.Name = "customButton4";
-            this.customButton4.Size = new System.Drawing.Size(105, 33);
-            this.customButton4.TabIndex = 22;
-            this.customButton4.Text = "Salir";
-            this.customButton4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.customButton4.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton4.UseVisualStyleBackColor = false;
-            this.customButton4.Click += new System.EventHandler(this.customButton4_Click);
-            // 
-            // customButton3
-            // 
-            this.customButton3.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton3.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton3.BorderColor = System.Drawing.Color.Silver;
-            this.customButton3.BorderRadius = 5;
-            this.customButton3.BorderSize = 1;
-            this.customButton3.FlatAppearance.BorderSize = 0;
-            this.customButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton3.Icon = null;
-            this.customButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton3.Location = new System.Drawing.Point(55, 210);
-            this.customButton3.Name = "customButton3";
-            this.customButton3.Size = new System.Drawing.Size(105, 33);
-            this.customButton3.TabIndex = 21;
-            this.customButton3.Text = "Active SSL";
-            this.customButton3.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton3.UseVisualStyleBackColor = false;
-            this.customButton3.Click += new System.EventHandler(this.customButton3_Click);
-            // 
-            // customButton2
-            // 
-            this.customButton2.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton2.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton2.BorderColor = System.Drawing.Color.Silver;
-            this.customButton2.BorderRadius = 5;
-            this.customButton2.BorderSize = 1;
-            this.customButton2.FlatAppearance.BorderSize = 0;
-            this.customButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton2.Icon = null;
-            this.customButton2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton2.Location = new System.Drawing.Point(57, 136);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.Size = new System.Drawing.Size(105, 33);
-            this.customButton2.TabIndex = 20;
-            this.customButton2.Text = "SSL Check";
-            this.customButton2.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton2.UseVisualStyleBackColor = false;
-            this.customButton2.Click += new System.EventHandler(this.customButton2_Click);
-            // 
             // panel11
             // 
             this.panel11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel11.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.panel11.Location = new System.Drawing.Point(12, 287);
+            this.panel11.Location = new System.Drawing.Point(13, 352);
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(386, 1);
             this.panel11.TabIndex = 18;
@@ -763,7 +681,7 @@ namespace Demo
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.Image = global::Demo.Properties.Resources.favicon;
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label14.Location = new System.Drawing.Point(0, 383);
+            this.label14.Location = new System.Drawing.Point(0, 483);
             this.label14.Name = "label14";
             this.label14.Padding = new System.Windows.Forms.Padding(5);
             this.label14.Size = new System.Drawing.Size(411, 47);
@@ -774,12 +692,206 @@ namespace Demo
             // pictureBox3
             // 
             this.pictureBox3.Image = global::Demo.Properties.Resources.baseline_business_black_18dp;
-            this.pictureBox3.Location = new System.Drawing.Point(1008, 478);
+            this.pictureBox3.Location = new System.Drawing.Point(1178, 679);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(18, 18);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox3.TabIndex = 7;
             this.pictureBox3.TabStop = false;
+            // 
+            // label15
+            // 
+            this.label15.BackColor = System.Drawing.Color.Silver;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Image = global::Demo.Properties.Resources.favicon;
+            this.label15.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label15.Location = new System.Drawing.Point(0, 299);
+            this.label15.Name = "label15";
+            this.label15.Padding = new System.Windows.Forms.Padding(5);
+            this.label15.Size = new System.Drawing.Size(411, 47);
+            this.label15.TabIndex = 7;
+            this.label15.Text = "     Versiòn: ";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // customButton1
+            // 
+            this.customButton1.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton1.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton1.BorderColor = System.Drawing.Color.Silver;
+            this.customButton1.BorderRadius = 5;
+            this.customButton1.BorderSize = 1;
+            this.customButton1.FlatAppearance.BorderSize = 0;
+            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton1.Icon = null;
+            this.customButton1.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton1.Location = new System.Drawing.Point(293, 494);
+            this.customButton1.Name = "customButton1";
+            this.customButton1.Size = new System.Drawing.Size(105, 33);
+            this.customButton1.TabIndex = 19;
+            this.customButton1.Text = "Salir";
+            this.customButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton1.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton1.UseVisualStyleBackColor = false;
+            this.customButton1.Click += new System.EventHandler(this.customButton1_Click);
+            // 
+            // customButton6
+            // 
+            this.customButton6.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton6.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton6.BorderColor = System.Drawing.Color.Silver;
+            this.customButton6.BorderRadius = 5;
+            this.customButton6.BorderSize = 1;
+            this.customButton6.FlatAppearance.BorderSize = 0;
+            this.customButton6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton6.Icon = null;
+            this.customButton6.Image = global::Demo.Properties.Resources.rectangle_xmark_30dp;
+            this.customButton6.Location = new System.Drawing.Point(0, 0);
+            this.customButton6.Name = "customButton6";
+            this.customButton6.Size = new System.Drawing.Size(54, 51);
+            this.customButton6.TabIndex = 22;
+            this.customButton6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton6.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton6.UseVisualStyleBackColor = false;
+            this.customButton6.Click += new System.EventHandler(this.customButton6_Click);
+            // 
+            // customButton4
+            // 
+            this.customButton4.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton4.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton4.BorderColor = System.Drawing.Color.Silver;
+            this.customButton4.BorderRadius = 5;
+            this.customButton4.BorderSize = 1;
+            this.customButton4.FlatAppearance.BorderSize = 0;
+            this.customButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton4.Icon = null;
+            this.customButton4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton4.Location = new System.Drawing.Point(251, 136);
+            this.customButton4.Name = "customButton4";
+            this.customButton4.Size = new System.Drawing.Size(105, 33);
+            this.customButton4.TabIndex = 22;
+            this.customButton4.Text = "Firmar PDF";
+            this.customButton4.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton4.UseVisualStyleBackColor = false;
+            this.customButton4.Click += new System.EventHandler(this.customButton4_Click);
+            // 
+            // customButton3
+            // 
+            this.customButton3.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton3.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton3.BorderColor = System.Drawing.Color.Silver;
+            this.customButton3.BorderRadius = 5;
+            this.customButton3.BorderSize = 1;
+            this.customButton3.FlatAppearance.BorderSize = 0;
+            this.customButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton3.Icon = null;
+            this.customButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton3.Location = new System.Drawing.Point(55, 210);
+            this.customButton3.Name = "customButton3";
+            this.customButton3.Size = new System.Drawing.Size(105, 33);
+            this.customButton3.TabIndex = 21;
+            this.customButton3.Text = "Active SSL";
+            this.customButton3.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton3.UseVisualStyleBackColor = false;
+            this.customButton3.Click += new System.EventHandler(this.customButton3_Click);
+            // 
+            // customButton2
+            // 
+            this.customButton2.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton2.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton2.BorderColor = System.Drawing.Color.Silver;
+            this.customButton2.BorderRadius = 5;
+            this.customButton2.BorderSize = 1;
+            this.customButton2.FlatAppearance.BorderSize = 0;
+            this.customButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton2.Icon = null;
+            this.customButton2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton2.Location = new System.Drawing.Point(57, 136);
+            this.customButton2.Name = "customButton2";
+            this.customButton2.Size = new System.Drawing.Size(105, 33);
+            this.customButton2.TabIndex = 20;
+            this.customButton2.Text = "SSL Check";
+            this.customButton2.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton2.UseVisualStyleBackColor = false;
+            this.customButton2.Click += new System.EventHandler(this.customButton2_Click);
+            // 
+            // customButton7
+            // 
+            this.customButton7.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton7.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton7.BorderColor = System.Drawing.Color.Silver;
+            this.customButton7.BorderRadius = 5;
+            this.customButton7.BorderSize = 1;
+            this.customButton7.FlatAppearance.BorderSize = 0;
+            this.customButton7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton7.Icon = null;
+            this.customButton7.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton7.Location = new System.Drawing.Point(293, 489);
+            this.customButton7.Name = "customButton7";
+            this.customButton7.Size = new System.Drawing.Size(105, 33);
+            this.customButton7.TabIndex = 20;
+            this.customButton7.Text = "Salir";
+            this.customButton7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton7.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton7.UseVisualStyleBackColor = false;
+            // 
+            // customButton5
+            // 
+            this.customButton5.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton5.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton5.BorderColor = System.Drawing.Color.Silver;
+            this.customButton5.BorderRadius = 5;
+            this.customButton5.BorderSize = 1;
+            this.customButton5.FlatAppearance.BorderSize = 0;
+            this.customButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton5.Icon = null;
+            this.customButton5.Image = global::Demo.Properties.Resources.gear_30dp;
+            this.customButton5.Location = new System.Drawing.Point(0, 0);
+            this.customButton5.Name = "customButton5";
+            this.customButton5.Size = new System.Drawing.Size(54, 51);
+            this.customButton5.TabIndex = 20;
+            this.customButton5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton5.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton5.UseVisualStyleBackColor = false;
+            this.customButton5.Click += new System.EventHandler(this.customButton5_Click);
+            // 
+            // customButton8
+            // 
+            this.customButton8.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton8.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton8.BorderColor = System.Drawing.Color.Silver;
+            this.customButton8.BorderRadius = 5;
+            this.customButton8.BorderSize = 1;
+            this.customButton8.FlatAppearance.BorderSize = 0;
+            this.customButton8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton8.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton8.Icon = null;
+            this.customButton8.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton8.Location = new System.Drawing.Point(294, 305);
+            this.customButton8.Name = "customButton8";
+            this.customButton8.Size = new System.Drawing.Size(105, 33);
+            this.customButton8.TabIndex = 21;
+            this.customButton8.Text = "Salir";
+            this.customButton8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton8.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton8.UseVisualStyleBackColor = false;
             // 
             // Signature
             // 
@@ -787,7 +899,6 @@ namespace Demo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1433, 815);
-            this.Controls.Add(this.panel5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.pictureBox3);
@@ -795,7 +906,6 @@ namespace Demo
             this.Controls.Add(this.label8);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.button2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Signature";
@@ -808,6 +918,7 @@ namespace Demo
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel10.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
@@ -819,6 +930,7 @@ namespace Demo
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
             this.panel12.ResumeLayout(false);
@@ -837,7 +949,6 @@ namespace Demo
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
@@ -885,6 +996,12 @@ namespace Demo
         private Label label13;
         private PictureBox pictureBox9;
         private PictureBox pictureBox10;
+        private CustomButton customButton5;
+        private Panel panel6;
+        private CustomButton customButton6;
+        private CustomButton customButton8;
+        private Label label15;
+        private CustomButton customButton7;
     }
 }
 
