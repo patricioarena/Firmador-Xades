@@ -47,7 +47,6 @@ namespace Demo
             this.CheckSSLCertificateInStores();
         }
 
- 
 
         public static Signature GetInstance()
         {
@@ -86,10 +85,12 @@ namespace Demo
             DualCheck dual = CertificateControl.CheckStores();
             if (dual.My.Equals(false) || dual.Root.Equals(false))
             {
+                this.label13.Image = pictureBox10.Image;
                 this.label8.Text = "False";
             }
             else
             {
+                this.label13.Image = pictureBox9.Image;
                 this.label8.Text = "True";
             }
         }
@@ -103,11 +104,11 @@ namespace Demo
         private void button1_Click(object sender, EventArgs e)
         {
             panel2.Visible = !panel2.Visible;
-            panel3.Visible = !panel3.Visible;
+            panel1.Visible = !panel1.Visible;
 
             if (panel2.Visible == true)
             {
-                panel3.SendToBack();
+                panel1.SendToBack();
                 panel2.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
@@ -115,7 +116,7 @@ namespace Demo
             if (panel2.Visible == false)
             {
                 panel2.SendToBack();
-                panel3.BringToFront();
+                panel1.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
@@ -354,6 +355,117 @@ namespace Demo
                 throw ex;
             }
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+             
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void customButton1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void panel11_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel10_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void customButton5_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = !panel2.Visible;
+            panel5.Visible = !panel5.Visible;
+
+            if (panel2.Visible == true)
+            {
+                panel5.SendToBack();
+                panel2.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            if (panel2.Visible == false)
+            {
+                panel2.SendToBack();
+                panel5.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            panel5.Refresh();
+            //Console.WriteLine("cambie la prop visible del panel");
+        }
+
+        private void customButton6_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = !panel2.Visible;
+            panel5.Visible = !panel5.Visible;
+
+            if (panel2.Visible == true)
+            {
+                panel5.SendToBack();
+                panel2.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            if (panel2.Visible == false)
+            {
+                panel2.SendToBack();
+                panel5.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            panel5.Refresh();
+            //Console.WriteLine("cambie la prop visible del panel");
+        }
+
+        private void customButton2_Click(object sender, EventArgs e)
+        {
+            this.CheckSSLCertificateInStores();
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void customButton3_Click(object sender, EventArgs e)
+        {
+            Program.ExecuteCertUtilCustom();
+        }
+
+        private void customButton4_Click(object sender, EventArgs e)
+        {
+            PDFSignatureHandler();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 
 }

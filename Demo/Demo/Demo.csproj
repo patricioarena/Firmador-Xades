@@ -131,6 +131,9 @@
     </Compile>
     <Compile Include="Results\CustomException.cs" />
     <Compile Include="Results\ResponseApi.cs" />
+    <Compile Include="CustomButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Startup.cs" />
     <EmbeddedResource Include="Configuración.resx">
       <DependentUpon>Configuración.cs</DependentUpon>
@@ -151,6 +154,9 @@
   <ItemGroup>
     <PackageReference Include="BouncyCastle">
       <Version>1.7.0</Version>
+    </PackageReference>
+    <PackageReference Include="FontAwesome.Sharp">
+      <Version>6.3.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
       <Version>5.2.7</Version>
@@ -207,6 +213,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\boton.png" />
+    <None Include="Resources\boton1.png" />
+    <None Include="Resources\cucarda.png" />
+    <None Include="Resources\map.PNG" />
+    <None Include="Resources\telephone.PNG" />
+    <None Include="Resources\globe.PNG" />
+    <None Include="Resources\arrow-right-from-bracket.PNG" />
+    <None Include="Resources\arrow_right_from_bracket_20dp.png" />
+    <None Include="Resources\gear_40dp.png" />
+    <None Include="Resources\gear_40dp1.png" />
+    <None Include="Resources\gear_30dp.png" />
+    <None Include="Resources\shield_check_20dp.png" />
+    <None Include="Resources\shield_xmark_20dp.png" />
+    <None Include="Resources\rectangle_xmark_30dp.png" />
     <Content Include="Site\Assets\baseline_business_black_18dp.png" />
     <Content Include="Site\Assets\baseline_call_black_18dp.png" />
     <Content Include="Site\Assets\baseline_home_black_18dp.png" />
