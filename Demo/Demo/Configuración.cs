@@ -41,9 +41,10 @@ namespace Demo
             this.PublishVersion();
             this.LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
-            this.panel1.Visible = true;
+            this.panel7.Visible = true;
             this.panel2.Visible = true;
             this.panel3.Visible = false;
+            this.panel5.Visible = false;
             this.CheckSSLCertificateInStores();
         }
 
@@ -103,25 +104,30 @@ namespace Demo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            panel2.Visible = !panel2.Visible;
-            panel1.Visible = !panel1.Visible;
+            Console.WriteLine(panel2.Visible);
+            Console.WriteLine(panel7.Visible);
 
-            if (panel2.Visible == true)
+            panel3.Visible = !panel3.Visible;
+            panel7.Visible = !panel7.Visible;
+
+            if (panel3.Visible == true)
             {
-                panel1.SendToBack();
-                panel2.BringToFront();
-                listView1.Refresh();
-                LoadViewList();
-            }
-            if (panel2.Visible == false)
-            {
+                panel7.SendToBack();
                 panel2.SendToBack();
-                panel1.BringToFront();
+                panel3.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            panel1.Refresh();
-            //Console.WriteLine("cambie la prop visible del panel");
+            if (panel3.Visible == false)
+            {
+                panel3.SendToBack();
+                panel2.SendToBack();
+                panel7.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            panel7.Refresh();
+            Console.WriteLine("cambie la prop visible del panel");
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -403,13 +409,17 @@ namespace Demo
             if (panel2.Visible == true)
             {
                 panel5.SendToBack();
+                panel3.SendToBack();
                 panel2.BringToFront();
+                panel7.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
             if (panel2.Visible == false)
             {
                 panel2.SendToBack();
+                panel7.SendToBack();
+                panel3.SendToBack();
                 panel5.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
@@ -423,21 +433,21 @@ namespace Demo
             panel2.Visible = !panel2.Visible;
             panel5.Visible = !panel5.Visible;
 
-            if (panel2.Visible == true)
+            if (panel5.Visible == true)
             {
-                panel5.SendToBack();
-                panel2.BringToFront();
-                listView1.Refresh();
-                LoadViewList();
-            }
-            if (panel2.Visible == false)
-            {
-                panel2.SendToBack();
                 panel5.BringToFront();
-                listView1.Refresh();
-                LoadViewList();
+                panel3.SendToBack();
+                panel2.SendToBack();
+                panel7.SendToBack();
             }
-            panel5.Refresh();
+            if (panel5.Visible == false)
+            {
+                panel2.BringToFront();
+                panel7.BringToFront();
+                panel3.SendToBack();
+                panel5.SendToBack();
+            }
+            panel2.Refresh();
             //Console.WriteLine("cambie la prop visible del panel");
         }
 
@@ -466,6 +476,30 @@ namespace Demo
 
         }
 
+        private void customButton7_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint_2(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 
 }
