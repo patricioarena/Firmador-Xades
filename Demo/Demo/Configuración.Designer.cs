@@ -66,50 +66,51 @@ namespace Demo
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.customButton1 = new Demo.CustomButton();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.customButton6 = new Demo.CustomButton();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.customButton4 = new Demo.CustomButton();
-            this.customButton3 = new Demo.CustomButton();
-            this.customButton2 = new Demo.CustomButton();
             this.panel11 = new System.Windows.Forms.Panel();
             this.panel12 = new System.Windows.Forms.Panel();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.customButton7 = new Demo.CustomButton();
+            this.pictureBox12 = new System.Windows.Forms.PictureBox();
+            this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.panel10 = new System.Windows.Forms.Panel();
-            this.customButton5 = new Demo.CustomButton();
-            this.panel9 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel7 = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel9 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.customButton7 = new Demo.CustomButton();
+            this.customButton5 = new Demo.CustomButton();
+            this.customButton1 = new Demo.CustomButton();
+            this.customButton6 = new Demo.CustomButton();
+            this.customButton4 = new Demo.CustomButton();
+            this.customButton3 = new Demo.CustomButton();
+            this.customButton2 = new Demo.CustomButton();
             this.contextMenuStrip1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -117,19 +118,21 @@ namespace Demo
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             this.panel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             this.panel10.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel3.SuspendLayout();
+            this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            this.panel7.SuspendLayout();
-            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon
@@ -248,30 +251,6 @@ namespace Demo
             this.panel5.TabIndex = 19;
             this.panel5.Visible = false;
             // 
-            // customButton1
-            // 
-            this.customButton1.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton1.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton1.BorderColor = System.Drawing.Color.Silver;
-            this.customButton1.BorderRadius = 5;
-            this.customButton1.BorderSize = 1;
-            this.customButton1.FlatAppearance.BorderSize = 0;
-            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton1.Icon = null;
-            this.customButton1.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
-            this.customButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton1.Location = new System.Drawing.Point(294, 489);
-            this.customButton1.Name = "customButton1";
-            this.customButton1.Size = new System.Drawing.Size(105, 33);
-            this.customButton1.TabIndex = 19;
-            this.customButton1.Text = "Salir";
-            this.customButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.customButton1.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton1.UseVisualStyleBackColor = false;
-            this.customButton1.Click += new System.EventHandler(this.customButton1_Click);
-            // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.Transparent;
@@ -282,28 +261,6 @@ namespace Demo
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(54, 51);
             this.panel6.TabIndex = 21;
-            // 
-            // customButton6
-            // 
-            this.customButton6.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton6.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton6.BorderColor = System.Drawing.Color.Silver;
-            this.customButton6.BorderRadius = 5;
-            this.customButton6.BorderSize = 1;
-            this.customButton6.FlatAppearance.BorderSize = 0;
-            this.customButton6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton6.Icon = null;
-            this.customButton6.Image = global::Demo.Properties.Resources.rectangle_xmark_30dp;
-            this.customButton6.Location = new System.Drawing.Point(0, 0);
-            this.customButton6.Name = "customButton6";
-            this.customButton6.Size = new System.Drawing.Size(54, 51);
-            this.customButton6.TabIndex = 22;
-            this.customButton6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.customButton6.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton6.UseVisualStyleBackColor = false;
-            this.customButton6.Click += new System.EventHandler(this.customButton6_Click);
             // 
             // pictureBox10
             // 
@@ -334,72 +291,6 @@ namespace Demo
             this.label13.Size = new System.Drawing.Size(41, 33);
             this.label13.TabIndex = 20;
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // customButton4
-            // 
-            this.customButton4.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton4.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton4.BorderColor = System.Drawing.Color.Silver;
-            this.customButton4.BorderRadius = 5;
-            this.customButton4.BorderSize = 1;
-            this.customButton4.FlatAppearance.BorderSize = 0;
-            this.customButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton4.Icon = null;
-            this.customButton4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton4.Location = new System.Drawing.Point(251, 136);
-            this.customButton4.Name = "customButton4";
-            this.customButton4.Size = new System.Drawing.Size(105, 33);
-            this.customButton4.TabIndex = 22;
-            this.customButton4.Text = "Firmar PDF";
-            this.customButton4.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton4.UseVisualStyleBackColor = false;
-            this.customButton4.Click += new System.EventHandler(this.customButton4_Click);
-            // 
-            // customButton3
-            // 
-            this.customButton3.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton3.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton3.BorderColor = System.Drawing.Color.Silver;
-            this.customButton3.BorderRadius = 5;
-            this.customButton3.BorderSize = 1;
-            this.customButton3.FlatAppearance.BorderSize = 0;
-            this.customButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton3.Icon = null;
-            this.customButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton3.Location = new System.Drawing.Point(55, 210);
-            this.customButton3.Name = "customButton3";
-            this.customButton3.Size = new System.Drawing.Size(105, 33);
-            this.customButton3.TabIndex = 21;
-            this.customButton3.Text = "Active SSL";
-            this.customButton3.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton3.UseVisualStyleBackColor = false;
-            this.customButton3.Click += new System.EventHandler(this.customButton3_Click);
-            // 
-            // customButton2
-            // 
-            this.customButton2.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton2.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton2.BorderColor = System.Drawing.Color.Silver;
-            this.customButton2.BorderRadius = 5;
-            this.customButton2.BorderSize = 1;
-            this.customButton2.FlatAppearance.BorderSize = 0;
-            this.customButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton2.Icon = null;
-            this.customButton2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton2.Location = new System.Drawing.Point(57, 136);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.Size = new System.Drawing.Size(105, 33);
-            this.customButton2.TabIndex = 20;
-            this.customButton2.Text = "SSL Check";
-            this.customButton2.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton2.UseVisualStyleBackColor = false;
-            this.customButton2.Click += new System.EventHandler(this.customButton2_Click);
             // 
             // panel11
             // 
@@ -476,54 +367,46 @@ namespace Demo
             this.label14.Text = "     Versiòn: ";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::Demo.Properties.Resources.baseline_business_black_18dp;
-            this.pictureBox3.Location = new System.Drawing.Point(1178, 679);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(18, 18);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 7;
-            this.pictureBox3.TabStop = false;
-            // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.pictureBox12);
             this.panel2.Controls.Add(this.customButton7);
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Controls.Add(this.panel7);
             this.panel2.Controls.Add(this.panel10);
             this.panel2.Controls.Add(this.panel8);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(435, 48);
+            this.panel2.Controls.Add(this.pictureBox11);
+            this.panel2.Location = new System.Drawing.Point(12, 48);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(411, 530);
             this.panel2.TabIndex = 6;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
-            // customButton7
+            // pictureBox12
             // 
-            this.customButton7.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton7.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton7.BorderColor = System.Drawing.Color.Silver;
-            this.customButton7.BorderRadius = 5;
-            this.customButton7.BorderSize = 1;
-            this.customButton7.FlatAppearance.BorderSize = 0;
-            this.customButton7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton7.Icon = null;
-            this.customButton7.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
-            this.customButton7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.customButton7.Location = new System.Drawing.Point(293, 489);
-            this.customButton7.Name = "customButton7";
-            this.customButton7.Size = new System.Drawing.Size(105, 33);
-            this.customButton7.TabIndex = 20;
-            this.customButton7.Text = "Salir";
-            this.customButton7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.customButton7.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton7.UseVisualStyleBackColor = false;
-            this.customButton7.Click += new System.EventHandler(this.customButton7_Click);
+            this.pictureBox12.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox12.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox12.Name = "pictureBox12";
+            this.pictureBox12.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox12.TabIndex = 21;
+            this.pictureBox12.TabStop = false;
+            this.pictureBox12.WaitOnLoad = true;
+            this.pictureBox12.Click += new System.EventHandler(this.pictureBox11_Click);
+            this.pictureBox12.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox11_Paint);
+            // 
+            // pictureBox11
+            // 
+            this.pictureBox11.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox11.Image = global::Demo.Properties.Resources.ribbon1;
+            this.pictureBox11.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox11.Name = "pictureBox11";
+            this.pictureBox11.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox11.TabIndex = 21;
+            this.pictureBox11.TabStop = false;
+            this.pictureBox11.Visible = false;
+            this.pictureBox11.WaitOnLoad = true;
             // 
             // panel10
             // 
@@ -536,37 +419,6 @@ namespace Demo
             this.panel10.Size = new System.Drawing.Size(54, 51);
             this.panel10.TabIndex = 19;
             this.panel10.Paint += new System.Windows.Forms.PaintEventHandler(this.panel10_Paint);
-            // 
-            // customButton5
-            // 
-            this.customButton5.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton5.BackgroundColor = System.Drawing.Color.GhostWhite;
-            this.customButton5.BorderColor = System.Drawing.Color.Silver;
-            this.customButton5.BorderRadius = 5;
-            this.customButton5.BorderSize = 1;
-            this.customButton5.FlatAppearance.BorderSize = 0;
-            this.customButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton5.Icon = null;
-            this.customButton5.Image = global::Demo.Properties.Resources.gear_30dp;
-            this.customButton5.Location = new System.Drawing.Point(0, 0);
-            this.customButton5.Name = "customButton5";
-            this.customButton5.Size = new System.Drawing.Size(54, 51);
-            this.customButton5.TabIndex = 20;
-            this.customButton5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.customButton5.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.customButton5.UseVisualStyleBackColor = false;
-            this.customButton5.Click += new System.EventHandler(this.customButton5_Click);
-            // 
-            // panel9
-            // 
-            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel9.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.panel9.Location = new System.Drawing.Point(13, 102);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(386, 1);
-            this.panel9.TabIndex = 18;
             // 
             // panel8
             // 
@@ -620,22 +472,6 @@ namespace Demo
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
-            // label5
-            // 
-            this.label5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
-            this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Location = new System.Drawing.Point(57, 149);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(339, 34);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Avenida 1 esq 60 #1342 - La Plata, Buenos Aires";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            this.label5.MouseLeave += new System.EventHandler(this.label5_MouseLeave);
-            this.label5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.label5_MouseMove);
-            // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Transparent;
@@ -670,6 +506,123 @@ namespace Demo
             this.label1.Text = "     Versiòn: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.label2);
+            this.panel3.Controls.Add(this.listView1);
+            this.panel3.Location = new System.Drawing.Point(882, 21);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(390, 270);
+            this.panel3.TabIndex = 7;
+            this.panel3.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(285, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(105, 24);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Verificación";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(0, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(285, 24);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Certificados";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // listView1
+            // 
+            this.listView1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listView1.FullRowSelect = true;
+            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(0, 3);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(390, 264);
+            this.listView1.TabIndex = 1;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView_KeyDown);
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView1MouseDoubleClick);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Certificados";
+            this.columnHeader1.Width = 273;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Verificación";
+            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader2.Width = 90;
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.pictureBox4);
+            this.panel7.Controls.Add(this.label5);
+            this.panel7.Controls.Add(this.pictureBox2);
+            this.panel7.Controls.Add(this.pictureBox1);
+            this.panel7.Controls.Add(this.panel9);
+            this.panel7.Controls.Add(this.panel4);
+            this.panel7.Location = new System.Drawing.Point(882, 297);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(411, 273);
+            this.panel7.TabIndex = 21;
+            this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint_2);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::Demo.Properties.Resources.map;
+            this.pictureBox4.Location = new System.Drawing.Point(39, 157);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(18, 18);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox4.TabIndex = 8;
+            this.pictureBox4.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Location = new System.Drawing.Point(57, 149);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(339, 34);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Avenida 1 esq 60 #1342 - La Plata, Buenos Aires";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            this.label5.MouseLeave += new System.EventHandler(this.label5_MouseLeave);
+            this.label5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.label5_MouseMove);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Demo.Properties.Resources.logo_cife_color_v2;
+            this.pictureBox2.Location = new System.Drawing.Point(292, 17);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(105, 41);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
@@ -682,25 +635,14 @@ namespace Demo
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // pictureBox4
+            // panel9
             // 
-            this.pictureBox4.Image = global::Demo.Properties.Resources.map;
-            this.pictureBox4.Location = new System.Drawing.Point(39, 157);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(18, 18);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox4.TabIndex = 8;
-            this.pictureBox4.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Demo.Properties.Resources.logo_cife_color_v2;
-            this.pictureBox2.Location = new System.Drawing.Point(292, 17);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(105, 41);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
+            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel9.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.panel9.Location = new System.Drawing.Point(13, 102);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(386, 1);
+            this.panel9.TabIndex = 18;
             // 
             // panel4
             // 
@@ -762,104 +704,173 @@ namespace Demo
             this.label6.MouseLeave += new System.EventHandler(this.label6_MouseLeave);
             this.label6.MouseMove += new System.Windows.Forms.MouseEventHandler(this.label6_MouseMove);
             // 
-            // button3
+            // pictureBox3
             // 
-            this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.BackgroundImage = global::Demo.Properties.Resources.boton1;
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button3.Location = new System.Drawing.Point(489, 652);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(299, 64);
-            this.button3.TabIndex = 20;
-            this.button3.Text = "Certificados";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button1_Click);
+            this.pictureBox3.Image = global::Demo.Properties.Resources.baseline_business_black_18dp;
+            this.pictureBox3.Location = new System.Drawing.Point(1178, 679);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(18, 18);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox3.TabIndex = 7;
+            this.pictureBox3.TabStop = false;
             // 
-            // listView1
+            // customButton7
             // 
-            this.listView1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listView1.FullRowSelect = true;
-            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(390, 264);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListView_KeyDown);
-            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView1MouseDoubleClick);
+            this.customButton7.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton7.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton7.BorderColor = System.Drawing.Color.Silver;
+            this.customButton7.BorderRadius = 5;
+            this.customButton7.BorderSize = 1;
+            this.customButton7.FlatAppearance.BorderSize = 0;
+            this.customButton7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton7.Icon = null;
+            this.customButton7.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton7.Location = new System.Drawing.Point(293, 489);
+            this.customButton7.Name = "customButton7";
+            this.customButton7.Size = new System.Drawing.Size(105, 33);
+            this.customButton7.TabIndex = 20;
+            this.customButton7.Text = "Salir";
+            this.customButton7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton7.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton7.UseVisualStyleBackColor = false;
+            this.customButton7.Click += new System.EventHandler(this.customButton7_Click);
             // 
-            // columnHeader1
+            // customButton5
             // 
-            this.columnHeader1.Text = "Certificados";
-            this.columnHeader1.Width = 273;
+            this.customButton5.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton5.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton5.BorderColor = System.Drawing.Color.Silver;
+            this.customButton5.BorderRadius = 5;
+            this.customButton5.BorderSize = 1;
+            this.customButton5.FlatAppearance.BorderSize = 0;
+            this.customButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton5.Icon = null;
+            this.customButton5.Image = global::Demo.Properties.Resources.gear_30dp;
+            this.customButton5.Location = new System.Drawing.Point(0, 0);
+            this.customButton5.Name = "customButton5";
+            this.customButton5.Size = new System.Drawing.Size(54, 51);
+            this.customButton5.TabIndex = 20;
+            this.customButton5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton5.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton5.UseVisualStyleBackColor = false;
+            this.customButton5.Click += new System.EventHandler(this.customButton5_Click);
             // 
-            // columnHeader2
+            // customButton1
             // 
-            this.columnHeader2.Text = "Verificación";
-            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader2.Width = 90;
+            this.customButton1.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton1.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton1.BorderColor = System.Drawing.Color.Silver;
+            this.customButton1.BorderRadius = 5;
+            this.customButton1.BorderSize = 1;
+            this.customButton1.FlatAppearance.BorderSize = 0;
+            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton1.Icon = null;
+            this.customButton1.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton1.Location = new System.Drawing.Point(294, 489);
+            this.customButton1.Name = "customButton1";
+            this.customButton1.Size = new System.Drawing.Size(105, 33);
+            this.customButton1.TabIndex = 19;
+            this.customButton1.Text = "Salir";
+            this.customButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton1.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton1.UseVisualStyleBackColor = false;
+            this.customButton1.Click += new System.EventHandler(this.customButton1_Click);
             // 
-            // label3
+            // customButton6
             // 
-            this.label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(285, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(105, 24);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Verificación";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton6.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton6.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton6.BorderColor = System.Drawing.Color.Silver;
+            this.customButton6.BorderRadius = 5;
+            this.customButton6.BorderSize = 1;
+            this.customButton6.FlatAppearance.BorderSize = 0;
+            this.customButton6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton6.Icon = null;
+            this.customButton6.Image = global::Demo.Properties.Resources.rectangle_xmark_30dp;
+            this.customButton6.Location = new System.Drawing.Point(0, 0);
+            this.customButton6.Name = "customButton6";
+            this.customButton6.Size = new System.Drawing.Size(54, 51);
+            this.customButton6.TabIndex = 22;
+            this.customButton6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.customButton6.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton6.UseVisualStyleBackColor = false;
+            this.customButton6.Click += new System.EventHandler(this.customButton6_Click);
             // 
-            // label2
+            // customButton4
             // 
-            this.label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(0, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(285, 24);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Certificados";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton4.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton4.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton4.BorderColor = System.Drawing.Color.Silver;
+            this.customButton4.BorderRadius = 5;
+            this.customButton4.BorderSize = 1;
+            this.customButton4.FlatAppearance.BorderSize = 0;
+            this.customButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton4.Icon = null;
+            this.customButton4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton4.Location = new System.Drawing.Point(251, 136);
+            this.customButton4.Name = "customButton4";
+            this.customButton4.Size = new System.Drawing.Size(105, 33);
+            this.customButton4.TabIndex = 22;
+            this.customButton4.Text = "Firmar PDF";
+            this.customButton4.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton4.UseVisualStyleBackColor = false;
+            this.customButton4.Click += new System.EventHandler(this.customButton4_Click);
             // 
-            // panel7
+            // customButton3
             // 
-            this.panel7.Controls.Add(this.pictureBox4);
-            this.panel7.Controls.Add(this.label5);
-            this.panel7.Controls.Add(this.pictureBox2);
-            this.panel7.Controls.Add(this.pictureBox1);
-            this.panel7.Controls.Add(this.panel9);
-            this.panel7.Controls.Add(this.panel4);
-            this.panel7.Location = new System.Drawing.Point(0, 210);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(411, 273);
-            this.panel7.TabIndex = 21;
-            this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint_2);
+            this.customButton3.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton3.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton3.BorderColor = System.Drawing.Color.Silver;
+            this.customButton3.BorderRadius = 5;
+            this.customButton3.BorderSize = 1;
+            this.customButton3.FlatAppearance.BorderSize = 0;
+            this.customButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton3.Icon = null;
+            this.customButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton3.Location = new System.Drawing.Point(55, 210);
+            this.customButton3.Name = "customButton3";
+            this.customButton3.Size = new System.Drawing.Size(105, 33);
+            this.customButton3.TabIndex = 21;
+            this.customButton3.Text = "Active SSL";
+            this.customButton3.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton3.UseVisualStyleBackColor = false;
+            this.customButton3.Click += new System.EventHandler(this.customButton3_Click);
             // 
-            // panel3
+            // customButton2
             // 
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Controls.Add(this.listView1);
-            this.panel3.Location = new System.Drawing.Point(11, 210);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(390, 270);
-            this.panel3.TabIndex = 7;
-            this.panel3.Visible = false;
+            this.customButton2.BackColor = System.Drawing.Color.GhostWhite;
+            this.customButton2.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton2.BorderColor = System.Drawing.Color.Silver;
+            this.customButton2.BorderRadius = 5;
+            this.customButton2.BorderSize = 1;
+            this.customButton2.FlatAppearance.BorderSize = 0;
+            this.customButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton2.Icon = null;
+            this.customButton2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.customButton2.Location = new System.Drawing.Point(57, 136);
+            this.customButton2.Name = "customButton2";
+            this.customButton2.Size = new System.Drawing.Size(105, 33);
+            this.customButton2.TabIndex = 20;
+            this.customButton2.Text = "SSL Check";
+            this.customButton2.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
+            this.customButton2.UseVisualStyleBackColor = false;
+            this.customButton2.Click += new System.EventHandler(this.customButton2_Click);
             // 
             // Signature
             // 
@@ -867,7 +878,8 @@ namespace Demo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1388, 1061);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.label4);
@@ -892,20 +904,22 @@ namespace Demo
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             this.panel10.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.panel7.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -960,7 +974,6 @@ namespace Demo
         private Label label7;
         private PictureBox pictureBox5;
         private Label label6;
-        private Button button3;
         private ListView listView1;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
@@ -968,6 +981,8 @@ namespace Demo
         private Label label2;
         private Label label3;
         private Panel panel3;
+        private PictureBox pictureBox11;
+        private PictureBox pictureBox12;
     }
 }
 

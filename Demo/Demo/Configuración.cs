@@ -34,6 +34,7 @@ namespace Demo
         private static string mapsUrl = Properties.Settings.Default.FiscaliaEnGoogleMAps;
         private static string fiscaliaWeb = Properties.Settings.Default.FiscaliaWeb;
         private static Signature _instance;
+        private PictureBox pictureBox;
 
         public Signature()
         {
@@ -58,6 +59,31 @@ namespace Demo
             return _instance;
         }
 
+        private void pictureBox11_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            Image image = pictureBox11.Image;
+            float angle = -45; // Ángulo de rotación deseado
+
+            // Calcula el centro de rotación
+            float startX = -60f; // Centro horizontal del PictureBox
+            float startY = (pictureBox1.Height + 60f) + image.Height; // Posición Y en el margen inferior horizontal
+            //float centerX = 0; //posicion X inicial (izquierda), para rotar en sentido antihorario
+            //float centerY = pictureBox1.Height; //posicion Y en la parte inferior
+
+            // Realiza la transformación de rotación
+            g.TranslateTransform(startX, startY);
+            g.RotateTransform(angle);
+            g.TranslateTransform(-startX, -startY);
+
+            // Dibuja la imagen rotada dentro del PictureBox
+            g.DrawImage(image, 0, startY);
+
+            // Restaura la transformación
+            g.ResetTransform();
+        }
 
         private void Configuración_Load(object sender, EventArgs e)
         {
@@ -500,6 +526,12 @@ namespace Demo
         {
 
         }
+
+        private void pictureBox11_Click(object sender, EventArgs e)
+        {
+        }
+
+
     }
 
 }

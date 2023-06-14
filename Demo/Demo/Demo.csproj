@@ -227,6 +227,8 @@
     <None Include="Resources\shield_check_20dp.png" />
     <None Include="Resources\shield_xmark_20dp.png" />
     <None Include="Resources\rectangle_xmark_30dp.png" />
+    <None Include="Resources\ribbon.png" />
+    <None Include="Resources\ribbon1.png" />
     <Content Include="Site\Assets\baseline_business_black_18dp.png" />
     <Content Include="Site\Assets\baseline_call_black_18dp.png" />
     <Content Include="Site\Assets\baseline_home_black_18dp.png" />
