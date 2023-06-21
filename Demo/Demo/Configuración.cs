@@ -39,6 +39,11 @@ namespace Demo
         public Signature()
         {
             this.InitializeComponent();
+            var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
+            position = pictureBox12.PointToClient(position);
+            rotatedLabel1.Parent = pictureBox12;
+            rotatedLabel1.Location = position;
+            rotatedLabel1.BackColor = Color.Transparent;
             this.PublishVersion();
             this.LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
@@ -69,7 +74,7 @@ namespace Demo
 
             // Calcula el centro de rotación
             float startX = -60f; // Centro horizontal del PictureBox
-            float startY = (pictureBox1.Height + 60f) + image.Height; // Posición Y en el margen inferior horizontal
+            float startY = (pictureBox11.Height + 3f) + image.Height; // Posición Y en el margen inferior horizontal
             //float centerX = 0; //posicion X inicial (izquierda), para rotar en sentido antihorario
             //float centerY = pictureBox1.Height; //posicion Y en la parte inferior
 
@@ -87,7 +92,8 @@ namespace Demo
 
         private void Configuración_Load(object sender, EventArgs e)
         {
-            this.label1.Text = String.Format("      Version: {0}", version);
+            //this.label1.Text = String.Format("      Version: {0}", version);
+            this.rotatedLabel1.Text = String.Format("V {0}", version);
             this.notifyIcon.Text = assemblyName;
             this.Text = assemblyName;
         }
@@ -531,7 +537,20 @@ namespace Demo
         {
         }
 
+        private void label16_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void rotatedLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

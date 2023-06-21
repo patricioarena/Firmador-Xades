@@ -78,7 +78,6 @@ namespace Demo
             this.label14 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
-            this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.panel10 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
@@ -86,6 +85,7 @@ namespace Demo
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -111,6 +111,7 @@ namespace Demo
             this.customButton4 = new Demo.CustomButton();
             this.customButton3 = new Demo.CustomButton();
             this.customButton2 = new Demo.CustomButton();
+            this.rotatedLabel1 = new Demo.RotatedLabel();
             this.contextMenuStrip1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -120,10 +121,10 @@ namespace Demo
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             this.panel10.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             this.panel3.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -357,18 +358,18 @@ namespace Demo
             // 
             this.label14.BackColor = System.Drawing.Color.Silver;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Image = global::Demo.Properties.Resources.favicon;
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label14.Location = new System.Drawing.Point(0, 483);
             this.label14.Name = "label14";
             this.label14.Padding = new System.Windows.Forms.Padding(5);
             this.label14.Size = new System.Drawing.Size(411, 47);
             this.label14.TabIndex = 2;
-            this.label14.Text = "     Versiòn: ";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.rotatedLabel1);
             this.panel2.Controls.Add(this.pictureBox12);
             this.panel2.Controls.Add(this.customButton7);
             this.panel2.Controls.Add(this.panel10);
@@ -384,7 +385,7 @@ namespace Demo
             // 
             // pictureBox12
             // 
-            this.pictureBox12.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox12.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox12.Location = new System.Drawing.Point(0, 0);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(100, 100);
@@ -394,19 +395,6 @@ namespace Demo
             this.pictureBox12.WaitOnLoad = true;
             this.pictureBox12.Click += new System.EventHandler(this.pictureBox11_Click);
             this.pictureBox12.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox11_Paint);
-            // 
-            // pictureBox11
-            // 
-            this.pictureBox11.BackColor = System.Drawing.SystemColors.Control;
-            this.pictureBox11.Image = global::Demo.Properties.Resources.ribbon1;
-            this.pictureBox11.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox11.Name = "pictureBox11";
-            this.pictureBox11.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox11.TabIndex = 21;
-            this.pictureBox11.TabStop = false;
-            this.pictureBox11.Visible = false;
-            this.pictureBox11.WaitOnLoad = true;
             // 
             // panel10
             // 
@@ -496,15 +484,27 @@ namespace Demo
             // 
             this.label1.BackColor = System.Drawing.Color.Silver;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Image = global::Demo.Properties.Resources.favicon;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label1.Location = new System.Drawing.Point(0, 483);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5);
             this.label1.Size = new System.Drawing.Size(411, 47);
             this.label1.TabIndex = 2;
-            this.label1.Text = "     Versiòn: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // pictureBox11
+            // 
+            this.pictureBox11.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox11.Image = global::Demo.Properties.Resources.ribbon1;
+            this.pictureBox11.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox11.Name = "pictureBox11";
+            this.pictureBox11.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox11.TabIndex = 21;
+            this.pictureBox11.TabStop = false;
+            this.pictureBox11.Visible = false;
+            this.pictureBox11.WaitOnLoad = true;
             // 
             // panel3
             // 
@@ -740,8 +740,8 @@ namespace Demo
             // 
             // customButton5
             // 
-            this.customButton5.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton5.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton5.BackColor = System.Drawing.Color.Transparent;
+            this.customButton5.BackgroundColor = System.Drawing.Color.Transparent;
             this.customButton5.BorderColor = System.Drawing.Color.Silver;
             this.customButton5.BorderRadius = 5;
             this.customButton5.BorderSize = 1;
@@ -786,8 +786,8 @@ namespace Demo
             // 
             // customButton6
             // 
-            this.customButton6.BackColor = System.Drawing.Color.GhostWhite;
-            this.customButton6.BackgroundColor = System.Drawing.Color.GhostWhite;
+            this.customButton6.BackColor = System.Drawing.Color.Transparent;
+            this.customButton6.BackgroundColor = System.Drawing.Color.Transparent;
             this.customButton6.BorderColor = System.Drawing.Color.Silver;
             this.customButton6.BorderRadius = 5;
             this.customButton6.BorderSize = 1;
@@ -872,6 +872,19 @@ namespace Demo
             this.customButton2.UseVisualStyleBackColor = false;
             this.customButton2.Click += new System.EventHandler(this.customButton2_Click);
             // 
+            // rotatedLabel1
+            // 
+            this.rotatedLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.rotatedLabel1.BackgroundColor = System.Drawing.Color.Transparent;
+            this.rotatedLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rotatedLabel1.ForeColor = System.Drawing.SystemColors.Control;
+            this.rotatedLabel1.Location = new System.Drawing.Point(3, 1);
+            this.rotatedLabel1.Name = "rotatedLabel1";
+            this.rotatedLabel1.RotationAngle = -45F;
+            this.rotatedLabel1.Size = new System.Drawing.Size(80, 82);
+            this.rotatedLabel1.TabIndex = 22;
+            this.rotatedLabel1.Text = "rotatedLabel1";
+            // 
             // Signature
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -892,7 +905,6 @@ namespace Demo
             this.MaximizeBox = false;
             this.Name = "Signature";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Signature";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Configuración_Load);
             this.Resize += new System.EventHandler(this.Form_Hide);
@@ -906,11 +918,11 @@ namespace Demo
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             this.panel10.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
@@ -983,6 +995,7 @@ namespace Demo
         private Panel panel3;
         private PictureBox pictureBox11;
         private PictureBox pictureBox12;
+        private RotatedLabel rotatedLabel1;
     }
 }
 
