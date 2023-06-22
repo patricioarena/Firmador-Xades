@@ -61,8 +61,6 @@ namespace Demo
             get { return this.ForeColor; }
             set { this.ForeColor = value; }
         }
-
-
         [Category("Image Icon")]
         public Image Icon
         {
@@ -108,7 +106,6 @@ namespace Demo
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            //dropShadow(this, pevent);
             base.OnPaint(pevent);
 
             Rectangle rectSurface = this.ClientRectangle;
@@ -135,8 +132,7 @@ namespace Demo
                     if (borderSize >= 1)
                         //Draw control border
                         pevent.Graphics.DrawPath(penBorder, pathBorder);
-                        //dropShadow(this, pevent);
-                        //base.OnPaint(pevent);
+
                 }
             }
             else //Normal button
@@ -151,20 +147,11 @@ namespace Demo
                     {
                         penBorder.Alignment = PenAlignment.Inset;
                         pevent.Graphics.DrawRectangle(penBorder, 0, 0, this.Width - 1, this.Height - 1);
-                        //dropShadow(this, pevent);
-                        //base.OnPaint(pevent);
+
                     }
                 }
             }
 
-            // Verifica si el control actual es una instancia de CustomButton
-            ////if (this is CustomButton customButton)
-            ////{
-            ////    // Llama a la función DropShadow
-            ////    dropShadow(customButton, pevent.Graphics);
-            ////}
-
-            // Dibujar el icono si está definido
             if (icon != null)
             {
                 int iconX = 5; // Ajustar la posición X según tus necesidades
@@ -198,36 +185,6 @@ namespace Demo
                 }
             }
         }
-
-        //private void dropShadow(CustomButton customButton, Graphics graphics)
-        //{
-        //    Color[] shadow = new Color[3];
-        //    //shadow[0] = Color.FromArgb(181, 181, 181);
-        //    //shadow[1] = Color.FromArgb(195, 195, 195);
-        //    //shadow[2] = Color.FromArgb(211, 211, 211);
-        //    shadow[0] = Color.FromArgb(181, 181, 181); // Azul
-        //    shadow[1] = Color.FromArgb(195, 195, 195); // Azul más oscuro
-        //    shadow[2] = Color.FromArgb(211, 211, 211); // Azul aún más oscuro
-        //    Pen pen = new Pen(shadow[0]);
-        //    using (pen)
-        //    {
-        //        foreach (Control control in customButton.Controls)
-        //        {
-        //            if (control is Panel panel)
-        //            {
-        //                Point pt = panel.Location;
-        //                pt.Y += panel.Height;
-        //                for (var sp = 0; sp < 3; sp++)
-        //                {
-        //                    pen.Color = shadow[sp];
-        //                    graphics.DrawLine(pen, pt.X + sp, pt.Y, pt.X + panel.Width - 1 + sp, pt.Y);
-        //                    graphics.DrawLine(pen, panel.Right + sp, panel.Top + sp, panel.Right + sp, panel.Bottom + sp);
-        //                    pt.Y++;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         protected override void OnHandleCreated(EventArgs e)
         {

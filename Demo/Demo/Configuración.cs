@@ -78,10 +78,10 @@ namespace Demo
             float angle = -45; // Ángulo de rotación deseado
 
             // Calcula el centro de rotación
-            float startX = -60f; // Centro horizontal del PictureBox
-            float startY = (pictureBox11.Height + 3f) + image.Height; // Posición Y en el margen inferior horizontal
-            //float centerX = 0; //posicion X inicial (izquierda), para rotar en sentido antihorario
-            //float centerY = pictureBox1.Height; //posicion Y en la parte inferior
+            // Centro horizontal del PictureBox
+            float startX = -60f;
+            // Posición Y en el margen inferior horizontal
+            float startY = (pictureBox11.Height + 3f) + image.Height; 
 
             // Realiza la transformación de rotación
             g.TranslateTransform(startX, startY);
@@ -125,12 +125,10 @@ namespace Demo
             if (dual.My.Equals(false) || dual.Root.Equals(false))
             {
                 this.label13.Image = pictureBox10.Image;
-                this.label8.Text = "False";
             }
             else
             {
                 this.label13.Image = pictureBox9.Image;
-                this.label8.Text = "True";
             }
         }
 
