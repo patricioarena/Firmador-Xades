@@ -44,6 +44,11 @@ namespace Demo
             rotatedLabel1.Parent = pictureBox12;
             rotatedLabel1.Location = position;
             rotatedLabel1.BackColor = Color.Transparent;
+            var position2 = rotatedLabel2.Parent.PointToScreen(rotatedLabel2.Location);
+            position2 = pictureBox14.PointToClient(position2);
+            rotatedLabel2.Parent = pictureBox14;
+            rotatedLabel2.Location = position;
+            rotatedLabel2.BackColor = Color.Transparent;
             this.PublishVersion();
             this.LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
@@ -94,6 +99,7 @@ namespace Demo
         {
             //this.label1.Text = String.Format("      Version: {0}", version);
             this.rotatedLabel1.Text = String.Format("V {0}", version);
+            this.rotatedLabel2.Text = String.Format("V {0}", version);
             this.notifyIcon.Text = assemblyName;
             this.Text = assemblyName;
         }
@@ -108,7 +114,7 @@ namespace Demo
             }
             else
             {
-                assemblyName = "Not Published";
+                assemblyName = "certiFisc";
                 version = "Not Published";
             }
         }
