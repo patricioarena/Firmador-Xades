@@ -83,6 +83,16 @@ namespace Demo.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_from_bracket_20dp__1_ {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_from_bracket_20dp (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap baseline_business_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_business_black_18dp", resourceCulture);
@@ -213,6 +223,16 @@ namespace Demo.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap globe_18dp {
+            get {
+                object obj = ResourceManager.GetObject("globe_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo_cife_color_v2 {
             get {
                 object obj = ResourceManager.GetObject("logo_cife_color_v2", resourceCulture);
@@ -236,6 +256,16 @@ namespace Demo.Properties {
         internal static System.Drawing.Bitmap map {
             get {
                 object obj = ResourceManager.GetObject("map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap map_18dp {
+            get {
+                object obj = ResourceManager.GetObject("map_18dp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -296,6 +326,26 @@ namespace Demo.Properties {
         internal static System.Drawing.Bitmap telephone {
             get {
                 object obj = ResourceManager.GetObject("telephone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap telephone_18dp {
+            get {
+                object obj = ResourceManager.GetObject("telephone_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xmark_30dp {
+            get {
+                object obj = ResourceManager.GetObject("xmark_30dp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

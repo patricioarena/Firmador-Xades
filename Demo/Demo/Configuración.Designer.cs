@@ -104,6 +104,7 @@ namespace Demo
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.rotatedLabel1 = new Demo.RotatedLabel();
             this.customButton7 = new Demo.CustomButton();
             this.customButton5 = new Demo.CustomButton();
             this.customButton1 = new Demo.CustomButton();
@@ -111,7 +112,6 @@ namespace Demo
             this.customButton4 = new Demo.CustomButton();
             this.customButton3 = new Demo.CustomButton();
             this.customButton2 = new Demo.CustomButton();
-            this.rotatedLabel1 = new Demo.RotatedLabel();
             this.contextMenuStrip1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -234,6 +234,7 @@ namespace Demo
             // 
             // panel5
             // 
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.panel5.Controls.Add(this.customButton1);
             this.panel5.Controls.Add(this.panel6);
             this.panel5.Controls.Add(this.pictureBox10);
@@ -326,7 +327,7 @@ namespace Demo
             // 
             // label11
             // 
-            this.label11.BackColor = System.Drawing.SystemColors.Control;
+            this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.label11.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(83)))), ((int)(((byte)(150)))));
@@ -342,14 +343,14 @@ namespace Demo
             // 
             // label12
             // 
-            this.label12.BackColor = System.Drawing.SystemColors.Control;
-            this.label12.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.label12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.label12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(83)))), ((int)(((byte)(150)))));
             this.label12.Location = new System.Drawing.Point(99, 5);
             this.label12.Name = "label12";
             this.label12.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label12.Size = new System.Drawing.Size(66, 40);
+            this.label12.Size = new System.Drawing.Size(80, 40);
             this.label12.TabIndex = 7;
             this.label12.Text = "certi";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -368,9 +369,10 @@ namespace Demo
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.panel2.Controls.Add(this.rotatedLabel1);
             this.panel2.Controls.Add(this.pictureBox12);
+            this.panel2.Controls.Add(this.panel7);
             this.panel2.Controls.Add(this.customButton7);
             this.panel2.Controls.Add(this.panel10);
             this.panel2.Controls.Add(this.panel8);
@@ -420,7 +422,7 @@ namespace Demo
             // 
             // pictureBox7
             // 
-            this.pictureBox7.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.pictureBox7.Image = global::Demo.Properties.Resources.cucarda;
             this.pictureBox7.Location = new System.Drawing.Point(68, 5);
             this.pictureBox7.Name = "pictureBox7";
@@ -431,7 +433,7 @@ namespace Demo
             // 
             // label10
             // 
-            this.label10.BackColor = System.Drawing.SystemColors.Control;
+            this.label10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.label10.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(83)))), ((int)(((byte)(150)))));
@@ -440,21 +442,21 @@ namespace Demo
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
             this.label10.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label10.Size = new System.Drawing.Size(54, 40);
+            this.label10.Size = new System.Drawing.Size(70, 40);
             this.label10.TabIndex = 7;
             this.label10.Text = "Fisc";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label9
             // 
-            this.label9.BackColor = System.Drawing.SystemColors.Control;
-            this.label9.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.label9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(83)))), ((int)(((byte)(150)))));
-            this.label9.Location = new System.Drawing.Point(99, 5);
+            this.label9.Location = new System.Drawing.Point(98, 5);
             this.label9.Name = "label9";
             this.label9.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label9.Size = new System.Drawing.Size(66, 40);
+            this.label9.Size = new System.Drawing.Size(83, 40);
             this.label9.TabIndex = 7;
             this.label9.Text = "certi";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -465,6 +467,7 @@ namespace Demo
             this.button1.BackColor = System.Drawing.Color.Transparent;
             this.button1.BackgroundImage = global::Demo.Properties.Resources.boton1;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Default;
             this.button1.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -575,13 +578,14 @@ namespace Demo
             // 
             // panel7
             // 
+            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.panel7.Controls.Add(this.pictureBox4);
             this.panel7.Controls.Add(this.label5);
             this.panel7.Controls.Add(this.pictureBox2);
             this.panel7.Controls.Add(this.pictureBox1);
             this.panel7.Controls.Add(this.panel9);
             this.panel7.Controls.Add(this.panel4);
-            this.panel7.Location = new System.Drawing.Point(882, 297);
+            this.panel7.Location = new System.Drawing.Point(0, 207);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(411, 273);
             this.panel7.TabIndex = 21;
@@ -589,7 +593,8 @@ namespace Demo
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::Demo.Properties.Resources.map;
+            this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox4.Image = global::Demo.Properties.Resources.map_18dp;
             this.pictureBox4.Location = new System.Drawing.Point(39, 157);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(18, 18);
@@ -646,7 +651,7 @@ namespace Demo
             // 
             // panel4
             // 
-            this.panel4.BackColor = System.Drawing.SystemColors.Control;
+            this.panel4.BackColor = System.Drawing.Color.Transparent;
             this.panel4.Controls.Add(this.pictureBox6);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.pictureBox5);
@@ -658,7 +663,8 @@ namespace Demo
             // 
             // pictureBox6
             // 
-            this.pictureBox6.Image = global::Demo.Properties.Resources.telephone;
+            this.pictureBox6.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox6.Image = global::Demo.Properties.Resources.telephone_18dp;
             this.pictureBox6.Location = new System.Drawing.Point(54, 39);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(18, 18);
@@ -680,7 +686,8 @@ namespace Demo
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Image = global::Demo.Properties.Resources.globe;
+            this.pictureBox5.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox5.Image = global::Demo.Properties.Resources.globe_18dp;
             this.pictureBox5.Location = new System.Drawing.Point(207, 40);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(18, 18);
@@ -714,6 +721,19 @@ namespace Demo
             this.pictureBox3.TabIndex = 7;
             this.pictureBox3.TabStop = false;
             // 
+            // rotatedLabel1
+            // 
+            this.rotatedLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.rotatedLabel1.BackgroundColor = System.Drawing.Color.Transparent;
+            this.rotatedLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rotatedLabel1.ForeColor = System.Drawing.SystemColors.Control;
+            this.rotatedLabel1.Location = new System.Drawing.Point(3, 1);
+            this.rotatedLabel1.Name = "rotatedLabel1";
+            this.rotatedLabel1.RotationAngle = -45F;
+            this.rotatedLabel1.Size = new System.Drawing.Size(80, 82);
+            this.rotatedLabel1.TabIndex = 22;
+            this.rotatedLabel1.Text = "rotatedLabel1";
+            // 
             // customButton7
             // 
             this.customButton7.BackColor = System.Drawing.Color.GhostWhite;
@@ -723,13 +743,14 @@ namespace Demo
             this.customButton7.BorderSize = 1;
             this.customButton7.FlatAppearance.BorderSize = 0;
             this.customButton7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton7.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton7.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customButton7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
             this.customButton7.Icon = null;
-            this.customButton7.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton7.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp__1_;
             this.customButton7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.customButton7.Location = new System.Drawing.Point(293, 489);
             this.customButton7.Name = "customButton7";
+            this.customButton7.Padding = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.customButton7.Size = new System.Drawing.Size(105, 33);
             this.customButton7.TabIndex = 20;
             this.customButton7.Text = "Salir";
@@ -751,7 +772,7 @@ namespace Demo
             this.customButton5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
             this.customButton5.Icon = null;
             this.customButton5.Image = global::Demo.Properties.Resources.gear_30dp;
-            this.customButton5.Location = new System.Drawing.Point(0, 0);
+            this.customButton5.Location = new System.Drawing.Point(-1, 0);
             this.customButton5.Name = "customButton5";
             this.customButton5.Size = new System.Drawing.Size(54, 51);
             this.customButton5.TabIndex = 20;
@@ -769,13 +790,14 @@ namespace Demo
             this.customButton1.BorderSize = 1;
             this.customButton1.FlatAppearance.BorderSize = 0;
             this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customButton1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
             this.customButton1.Icon = null;
-            this.customButton1.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp;
+            this.customButton1.Image = global::Demo.Properties.Resources.arrow_right_from_bracket_20dp__1_;
             this.customButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.customButton1.Location = new System.Drawing.Point(294, 489);
             this.customButton1.Name = "customButton1";
+            this.customButton1.Padding = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.customButton1.Size = new System.Drawing.Size(105, 33);
             this.customButton1.TabIndex = 19;
             this.customButton1.Text = "Salir";
@@ -796,8 +818,8 @@ namespace Demo
             this.customButton6.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customButton6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
             this.customButton6.Icon = null;
-            this.customButton6.Image = global::Demo.Properties.Resources.rectangle_xmark_30dp;
-            this.customButton6.Location = new System.Drawing.Point(0, 0);
+            this.customButton6.Image = global::Demo.Properties.Resources.xmark_30dp;
+            this.customButton6.Location = new System.Drawing.Point(-1, 0);
             this.customButton6.Name = "customButton6";
             this.customButton6.Size = new System.Drawing.Size(54, 51);
             this.customButton6.TabIndex = 22;
@@ -872,19 +894,6 @@ namespace Demo
             this.customButton2.UseVisualStyleBackColor = false;
             this.customButton2.Click += new System.EventHandler(this.customButton2_Click);
             // 
-            // rotatedLabel1
-            // 
-            this.rotatedLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.rotatedLabel1.BackgroundColor = System.Drawing.Color.Transparent;
-            this.rotatedLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rotatedLabel1.ForeColor = System.Drawing.SystemColors.Control;
-            this.rotatedLabel1.Location = new System.Drawing.Point(3, 1);
-            this.rotatedLabel1.Name = "rotatedLabel1";
-            this.rotatedLabel1.RotationAngle = -45F;
-            this.rotatedLabel1.Size = new System.Drawing.Size(80, 82);
-            this.rotatedLabel1.TabIndex = 22;
-            this.rotatedLabel1.Text = "rotatedLabel1";
-            // 
             // Signature
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -892,7 +901,6 @@ namespace Demo
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1388, 1061);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.label4);

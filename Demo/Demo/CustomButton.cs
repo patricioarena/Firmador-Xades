@@ -112,7 +112,7 @@ namespace Demo
             base.OnPaint(pevent);
 
             Rectangle rectSurface = this.ClientRectangle;
-            Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
+            Rectangle rectBorder = Rectangle.Inflate(rectSurface, borderSize, borderSize);
             int smoothSize = 2;
 
             if (borderSize > 0)
@@ -156,6 +156,14 @@ namespace Demo
                     }
                 }
             }
+
+            // Verifica si el control actual es una instancia de CustomButton
+            ////if (this is CustomButton customButton)
+            ////{
+            ////    // Llama a la función DropShadow
+            ////    dropShadow(customButton, pevent.Graphics);
+            ////}
+
             // Dibujar el icono si está definido
             if (icon != null)
             {
@@ -163,33 +171,61 @@ namespace Demo
                 int iconY = (Height - icon.Height) / 2;
                 pevent.Graphics.DrawImage(icon, iconX, iconY);
             }
+
+            dropShadow(pevent.Graphics);
         }
 
-        //private void dropShadow(object sender, PaintEventArgs e)
+        private void dropShadow(Graphics graphics)
+        {
+            Color[] shadow = new Color[3];
+            shadow[0] = Color.FromArgb(181, 181, 181);
+            shadow[1] = Color.FromArgb(195, 195, 195);
+            shadow[2] = Color.FromArgb(211, 211, 211);
+            Pen pen = new Pen(shadow[0]);
+            using (pen)
+            {
+                foreach (CustomButton customButton in Controls.OfType<CustomButton>())
+                {
+                    Point pt = customButton.Location;
+                    pt.Y += customButton.Height;
+                    for (var sp = 0; sp < 3; sp++)
+                    {
+                        pen.Color = shadow[sp];
+                        graphics.DrawLine(pen, pt.X + sp, pt.Y, pt.X + customButton.Width - 1 + sp, pt.Y);
+                        graphics.DrawLine(pen, customButton.Right + sp, customButton.Top + sp, customButton.Right + sp, customButton.Bottom + sp);
+                        pt.Y++;
+                    }
+                }
+            }
+        }
+
+        //private void dropShadow(CustomButton customButton, Graphics graphics)
         //{
-        //    RJButton button = (RJButton)sender;
         //    Color[] shadow = new Color[3];
         //    //shadow[0] = Color.FromArgb(181, 181, 181);
         //    //shadow[1] = Color.FromArgb(195, 195, 195);
         //    //shadow[2] = Color.FromArgb(211, 211, 211);
-        //    shadow[0] = Color.FromArgb(0, 0, 255); // Azul
-        //    shadow[1] = Color.FromArgb(0, 0, 195); // Azul más oscuro
-        //    shadow[2] = Color.FromArgb(0, 0, 135); // Azul aún más oscuro
+        //    shadow[0] = Color.FromArgb(181, 181, 181); // Azul
+        //    shadow[1] = Color.FromArgb(195, 195, 195); // Azul más oscuro
+        //    shadow[2] = Color.FromArgb(211, 211, 211); // Azul aún más oscuro
         //    Pen pen = new Pen(shadow[0]);
         //    using (pen)
         //    {
-        //        //foreach (RJButton p in button.Controls.OfType<RJButton>())
-        //        //{
-        //            Point pt = button.Location;
-        //            pt.Y += button.Height;
-        //            for (var sp = 0; sp < 3; sp++)
+        //        foreach (Control control in customButton.Controls)
+        //        {
+        //            if (control is Panel panel)
         //            {
-        //                pen.Color = shadow[sp];
-        //                e.Graphics.DrawLine(pen, pt.X + sp, pt.Y, pt.X +button.Width - 1 + sp, pt.Y); 
-        //                e.Graphics.DrawLine(pen, button.Right + sp, button.Top + sp, button.Right + sp, button.Bottom + sp);
-        //                pt.Y++;
+        //                Point pt = panel.Location;
+        //                pt.Y += panel.Height;
+        //                for (var sp = 0; sp < 3; sp++)
+        //                {
+        //                    pen.Color = shadow[sp];
+        //                    graphics.DrawLine(pen, pt.X + sp, pt.Y, pt.X + panel.Width - 1 + sp, pt.Y);
+        //                    graphics.DrawLine(pen, panel.Right + sp, panel.Top + sp, panel.Right + sp, panel.Bottom + sp);
+        //                    pt.Y++;
+        //                }
         //            }
-        //        //}
+        //        }
         //    }
         //}
 

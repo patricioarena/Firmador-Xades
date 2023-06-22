@@ -232,6 +232,11 @@
     <None Include="Resources\rectangle_xmark_30dp.png" />
     <None Include="Resources\ribbon.png" />
     <None Include="Resources\ribbon1.png" />
+    <None Include="Resources\arrow_right_from_bracket_20dp %281%292.png" />
+    <None Include="Resources\map_18dp2.png" />
+    <None Include="Resources\telephone_18dp2.png" />
+    <None Include="Resources\globe_18dp2.png" />
+    <None Include="Resources\xmark_30dp3.png" />
     <Content Include="Site\Assets\baseline_business_black_18dp.png" />
     <Content Include="Site\Assets\baseline_call_black_18dp.png" />
     <Content Include="Site\Assets\baseline_home_black_18dp.png" />
