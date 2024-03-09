@@ -147,8 +147,6 @@ namespace Demo.Controllers
 
         private IHttpActionResult CoreDecision(string typeSignature, ObjetoModel model, bool usarComprobaciónPorOCSP)
         {
-            XmlElement xmlElement = null;
-
             if (String.IsNullOrEmpty(typeSignature))
                 throw new CustomException(CustomException.ErrorsEnum.TypeSignatureNull);
 
@@ -170,7 +168,7 @@ namespace Demo.Controllers
                     break;
             }
 
-            int code = SignatureHandler(model, service, usarComprobaciónPorOCSP, out xmlElement);
+            int code = SignatureHandler(model, service, usarComprobaciónPorOCSP, out var xmlElement);
             if (code == ((int)StatusSignProcess.Good))
                 return Content(HttpStatusCode.OK, xmlElement, Configuration.Formatters.XmlFormatter);
             return Content(HttpStatusCode.OK, code);
@@ -357,7 +355,5 @@ namespace Demo.Controllers
                 return (int)CustomException.ErrorsEnum.InvalidCert;
             return 0;
         }
-
-
     }
 }

@@ -59,7 +59,6 @@ namespace Demo
             this.CheckSSLCertificateInStores();
         }
 
-
         public static Signature GetInstance()
         {
             if (_instance == null)
@@ -81,7 +80,7 @@ namespace Demo
             // Centro horizontal del PictureBox
             float startX = -60f;
             // Posición Y en el margen inferior horizontal
-            float startY = (pictureBox11.Height + 3f) + image.Height; 
+            float startY = pictureBox11.Height + 3f + image.Height; 
 
             // Realiza la transformación de rotación
             g.TranslateTransform(startX, startY);
@@ -196,7 +195,6 @@ namespace Demo
                         ViewCert(item);
                     }
                 }
-
             }
         }
         private void ObtainModel()
@@ -217,7 +215,6 @@ namespace Demo
                 IDataNode m = new DataNode(subject, friendlyName, thumbprint, isValid);
                 listDataNode.Add(m);
             }
-
         }
         private void LoadViewList()
         {
@@ -378,7 +375,6 @@ namespace Demo
                                 MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
-
                 }
             }
         }
@@ -556,5 +552,4 @@ namespace Demo
 
         }
     }
-
 }

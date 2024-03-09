@@ -50,6 +50,5 @@ namespace Demo.Results
         public T data { get; set; }
         public String developerMessage { get; set; }
         public int errorCode { get; set; }
-
     }
 }

@@ -26,13 +26,15 @@ namespace Demo.Results
         public CustomException(ErrorsEnum errorsEnum)
         {
             //declaracion de tipos de error
-            _errors = new Dictionary<ErrorsEnum, string>();
-            _errors.Add(ErrorsEnum.ServiceNull, "Service is null");
-            _errors.Add(ErrorsEnum.ModelNull, "Model is null");
-            _errors.Add(ErrorsEnum.TypeSignatureNull, "TypeSignature is null");
+            _errors = new Dictionary<ErrorsEnum, string>
+            {
+                { ErrorsEnum.ServiceNull, "Service is null" },
+                { ErrorsEnum.ModelNull, "Model is null" },
+                { ErrorsEnum.TypeSignatureNull, "TypeSignature is null" },
 
-            _errors.Add(ErrorsEnum.NoCert, "No se selecciono certificado");
-            _errors.Add(ErrorsEnum.InvalidCert, "Certificado no valido ");
+                { ErrorsEnum.NoCert, "No se selecciono certificado" },
+                { ErrorsEnum.InvalidCert, "Certificado no valido " }
+            };
 
             //se asigna el mensaje
             Message = _errors[errorsEnum];
