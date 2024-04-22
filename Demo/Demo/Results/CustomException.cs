@@ -16,6 +16,7 @@ namespace Demo.Results
             ServiceNull = 1,
             ModelNull = 2,
             TypeSignatureNull = 3,
+            ListOfModelNullorEmpty = 4
         };
         
         public int errorCode = 0;
@@ -30,6 +31,7 @@ namespace Demo.Results
             {
                 { ErrorsEnum.ServiceNull, "Service is null" },
                 { ErrorsEnum.ModelNull, "Model is null" },
+                { ErrorsEnum.ListOfModelNullorEmpty, "List is null or empty" },
                 { ErrorsEnum.TypeSignatureNull, "TypeSignature is null" },
 
                 { ErrorsEnum.NoCert, "No se selecciono certificado" },
