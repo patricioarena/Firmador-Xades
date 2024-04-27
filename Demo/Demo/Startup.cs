@@ -3,26 +3,40 @@ using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
+using Autofac;
+using Autofac.Integration.WebApi;
 using Helper.Services;
+using Demo.Handlers;
+using System.Reflection;
 
 [assembly: OwinStartup(typeof(Demo.Startup))]
 
 namespace Demo
 {
-    /// <summary>
-    /// Configuraciones pertenecientes a Microsoft Owin utilizado para 
-    /// server web embebido en aplicacion principal.
-    /// </summary>
     public class Startup
     {
         public void Configuration(IAppBuilder appBuilder)
         {
-            HttpConfiguration config = new HttpConfiguration();
-            FileServerOptions options = new FileServerOptions();
+            // Configuración de Autofac
+            var builder = new ContainerBuilder();
 
+            // Registra los controladores de Web API
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+
+            // Registra tus dependencias aquí
+            builder.RegisterType<CoreHandler>().As<ICoreHandler>();
+            builder.RegisterType<DecisionHandler>().As<IDecisionHandler>();
+            builder.RegisterType<VerificationHandler>().As<IVerificationHandler>();
+
+            var container = builder.Build();
+
+            // Configura Autofac para Web API
+            var config = new HttpConfiguration();
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+            // Resto de tu configuración de Owin
+            FileServerOptions options = new FileServerOptions();
             options.EnableDirectoryBrowsing = true;
-            // Habilitar mostrar pagina web alojada en Site de la aplicacion principal
-            //options.FileSystem = new PhysicalFileSystem("./Site"); 
             options.StaticFileOptions.ServeUnknownFileTypes = true;
 
             config.Routes.MapHttpRoute(
@@ -36,7 +50,6 @@ namespace Demo
             appBuilder.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             appBuilder.UseFileServer(options);
             appBuilder.UseWebApi(config);
-
         }
     }
 }
