@@ -50,8 +50,8 @@ namespace Demo.Controllers
         /// Para probar que la aplicacion esta corriendo desde otras aplicaciones que consuman la api de esta misma
         /// </summary>
         [HttpGet]
-        [Route("isAlive")]
-        public IHttpActionResult IsAlive()
+        [Route("ping")]
+        public IHttpActionResult Ping()
         {
             return Content(HttpStatusCode.OK, true, Configuration.Formatters.JsonFormatter);
         }
@@ -108,6 +108,67 @@ namespace Demo.Controllers
         }
 
         /// <summary>
+        /// Realiza una firma electrónica a granel basada en la decisión de usar o no la comprobación por OCSP.
+        /// </summary>
+        /// <param name="typeSignature">Tipo de firma electrónica.</param>
+        /// <param name="model">Lista de objetos de modelo.</param>
+        /// <param name="usarComprobaciónPorOCSP">Indica si se debe utilizar la comprobación por OCSP (0 para no, 1 para sí).</param>
+        /// <returns>Una acción HTTP que representa el resultado de la firma electrónica.</returns>
+        [HttpPost]
+        [Route("Bulk/Signature/{typeSignature}/{usarComprobaciónPorOCSP}")]
+        public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] List<ObjetoModel> model, int usarComprobaciónPorOCSP)
+        {
+            try
+            {
+                // Verificar la decisión de usar o no la comprobación por OCSP
+                if (usarComprobaciónPorOCSP == 0)
+                {
+                    return BulkCoreDecision(typeSignature, model, false); // No se utiliza la comprobación por OCSP
+                }
+
+                if (usarComprobaciónPorOCSP == 1)
+                {
+                    return BulkCoreDecision(typeSignature, model, true); // Se utiliza la comprobación por OCSP
+                }
+
+                return null; // Retorno nulo si el valor de usarComprobaciónPorOCSP no es 0 ni 1
+            }
+            catch (System.Exception ex)
+            {
+                return InternalServerError(ex); // Manejo de excepciones internas del servidor
+            }
+        }
+
+        private IHttpActionResult BulkCoreDecision(string typeSignature, List<ObjetoModel> list, bool usarComprobaciónPorOCSP)
+        {
+            if (String.IsNullOrEmpty(typeSignature))
+                throw new CustomException(CustomException.ErrorsEnum.TypeSignatureNull);
+
+            if (list == null)
+                throw new CustomException(CustomException.ErrorsEnum.ModelNull);
+
+            IService service = null;
+            TypeService key = (TypeService)Int32.Parse(typeSignature);
+
+            switch (key)
+            {
+                case TypeService.Original:
+                    service = new FirmaXadesNet.XadesService();
+                    break;
+                case TypeService.CIFE:
+                    service = new Custom.FirmaXadesNet.XadesService_CIFE();
+                    break;
+                default:
+                    break;
+            }
+
+            int code = BulkSignatureHandler(list, service, usarComprobaciónPorOCSP, out List<XmlElement> xmlElement);
+            if (code == ((int)StatusSignProcess.Good))
+                return Content(HttpStatusCode.OK, xmlElement, Configuration.Formatters.XmlFormatter);
+            return Content(HttpStatusCode.OK, code);
+        }
+
+        /// <summary>
         /// Verifica si existe una o mas firmas
         /// </summary>
         /// Xades Original :: 1
@@ -147,8 +208,6 @@ namespace Demo.Controllers
 
         private IHttpActionResult CoreDecision(string typeSignature, ObjetoModel model, bool usarComprobaciónPorOCSP)
         {
-            XmlElement xmlElement = null;
-
             if (String.IsNullOrEmpty(typeSignature))
                 throw new CustomException(CustomException.ErrorsEnum.TypeSignatureNull);
 
@@ -170,7 +229,7 @@ namespace Demo.Controllers
                     break;
             }
 
-            int code = SignatureHandler(model, service, usarComprobaciónPorOCSP, out xmlElement);
+            int code = SignatureHandler(model, service, usarComprobaciónPorOCSP, out var xmlElement);
             if (code == ((int)StatusSignProcess.Good))
                 return Content(HttpStatusCode.OK, xmlElement, Configuration.Formatters.XmlFormatter);
             return Content(HttpStatusCode.OK, code);
@@ -347,6 +406,78 @@ namespace Demo.Controllers
             }
         }
 
+        private int BulkSignatureHandler(List<ObjetoModel> list, IService service, bool usarComprobaciónPorOCSP, out List<XmlElement> OutXmlElement)
+        {
+            try
+            {
+                OutXmlElement = null;
+
+                if (service == null)
+                    throw new CustomException(CustomException.ErrorsEnum.ServiceNull);
+
+                if (list.Count == 0)
+                    throw new CustomException(CustomException.ErrorsEnum.ListOfModelNullorEmpty);
+
+                X509Certificate2 aCert = CertUtil.SelectCertificate();
+
+                if (aCert == null)
+                    return (int)CustomException.ErrorsEnum.NoCert;
+
+                if (usarComprobaciónPorOCSP)
+                    comprobaciónPorOCSP(aCert);
+
+                if (VerifyX509Certificate(aCert)) 
+                {
+                    var outXmlElementAux = new List<XmlElement>();
+                    foreach (var model in list)
+                    {
+                        SignatureParameters parametros = ObtenerParametrosFirma();
+                        SignatureDocument _signatureDocument;
+
+                        parametros.SignaturePolicyInfo = ObtenerPolitica();
+                        parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
+                        parametros.DataFormat = new DataFormat();
+                        parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
+
+                        byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+                        
+                        _signatureDocument = SignXmlDocumentAndReturnSignatureDocument(service, outXmlElementAux, parametros, bytes, aCert);
+                    }
+                    OutXmlElement = outXmlElementAux;
+                    return (int)StatusSignProcess.Good;
+                }
+
+                return (int)CustomException.ErrorsEnum.InvalidCert;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private static SignatureDocument SignXmlDocumentAndReturnSignatureDocument(IService service, List<XmlElement> OutXmlElement, SignatureParameters parametros, byte[] bytes, X509Certificate2 aCert)
+        {
+            SignatureDocument _signatureDocument;
+            using (parametros.Signer = new Signer(aCert))
+            {
+                if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
+                {
+                    using (Stream stream = new MemoryStream(bytes))
+                    {
+                        _signatureDocument = service.Sign(stream, parametros);
+                    }
+                }
+                else
+                {
+                    _signatureDocument = service.Sign(null, parametros);
+                }
+            }
+            //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
+            XmlDocument xmlDocument = _signatureDocument.Document;
+            OutXmlElement.Add(xmlDocument.DocumentElement);
+            return _signatureDocument;
+        }
+
         private int comprobaciónPorOCSP(X509Certificate2 aCert)
         {
             Helper.Services.OcspClient client = new Helper.Services.OcspClient();
@@ -357,7 +488,5 @@ namespace Demo.Controllers
                 return (int)CustomException.ErrorsEnum.InvalidCert;
             return 0;
         }
-
-
     }
 }
