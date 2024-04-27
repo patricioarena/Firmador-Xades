@@ -1,9 +1,13 @@
-﻿using Helper.Model;
+﻿using FirmarPDFLibrary;
+using FirmaXadesNet.Crypto;
+using FirmaXadesNet.Utils;
+using Helper.Model;
 using Helper.Services;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -27,22 +31,74 @@ namespace Demo
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static string path = Assembly.GetExecutingAssembly().Location;
         private static string version;
+        private static string mapsUrl = Properties.Settings.Default.FiscaliaEnGoogleMAps;
+        private static string fiscaliaWeb = Properties.Settings.Default.FiscaliaWeb;
+        private static Signature _instance;
+        private PictureBox pictureBox;
 
         public Signature()
         {
             this.InitializeComponent();
+            var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
+            position = pictureBox12.PointToClient(position);
+            rotatedLabel1.Parent = pictureBox12;
+            rotatedLabel1.Location = position;
+            rotatedLabel1.BackColor = Color.Transparent;
+            var position2 = rotatedLabel2.Parent.PointToScreen(rotatedLabel2.Location);
+            position2 = pictureBox14.PointToClient(position2);
+            rotatedLabel2.Parent = pictureBox14;
+            rotatedLabel2.Location = position;
+            rotatedLabel2.BackColor = Color.Transparent;
             this.PublishVersion();
             this.LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
-            this.panel1.Visible = true;
+            this.panel7.Visible = true;
             this.panel2.Visible = true;
             this.panel3.Visible = false;
+            this.panel5.Visible = false;
             this.CheckSSLCertificateInStores();
+        }
+
+        public static Signature GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new Signature();
+            }
+            return _instance;
+        }
+
+        private void pictureBox11_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            Image image = pictureBox11.Image;
+            float angle = -45; // Ángulo de rotación deseado
+
+            // Calcula el centro de rotación
+            // Centro horizontal del PictureBox
+            float startX = -60f;
+            // Posición Y en el margen inferior horizontal
+            float startY = pictureBox11.Height + 3f + image.Height; 
+
+            // Realiza la transformación de rotación
+            g.TranslateTransform(startX, startY);
+            g.RotateTransform(angle);
+            g.TranslateTransform(-startX, -startY);
+
+            // Dibuja la imagen rotada dentro del PictureBox
+            g.DrawImage(image, 0, startY);
+
+            // Restaura la transformación
+            g.ResetTransform();
         }
 
         private void Configuración_Load(object sender, EventArgs e)
         {
-            this.label1.Text = String.Format("      Version: {0}", version);
+            //this.label1.Text = String.Format("      Version: {0}", version);
+            this.rotatedLabel1.Text = String.Format("V {0}", version);
+            this.rotatedLabel2.Text = String.Format("V {0}", version);
             this.notifyIcon.Text = assemblyName;
             this.Text = assemblyName;
         }
@@ -57,7 +113,7 @@ namespace Demo
             }
             else
             {
-                assemblyName = "Not Published";
+                assemblyName = "certiFisc";
                 version = "Not Published";
             }
         }
@@ -67,11 +123,11 @@ namespace Demo
             DualCheck dual = CertificateControl.CheckStores();
             if (dual.My.Equals(false) || dual.Root.Equals(false))
             {
-                this.label8.Text = "False";
+                this.label13.Image = pictureBox10.Image;
             }
             else
             {
-                this.label8.Text = "True";
+                this.label13.Image = pictureBox9.Image;
             }
         }
 
@@ -83,25 +139,30 @@ namespace Demo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            panel2.Visible = !panel2.Visible;
-            panel3.Visible = !panel3.Visible;
+            Console.WriteLine(panel2.Visible);
+            Console.WriteLine(panel7.Visible);
 
-            if (panel2.Visible == true)
+            panel3.Visible = !panel3.Visible;
+            panel7.Visible = !panel7.Visible;
+
+            if (panel3.Visible == true)
             {
-                panel3.SendToBack();
-                panel2.BringToFront();
-                listView1.Refresh();
-                LoadViewList();
-            }
-            if (panel2.Visible == false)
-            {
+                panel7.SendToBack();
                 panel2.SendToBack();
                 panel3.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            panel1.Refresh();
-            //Console.WriteLine("cambie la prop visible del panel");
+            if (panel3.Visible == false)
+            {
+                panel3.SendToBack();
+                panel2.SendToBack();
+                panel7.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            panel7.Refresh();
+            Console.WriteLine("cambie la prop visible del panel");
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -134,7 +195,6 @@ namespace Demo
                         ViewCert(item);
                     }
                 }
-
             }
         }
         private void ObtainModel()
@@ -155,7 +215,6 @@ namespace Demo
                 IDataNode m = new DataNode(subject, friendlyName, thumbprint, isValid);
                 listDataNode.Add(m);
             }
-
         }
         private void LoadViewList()
         {
@@ -245,14 +304,12 @@ namespace Demo
 
         private void label5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.google.com/maps/place/Fiscal%C3%ADa+de+Estado/" +
-                "@-34.9149269,-57.9377341,17z/data=!3m1!4b1!4m5!3m4!1s0x95a2e619d798ea5f:0xaa78c0a6a7e5167!" +
-                "8m2!3d-34.9149269!4d-57.9355454");
+            System.Diagnostics.Process.Start(mapsUrl);
         }
 
         private void label6_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www2.fepba.gov.ar/");
+            System.Diagnostics.Process.Start(fiscaliaWeb);
         }
 
         private void label5_MouseLeave(object sender, EventArgs e)
@@ -293,6 +350,206 @@ namespace Demo
             Program.ExecuteCertUtilCustom();
         }
 
-    }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            PDFSignatureHandler();
+        }
 
+        public void PDFSignatureHandler()
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (!PDF.IsValidPDFA(openFileDialog1.FileName))
+                    MessageBox.Show("Se requiere un PDF/A.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
+
+                        if (!this.VerifyX509Certificate(certificate))
+                            MessageBox.Show("El certificado no tiene asociada una clave privada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else
+                        {
+                            if (PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true))
+                                MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Copia de metodo en controlller
+        private bool VerifyX509Certificate(X509Certificate2 aCert)
+        {
+            try
+            {
+                if (!aCert.HasPrivateKey)
+                    return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+             
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void customButton1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void panel11_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel10_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void customButton5_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = !panel2.Visible;
+            panel5.Visible = !panel5.Visible;
+
+            if (panel2.Visible == true)
+            {
+                panel5.SendToBack();
+                panel3.SendToBack();
+                panel2.BringToFront();
+                panel7.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            if (panel2.Visible == false)
+            {
+                panel2.SendToBack();
+                panel7.SendToBack();
+                panel3.SendToBack();
+                panel5.BringToFront();
+                listView1.Refresh();
+                LoadViewList();
+            }
+            panel5.Refresh();
+            //Console.WriteLine("cambie la prop visible del panel");
+        }
+
+        private void customButton6_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = !panel2.Visible;
+            panel5.Visible = !panel5.Visible;
+
+            if (panel5.Visible == true)
+            {
+                panel5.BringToFront();
+                panel3.SendToBack();
+                panel2.SendToBack();
+                panel7.SendToBack();
+            }
+            if (panel5.Visible == false)
+            {
+                panel2.BringToFront();
+                panel7.BringToFront();
+                panel3.SendToBack();
+                panel5.SendToBack();
+            }
+            panel2.Refresh();
+            //Console.WriteLine("cambie la prop visible del panel");
+        }
+
+        private void customButton2_Click(object sender, EventArgs e)
+        {
+            this.CheckSSLCertificateInStores();
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void customButton3_Click(object sender, EventArgs e)
+        {
+            Program.ExecuteCertUtilCustom();
+        }
+
+        private void customButton4_Click(object sender, EventArgs e)
+        {
+            PDFSignatureHandler();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void customButton7_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint_2(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox11_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rotatedLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

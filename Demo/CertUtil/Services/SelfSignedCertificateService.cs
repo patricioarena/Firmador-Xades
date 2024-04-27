@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Collections.Generic;
 using CertUtilCustom.Model;
+using System.Configuration;
 
 namespace CertUtilCustom.Services
 {
@@ -19,16 +20,16 @@ namespace CertUtilCustom.Services
     /// </summary>
     public static class SelfSignedCertificateService
     {
-        private static StoreName storeRoot = StoreName.Root;
-        private static StoreName storeMy = StoreName.My;
-        private static StoreLocation storeLocation = StoreLocation.LocalMachine;
-        private static string CertificateName = "Web Service Digital Signature";
-        private static string password = RandomString();
-        private static string Autenticación_del_servidor = "1.3.6.1.5.5.7.3.1";
-        private static int keyLength = 4096;
+        private static StoreName StoreRoot = StoreName.Root;
+        private static StoreName StoreMy = StoreName.My;
+        private static StoreLocation StoreLocation = StoreLocation.LocalMachine;
+        private static string CertificateName = Properties.Settings.Default.CertificateName;
+        private static string Password = RandomString();
+        private static string AuthenticationServer = Properties.Settings.Default.AuthenticationServer;
+        private static string DataFolder = Properties.Settings.Default.DataFolder;
+        private static int KeyLength = 4096;
         private static X509Certificate2 x509Certificate = null;
-        private static string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Web Service Digital Signature\\Settings.json");
-
+        private static string Settings = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"{DataFolder}\\Settings.json");
         public static string assemblyGuid = null;
         public static int? Port = null;
 
@@ -38,17 +39,17 @@ namespace CertUtilCustom.Services
         /// </summary>
         public static void SetConfig()
         {
-            if (!File.Exists(FileName))
+            if (!File.Exists(Settings))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(FileName));
-                using (StreamWriter writer = File.CreateText(FileName))
+                Directory.CreateDirectory(Path.GetDirectoryName(Settings));
+                using (StreamWriter writer = File.CreateText(Settings))
                 {
                     writer.WriteLine($"Thumbprint:{x509Certificate.Thumbprint}");
                 }
             }
             else
             {
-                using (StreamWriter writer = File.CreateText(FileName))
+                using (StreamWriter writer = File.CreateText(Settings))
                 {
                     writer.WriteLine($"Thumbprint:{x509Certificate.Thumbprint}");
                 }
@@ -58,9 +59,9 @@ namespace CertUtilCustom.Services
 
         public static bool? Compare_x509_Thumbprint_With_Config(string Thumbprint)
         {
-            if (File.Exists(FileName))
+            if (File.Exists(Settings))
             {
-                using (StreamReader reader = File.OpenText(FileName))
+                using (StreamReader reader = File.OpenText(Settings))
                 {
                     string line = String.Empty;
                     while ((line = reader.ReadLine()) != null)
@@ -118,7 +119,7 @@ namespace CertUtilCustom.Services
                 List<StoreName> StoreCollection = GetPropertyValues(dualCheck);
                 foreach (StoreName storeName in StoreCollection)
                 {
-                    X509Store store = new X509Store(storeName, storeLocation);
+                    X509Store store = new X509Store(storeName, StoreLocation);
                     X509Certificate2 x509Certificate_old = GetCertificateStore(store);
                     UninstallCertificate(storeName, x509Certificate_old);
                 }
@@ -129,8 +130,8 @@ namespace CertUtilCustom.Services
 
         private static (bool, string) ThumbprintIsEqual()
         {
-            X509Store storeR = new X509Store(storeRoot, storeLocation);
-            X509Store storeM = new X509Store(storeMy, storeLocation);
+            X509Store storeR = new X509Store(StoreRoot, StoreLocation);
+            X509Store storeM = new X509Store(StoreMy, StoreLocation);
             X509Certificate2 x509_R = GetCertificateStore(storeR);
             X509Certificate2 x509_M = GetCertificateStore(storeM);
 
@@ -169,8 +170,8 @@ namespace CertUtilCustom.Services
         private static DualCheck CheckStores()
         {
             DualCheck dualCheck = new DualCheck();
-            X509Store CollectionRoot = new X509Store(storeRoot, storeLocation);
-            X509Store CollectionMy = new X509Store(storeMy, storeLocation);
+            X509Store CollectionRoot = new X509Store(StoreRoot, StoreLocation);
+            X509Store CollectionMy = new X509Store(StoreMy, StoreLocation);
 
             if (CheckStores(CollectionRoot).Equals(false))
             {
@@ -212,17 +213,17 @@ namespace CertUtilCustom.Services
 
         private static void InstallCertificate()
         {
-            X509Store CollectionRoot = new X509Store(storeRoot, storeLocation);
-            X509Store CollectionMy = new X509Store(storeMy, storeLocation);
-            InstallCertificate(storeRoot, x509Certificate);
-            InstallCertificate(storeMy, x509Certificate);
+            X509Store CollectionRoot = new X509Store(StoreRoot, StoreLocation);
+            X509Store CollectionMy = new X509Store(StoreMy, StoreLocation);
+            InstallCertificate(StoreRoot, x509Certificate);
+            InstallCertificate(StoreMy, x509Certificate);
         }
 
         private static void InstallCertificate(StoreName storeName, X509Certificate2 certi)
         {
             try
             {
-                X509Store store = new X509Store(storeName, storeLocation);
+                X509Store store = new X509Store(storeName, StoreLocation);
                 X509Certificate2 cert = certi;
                 store.Open(OpenFlags.ReadWrite);
                 store.Add(cert);
@@ -238,7 +239,7 @@ namespace CertUtilCustom.Services
         {
             try
             {
-                X509Store store = new X509Store(storeName, storeLocation);
+                X509Store store = new X509Store(storeName, StoreLocation);
                 X509Certificate2 cert = certi;
                 store.Open(OpenFlags.ReadWrite);
                 store.Remove(cert);
@@ -260,7 +261,7 @@ namespace CertUtilCustom.Services
 
             X500DistinguishedName distinguishedName = new X500DistinguishedName($"CN={CertificateName}");
 
-            using (RSA rsa = RSA.Create(keyLength))
+            using (RSA rsa = RSA.Create(KeyLength))
             {
                 var request = new CertificateRequest(distinguishedName, rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
@@ -269,14 +270,14 @@ namespace CertUtilCustom.Services
 
                 request.CertificateExtensions.Add(
                    new X509EnhancedKeyUsageExtension(
-                       new OidCollection { new Oid(Autenticación_del_servidor) }, false));
+                       new OidCollection { new Oid(AuthenticationServer) }, false));
 
                 request.CertificateExtensions.Add(sanBuilder.Build());
 
                 var certificate = request.CreateSelfSigned(new DateTimeOffset(DateTime.UtcNow.AddDays(-1)), new DateTimeOffset(DateTime.UtcNow.AddDays(3650)));
                 certificate.FriendlyName = CertificateName;
 
-                return new X509Certificate2(certificate.Export(X509ContentType.Pfx, password), password, X509KeyStorageFlags.MachineKeySet);
+                return new X509Certificate2(certificate.Export(X509ContentType.Pfx, Password), Password, X509KeyStorageFlags.MachineKeySet);
             }
         }
 

@@ -1,69 +1,29 @@
 ﻿using Helper.Model;
 using Demo.Results;
-using Helper.Services;
-using FirmaXadesNet;
-using FirmaXadesNet.Clients;
 using FirmaXadesNet.Crypto;
-using FirmaXadesNet.Signature;
-using FirmaXadesNet.Signature.Parameters;
 using FirmaXadesNet.Utils;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Web.Http;
-using System.Xml;
-using Org.BouncyCastle.X509;
-using System.Configuration;
+using System.Threading;
+using Demo.Handlers;
+using Demo.Models;
 
 namespace Demo.Controllers
 {
     [RoutePrefix("api/Signature")]
-    public class SignatureController : ApiController
+    public class SignatureController : BaseController
     {
-        #region private methods
-        private SignaturePolicyInfo ObtenerPolitica()
+        IDecisionHandler Decision { get; set; }
+        IVerificationHandler Verification { get; set; }
+
+        public SignatureController(IDecisionHandler decision, IVerificationHandler verification)
         {
-            return new SignaturePolicyInfo()
-            {
-                PolicyIdentifier = ConfigurationManager.AppSettings["SignaturePolicyInfo.PolicyIdentifier"],
-                PolicyHash = ConfigurationManager.AppSettings["SignaturePolicyInfo.PolicyHash"],
-                PolicyUri = ConfigurationManager.AppSettings["SignaturePolicyInfo.PolicyUri"],
-            };
+            this.Decision = decision;
+            this.Verification = verification;
         }
-
-        private SignatureParameters ObtenerParametrosFirma()
-        {
-            SignatureParameters parametros = new SignatureParameters();
-            parametros.SignatureMethod = SignatureMethod.RSAwithSHA256;
-            parametros.SigningDate = DateTime.Now;
-
-            var sc = new SignatureCommitment(SignatureCommitmentType.ProofOfOrigin);
-            parametros.SignatureCommitments.Add(sc);
-
-            return parametros;
-        }
-
-        private bool Verify(X509Certificate2 aCert)
-        {
-            try
-            {
-                aCert.Verify().Equals(true);
-                var key = (RSACryptoServiceProvider)aCert.PrivateKey;
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-        }
-        #endregion
-
 
         /// <summary>
         /// Para probar el acceso a los certificados del almacen de certificados y recursos locales de la pc del usuario
@@ -79,7 +39,7 @@ namespace Demo.Controllers
             }
             catch (System.Exception ex)
             {
-                return Ok(ex);
+                return CustomErrorStatusCode(ex);
             }
         }
 
@@ -87,144 +47,81 @@ namespace Demo.Controllers
         /// Para probar que la aplicacion esta corriendo desde otras aplicaciones que consuman la api de esta misma
         /// </summary>
         [HttpGet]
-        [Route("isAlive")]
-        public IHttpActionResult isAlive()
+        [Route("ping")]
+        public IHttpActionResult Ping()
         {
             return Content(HttpStatusCode.OK, true, Configuration.Formatters.JsonFormatter);
         }
 
         /// <summary>
-        /// Firma el documento recibido (Firma Electronica)
+        /// Firmar PDF/A 
         /// </summary>
+        [HttpGet]
+        [Route("PDF/Signature")]
+        public void PDFSignatureHandler()
+        {
+            Thread _thread = new Thread((ThreadStart)(() => {
+                Signature.GetInstance().PDFSignatureHandler();
+            }));
+
+            // Ejecute su código desde un hilo que se une al hilo de STA
+            _thread.SetApartmentState(ApartmentState.STA);
+            _thread.Start();
+            _thread.Join();
+        }
+
         [HttpPost]
-        [Route("Electronic/Signature/{typeSignature}")]
-        public IHttpActionResult Electronic(string typeSignature, [FromBody] ObjetoModel model)
+        [Route("Single/Signature/{typeSignature}/{usarComprobaciónPorOCSP}")]
+        public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] ObjetoModel model, bool usarComprobaciónPorOCSP)
         {
             try
             {
-                IService service = null;
-                //Xades Original :: 1
-                if (typeSignature.Equals("1"))
+                // Verificar la decisión de usar o no la comprobación por OCSP
+                if (usarComprobaciónPorOCSP)
                 {
-                    service = new FirmaXadesNet.XadesService();
+                    ProcessResult result = this.Decision.CoreDecision(typeSignature, model, true); // Se utiliza la comprobación por OCSP
+                    return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, "Firmas Digitales", result));
                 }
-                //Xades Custom :: 2
                 else
                 {
-                    service = new Custom.FirmaXadesNet.XadesService2();
+                    ProcessResult result = this.Decision.CoreDecision(typeSignature, model, false); // No se utiliza la comprobación por OCSP
+                    return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, "Firmas Electronicas", result));
                 }
-
-                SignatureParameters parametros = ObtenerParametrosFirma();
-                SignatureDocument _signatureDocument;
-
-                parametros.SignaturePolicyInfo = ObtenerPolitica();
-                parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
-                parametros.DataFormat = new DataFormat();
-                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
-
-                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
-
-                X509Certificate2 aCert = CertUtil.SelectCertificate();
-
-                if (aCert == null)
-                    return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
-
-                else if (this.Verify(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
-                {
-                    using (parametros.Signer = new Signer(aCert))
-                    {
-                        if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
-                        {
-                            using (Stream stream = new MemoryStream(bytes))
-                            {
-                                _signatureDocument = service.Sign(stream, parametros);
-                            }
-                        }
-                        else
-                        {
-                            _signatureDocument = service.Sign(null, parametros);
-                        }
-                    }
-                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
-                    XmlDocument xmlDocument = _signatureDocument.Document;
-                    return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
-                }
-                return Content(HttpStatusCode.OK, -2); // Certificado no valido
             }
             catch (System.Exception ex)
             {
-                return InternalServerError(ex);
+                return CustomErrorStatusCode(ex); // Manejo de excepciones internas del servidor
             }
         }
+
         /// <summary>
-        /// Firma el documento recibido (Firma Digital)
+        /// Realiza una firma electrónica a granel basada en la decisión de usar o no la comprobación por OCSP.
         /// </summary>
+        /// <param name="typeSignature">Tipo de firma electrónica.</param>
+        /// <param name="model">Lista de objetos de modelo.</param>
+        /// <param name="usarComprobaciónPorOCSP">Indica si se debe utilizar la comprobación por OCSP (0 para no, 1 para sí).</param>
+        /// <returns>Una acción HTTP que representa el resultado de la firma electrónica.</returns>
         [HttpPost]
-        [Route("Digital/Signature/{typeSignature}")]
-        public IHttpActionResult Digital(string typeSignature, [FromBody] ObjetoModel model)
+        [Route("Bulk/Signature/{typeSignature}/{usarComprobaciónPorOCSP}")]
+        public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] List<ObjetoModel> model, bool usarComprobaciónPorOCSP)
         {
             try
             {
-                IService service = null;
-                //Xades Original :: 1
-                if (typeSignature.Equals("1"))
+                // Verificar la decisión de usar o no la comprobación por OCSP
+                if (usarComprobaciónPorOCSP)
                 {
-                    service = new FirmaXadesNet.XadesService();
+                    ProcessResult result = this.Decision.BulkCoreDecision(typeSignature, model, true); // Se utiliza la comprobación por OCSP
+                    return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, "Firmas Digitales", result));
                 }
-                //Xades Custom :: 2
                 else
                 {
-                    service = new Custom.FirmaXadesNet.XadesService2();
+                    ProcessResult result = this.Decision.BulkCoreDecision(typeSignature, model, false); // No se utiliza la comprobación por OCSP
+                    return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, "Firmas Electronicas", result));
                 }
-
-                SignatureParameters parametros = ObtenerParametrosFirma();
-                SignatureDocument _signatureDocument;
-
-                parametros.SignaturePolicyInfo = ObtenerPolitica();
-                parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
-                parametros.DataFormat = new DataFormat();
-                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
-
-                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
-
-                X509Certificate2 aCert = CertUtil.SelectCertificate();
-
-                if (aCert == null)
-                    return Content(HttpStatusCode.OK, -1); // No se selecciono certificado
-
-                Helper.Services.OcspClient client = new Helper.Services.OcspClient();
-                Helper.Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
-                JObject T = client.x509ChainVerify(aCert);
-
-                if(T.Count > 0 || resp != Helper.Services.CertificateStatus.Good)
-                    return Content(HttpStatusCode.OK, -2); // Certificado no valido
-                    //return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Chain Error", T));
-
-                else if (this.Verify(aCert).Equals(true)) // Certificado tiene una clave privada, sirve para firmar
-                {
-                    using (parametros.Signer = new Signer(aCert))
-                    {
-                        if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
-                        {
-                            using (Stream stream = new MemoryStream(bytes))
-                            {
-                                _signatureDocument = service.Sign(stream, parametros);
-                            }
-                        }
-                        else
-                        {
-                            _signatureDocument = service.Sign(null, parametros);
-                        }
-                    }
-                    //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
-                    XmlDocument xmlDocument = _signatureDocument.Document;
-                    return Content(HttpStatusCode.OK, xmlDocument.DocumentElement, Configuration.Formatters.XmlFormatter);
-                }
-                return Content(HttpStatusCode.OK, -2); // Certificado no valido
             }
             catch (System.Exception ex)
             {
-                return InternalServerError(ex);
+                return CustomErrorStatusCode(ex); // Manejo de excepciones internas del servidor
             }
         }
 
@@ -234,85 +131,35 @@ namespace Demo.Controllers
         /// Xades Original :: 1
         [HttpPost]
         [Route("Verify/1")]
-        public IHttpActionResult Verify1([FromBody] ObjetoModel model)
+        public IHttpActionResult ExistSignatures([FromBody] ObjetoModel model)
         {
             try
             {
-                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
-                FirmaXadesNet.XadesService service = new FirmaXadesNet.XadesService();
-                JObject SignatureList = new JObject();
-
-                //Para hacer prubas usando un documento local en el escritorio 
-                //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
-                //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
-                using (Stream stream = new MemoryStream(bytes))
-                {
-                    SignatureDocument[] signatureDocument = service.Load(stream);
-                    foreach (var aFirma in signatureDocument)
-                    {
-                        string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
-                        DateTime SigningTime = aFirma.XadesSignature.XadesObject.QualifyingProperties.SignedProperties.SignedSignatureProperties.SigningTime;
-                        JProperty Signature = new JProperty(Subject, SigningTime.ToString());
-                        SignatureList.Add(Signature);
-                    }
-                }
+                JObject SignatureList = this.Verification.ExistOneOrMoreSignatures(model);
                 return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", SignatureList));
             }
             catch (System.Exception ex)
             {
-                return InternalServerError(ex);
+                return CustomErrorStatusCode(ex);
             }
         }
 
         /// <summary>
         /// Verifica valides de multiples firmas
         /// </summary>
-        /// Xades Custom :: 2
+        /// Xades CIFE :: 2
         [HttpPost]
         [Route("Verify/2")]
-        public IHttpActionResult Verify2([FromBody] ObjetoModel model)
+        public IHttpActionResult CheckMultiSignatures([FromBody] ObjetoModel model)
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
-                doc.PreserveWhitespace = true;
-                doc.LoadXml(model.Archivo);
-                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
-                List<JObject> SignatureList = new List<JObject>();
-
-                //Servicio correspondiente a la libreria que uso y modifique un poco
-                Custom.FirmaXadesNet.XadesService2 service = new Custom.FirmaXadesNet.XadesService2();
-
-                using (Stream stream = new MemoryStream(bytes))
-                {
-                    // Esto es propio de la libreia que uso crea un arreglo de documentos firmados [[documento,firma 1]
-                    // [documento,firma 2]] 
-                    SignatureDocument[] signatureDocument = service.Load(stream); 
-
-                    //Recorro las firmas de atras para adelante
-                    for (int index = signatureDocument.Length - 1; index >= 0; index--)
-                    {
-
-                        VerifyMultiSignature verifyMultiSignature = new VerifyMultiSignature();
-
-                        var aFirma = signatureDocument[index];
-                        var x509Certificate2 = aFirma.XadesSignature.GetSigningCertificate(); //Obtener certificado del documento firmado
-                        var validationResult = verifyMultiSignature.MatchesSignature(doc, x509Certificate2, index);
-
-                        JObject jObject = new JObject();
-                        jObject.Add("Subject", x509Certificate2.Subject);
-                        jObject.Add("IsValid", validationResult.IsValid);
-                        jObject.Add("Message", validationResult.Message);
-
-                        SignatureList.Add(jObject);
-
-                    }
-                    return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
-                }
+                List<JObject> SignatureList = this.Verification.CheckSignatures(model);
+                return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
             }
             catch (System.Exception ex)
             {
-                return InternalServerError(ex);
+                return CustomErrorStatusCode(ex);
             }
         }
     }

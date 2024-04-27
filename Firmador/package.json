@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "build-prod": "ng build lib-digitalsignature --prod",
     "increment-lib-version": "cd projects/lib-digitalsignature && yarn version --no-git-tag-version",
-    "deploy-lib": "yarn increment-lib-version && yarn build-prod && echo \"execute npm publish in dist/lib-digitalsignature\""
+    "deploy-lib": "yarn increment-lib-version && yarn build-prod && echo \"Execute npm publish in folder. dist/lib-digitalsignature\""
   },
   "private": true,
   "dependencies": {
