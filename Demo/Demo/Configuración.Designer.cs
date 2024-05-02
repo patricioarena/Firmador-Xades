@@ -62,8 +62,11 @@ namespace Demo
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel5 = new System.Windows.Forms.Panel();
             this.customButton1 = new Demo.CustomButton();
+            this.rotatedLabel2 = new Demo.RotatedLabel();
+            this.pictureBox14 = new System.Windows.Forms.PictureBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.customButton6 = new Demo.CustomButton();
+            this.pictureBox13 = new System.Windows.Forms.PictureBox();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -76,9 +79,6 @@ namespace Demo
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.rotatedLabel2 = new Demo.RotatedLabel();
-            this.pictureBox14 = new System.Windows.Forms.PictureBox();
-            this.pictureBox13 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.rotatedLabel1 = new Demo.RotatedLabel();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
@@ -111,13 +111,13 @@ namespace Demo
             this.label6 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
             this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             this.panel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
             this.panel3.SuspendLayout();
@@ -229,6 +229,32 @@ namespace Demo
             this.customButton1.UseVisualStyleBackColor = false;
             this.customButton1.Click += new System.EventHandler(this.customButton1_Click);
             // 
+            // rotatedLabel2
+            // 
+            this.rotatedLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.rotatedLabel2.BackgroundColor = System.Drawing.Color.Transparent;
+            this.rotatedLabel2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rotatedLabel2.ForeColor = System.Drawing.SystemColors.Control;
+            this.rotatedLabel2.Location = new System.Drawing.Point(1, 1);
+            this.rotatedLabel2.Name = "rotatedLabel2";
+            this.rotatedLabel2.RotationAngle = -45F;
+            this.rotatedLabel2.Size = new System.Drawing.Size(80, 82);
+            this.rotatedLabel2.TabIndex = 24;
+            this.rotatedLabel2.Text = "rotatedLabel2";
+            // 
+            // pictureBox14
+            // 
+            this.pictureBox14.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox14.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox14.Name = "pictureBox14";
+            this.pictureBox14.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox14.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox14.TabIndex = 23;
+            this.pictureBox14.TabStop = false;
+            this.pictureBox14.WaitOnLoad = true;
+            this.pictureBox14.Click += new System.EventHandler(this.pictureBox11_Click);
+            this.pictureBox14.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox11_Paint);
+            // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.Transparent;
@@ -261,6 +287,19 @@ namespace Demo
             this.customButton6.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(51)))));
             this.customButton6.UseVisualStyleBackColor = false;
             this.customButton6.Click += new System.EventHandler(this.customButton6_Click);
+            // 
+            // pictureBox13
+            // 
+            this.pictureBox13.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox13.Image = global::Demo.Properties.Resources.ribbon1;
+            this.pictureBox13.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox13.Name = "pictureBox13";
+            this.pictureBox13.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox13.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox13.TabIndex = 23;
+            this.pictureBox13.TabStop = false;
+            this.pictureBox13.Visible = false;
+            this.pictureBox13.WaitOnLoad = true;
             // 
             // pictureBox10
             // 
@@ -430,45 +469,6 @@ namespace Demo
             this.label14.Size = new System.Drawing.Size(411, 47);
             this.label14.TabIndex = 2;
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // rotatedLabel2
-            // 
-            this.rotatedLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.rotatedLabel2.BackgroundColor = System.Drawing.Color.Transparent;
-            this.rotatedLabel2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rotatedLabel2.ForeColor = System.Drawing.SystemColors.Control;
-            this.rotatedLabel2.Location = new System.Drawing.Point(1, 1);
-            this.rotatedLabel2.Name = "rotatedLabel2";
-            this.rotatedLabel2.RotationAngle = -45F;
-            this.rotatedLabel2.Size = new System.Drawing.Size(80, 82);
-            this.rotatedLabel2.TabIndex = 24;
-            this.rotatedLabel2.Text = "rotatedLabel2";
-            // 
-            // pictureBox14
-            // 
-            this.pictureBox14.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox14.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox14.Name = "pictureBox14";
-            this.pictureBox14.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox14.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox14.TabIndex = 23;
-            this.pictureBox14.TabStop = false;
-            this.pictureBox14.WaitOnLoad = true;
-            this.pictureBox14.Click += new System.EventHandler(this.pictureBox11_Click);
-            this.pictureBox14.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox11_Paint);
-            // 
-            // pictureBox13
-            // 
-            this.pictureBox13.BackColor = System.Drawing.SystemColors.Control;
-            this.pictureBox13.Image = global::Demo.Properties.Resources.ribbon1;
-            this.pictureBox13.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox13.Name = "pictureBox13";
-            this.pictureBox13.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox13.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox13.TabIndex = 23;
-            this.pictureBox13.TabStop = false;
-            this.pictureBox13.Visible = false;
-            this.pictureBox13.WaitOnLoad = true;
             // 
             // panel2
             // 
@@ -885,6 +885,7 @@ namespace Demo
             this.Controls.Add(this.panel5);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Signature";
@@ -894,14 +895,14 @@ namespace Demo
             this.Resize += new System.EventHandler(this.Form_Hide);
             this.contextMenuStrip1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
             this.panel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             this.panel3.ResumeLayout(false);
