@@ -71,7 +71,7 @@ namespace Demo.Controllers
         }
 
         [HttpPost]
-        [Route("Single/Signature/{typeSignature}/{usarComprobaciónPorOCSP}")]
+        [Route("Single/{typeSignature}/{usarComprobaciónPorOCSP}")]
         public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] ObjetoModel model, bool usarComprobaciónPorOCSP)
         {
             try
@@ -102,7 +102,7 @@ namespace Demo.Controllers
         /// <param name="usarComprobaciónPorOCSP">Indica si se debe utilizar la comprobación por OCSP (0 para no, 1 para sí).</param>
         /// <returns>Una acción HTTP que representa el resultado de la firma electrónica.</returns>
         [HttpPost]
-        [Route("Bulk/Signature/{typeSignature}/{usarComprobaciónPorOCSP}")]
+        [Route("Bulk/{typeSignature}/{usarComprobaciónPorOCSP}")]
         public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] List<ObjetoModel> model, bool usarComprobaciónPorOCSP)
         {
             try
