@@ -72,7 +72,7 @@ namespace Demo.Controllers
 
         [HttpPost]
         [Route("Single/{typeSignature}/{usarComprobaciónPorOCSP}")]
-        public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] ObjetoModel model, bool usarComprobaciónPorOCSP)
+        public IHttpActionResult SingleElectronic(string typeSignature, [FromBody] ObjetoModel model, bool usarComprobaciónPorOCSP)
         {
             try
             {
