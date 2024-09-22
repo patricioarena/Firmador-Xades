@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Demo.Results
+namespace Helper.Results
 {
     public class ResponseApi<T> where T : class
     {

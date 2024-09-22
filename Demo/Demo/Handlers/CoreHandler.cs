@@ -1,11 +1,11 @@
 ﻿using Demo.Enums;
-using Demo.Results;
 using FirmaXadesNet;
 using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature;
 using FirmaXadesNet.Signature.Parameters;
 using FirmaXadesNet.Utils;
 using Helper.Model;
+using Helper.Results;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -54,7 +54,7 @@ namespace Demo.Handlers
             }
         }
 
-        public int SignatureHandler(ObjetoModel model, IService service, bool usarComprobaciónPorOCSP, out List<string> listString)
+        public int SignatureHandler(XmlToSign model, IService service, bool usarComprobaciónPorOCSP, out List<string> listString)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace Demo.Handlers
                 parametros.DataFormat = new DataFormat();
                 parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
 
-                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+                byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
 
                 X509Certificate2 aCert = CertUtil.SelectCertificate();
 
@@ -119,7 +119,7 @@ namespace Demo.Handlers
             }
         }
 
-        public int BulkSignatureHandler(List<ObjetoModel> list, IService service, bool usarComprobaciónPorOCSP, out List<string> listString)
+        public int BulkSignatureHandler(List<XmlToSign> list, IService service, bool usarComprobaciónPorOCSP, out List<string> listString)
         {
             try
             {
@@ -152,11 +152,11 @@ namespace Demo.Handlers
                         parametros.DataFormat = new DataFormat();
                         parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
 
-                        byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+                        byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
 
                         _signatureDocument = SignXmlDocumentAndReturnSignatureDocument(service, outXmlElement, parametros, bytes, aCert);
                     }
-                    
+
                     var listStringAux = new List<string>();
                     foreach (var xmlElement in outXmlElement)
                     {

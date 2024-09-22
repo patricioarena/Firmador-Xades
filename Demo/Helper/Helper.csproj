@@ -51,12 +51,15 @@
   <ItemGroup>
     <Compile Include="Model\DataNode.cs" />
     <Compile Include="Model\DualCheck.cs" />
-    <Compile Include="Model\ObjetoModel.cs" />
+    <Compile Include="Model\PdfToSign.cs" />
+    <Compile Include="Model\XmlToSign.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Results\CustomException.cs" />
+    <Compile Include="Results\ResponseApi.cs" />
     <Compile Include="Services\CertificateControl.cs" />
     <Compile Include="Services\OcspClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

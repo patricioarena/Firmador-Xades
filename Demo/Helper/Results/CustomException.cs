@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Demo.Results
+namespace Helper.Results
 {
     public class CustomException : Exception
     {
         static Dictionary<ErrorsEnum, string> _errors;
-        public static Dictionary<ErrorsEnum, string> Errors{ get => _errors; }
+        public static Dictionary<ErrorsEnum, string> Errors { get => _errors; }
         public enum ErrorsEnum : int
         {
             NoCert = -1,
@@ -15,9 +15,11 @@ namespace Demo.Results
             ServiceNull = 1,
             ModelNull = 2,
             TypeSignatureNull = 3,
-            ListOfModelNullorEmpty = 4
+            ListOfModelNullorEmpty = 4,
+            PdfInvalido = 5,
+            PdfNull = 6
         };
-        
+
         public int errorCode = 0;
         public new string Message;
 
@@ -34,7 +36,9 @@ namespace Demo.Results
                 { ErrorsEnum.TypeSignatureNull, "TypeSignature is null" },
 
                 { ErrorsEnum.NoCert, "No se selecciono certificado" },
-                { ErrorsEnum.InvalidCert, "Certificado no valido " }
+                { ErrorsEnum.InvalidCert, "Certificado no valido " },
+                { ErrorsEnum.PdfInvalido, "Se requiere un PDF/A." },
+                { ErrorsEnum.PdfNull, "El archivo PDF no puede estar vacío o ser nulo." }
             };
 
             //se asigna el mensaje

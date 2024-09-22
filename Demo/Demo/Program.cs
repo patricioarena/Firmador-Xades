@@ -2,19 +2,12 @@
 using Helper.Services;
 using Microsoft.Owin.Hosting;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Configuration;
 
 namespace Demo
 {
@@ -35,7 +28,7 @@ namespace Demo
         {
             int exitCode;
             string arguments = Program.AssemblyGuidString(typeof(Program).Assembly) + " " + Program.port;
-            string assamblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString()+".exe";
+            string assamblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString() + ".exe";
             var dir = Assembly.GetExecutingAssembly().Location.Replace(assamblyName, "") + "CertUtilCustom.exe";
             using (Process process = new Process())
             {
@@ -93,7 +86,6 @@ namespace Demo
                 {
                     MessageBox.Show("La aplicación ya se encuentra en ejecución");
                 }
-
             }
         }
     }

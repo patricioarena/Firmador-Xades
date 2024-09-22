@@ -8,7 +8,7 @@ namespace Demo.Handlers
 {
     public interface IDecisionHandler
     {
-        ProcessResult CoreDecision(string typeSignature, ObjetoModel model, bool usarComprobaciónPorOCSP);
-        ProcessResult BulkCoreDecision(string typeSignature, List<ObjetoModel> list, bool usarComprobaciónPorOCSP);
+        ProcessResult CoreDecision(string typeSignature, XmlToSign model, bool usarComprobaciónPorOCSP);
+        ProcessResult BulkCoreDecision(string typeSignature, List<XmlToSign> list, bool usarComprobaciónPorOCSP);
     }
 }

@@ -6,19 +6,12 @@ using Helper.Services;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Demo
@@ -26,14 +19,29 @@ namespace Demo
     public partial class Signature : Form
     {
         private static readonly List<IDataNode> listDataNode = new List<IDataNode>();
+
         private static Color colorLinks = Color.Blue;
+
         private static string assemblyName;
+
         private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
+
         private static string path = Assembly.GetExecutingAssembly().Location;
+
         private static string version;
+
         private static string mapsUrl = Properties.Settings.Default.FiscaliaEnGoogleMAps;
+
         private static string fiscaliaWeb = Properties.Settings.Default.FiscaliaWeb;
+
+        private static string reason = Properties.Settings.Default.Reason;
+
+        private static string country = Properties.Settings.Default.Country;
+
+        private static bool addVisibleSign = Properties.Settings.Default.AddVisibleSign;
+
         private static Signature _instance;
+
         private PictureBox pictureBox;
 
         public Signature()
@@ -80,7 +88,7 @@ namespace Demo
             // Centro horizontal del PictureBox
             float startX = -60f;
             // Posición Y en el margen inferior horizontal
-            float startY = pictureBox11.Height + 3f + image.Height; 
+            float startY = pictureBox11.Height + 3f + image.Height;
 
             // Realiza la transformación de rotación
             g.TranslateTransform(startX, startY);
@@ -359,7 +367,7 @@ namespace Demo
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (!PDF.IsValidPDFA(openFileDialog1.FileName))
+                if (!ValidatorForDesktop.IsValidPDFA(openFileDialog1.FileName))
                     MessageBox.Show("Se requiere un PDF/A.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else
                 {
@@ -367,30 +375,15 @@ namespace Demo
                     {
                         X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
 
-                        if (!this.VerifyX509Certificate(certificate))
+                        if (!ValidatorForDesktop.IsValidX509Certificate2(certificate))
                             MessageBox.Show("El certificado no tiene asociada una clave privada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         else
                         {
-                            if (PDF.SignHashed(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, "Prueba", "Argentina", true))
+                            if (PDFSigner.Sign(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, reason, country, addVisibleSign))
                                 MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
-            }
-        }
-
-        // Copia de metodo en controlller
-        private bool VerifyX509Certificate(X509Certificate2 aCert)
-        {
-            try
-            {
-                if (!aCert.HasPrivateKey)
-                    return false;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 
@@ -401,7 +394,7 @@ namespace Demo
 
         private void label9_Click(object sender, EventArgs e)
         {
-             
+
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)

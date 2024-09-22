@@ -1,6 +1,6 @@
-﻿using Demo.Results;
-using FirmaXadesNet.Signature;
+﻿using FirmaXadesNet.Signature;
 using Helper.Model;
+using Helper.Results;
 using Helper.Services;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,14 +13,14 @@ namespace Demo.Handlers
 {
     public class VerificationHandler : IVerificationHandler
     {
-        public JObject ExistOneOrMoreSignatures(ObjetoModel model)
+        public JObject ExistOneOrMoreSignatures(XmlToSign model)
         {
             try
             {
                 if (model == null)
                     throw new CustomException(CustomException.ErrorsEnum.ModelNull);
 
-                byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+                byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
                 FirmaXadesNet.XadesService service = new FirmaXadesNet.XadesService();
                 JObject SignatureList = new JObject();
 
@@ -46,12 +46,12 @@ namespace Demo.Handlers
             }
         }
 
-        public List<JObject> CheckSignatures(ObjetoModel model)
+        public List<JObject> CheckSignatures(XmlToSign model)
         {
             XmlDocument doc = new XmlDocument();
             doc.PreserveWhitespace = true;
-            doc.LoadXml(model.Archivo);
-            byte[] bytes = Encoding.ASCII.GetBytes(model.Archivo);
+            doc.LoadXml(model.XmlFile);
+            byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
             List<JObject> SignatureList = new List<JObject>();
 
             //Servicio correspondiente a la libreria que uso y modifique un poco

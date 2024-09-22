@@ -1,8 +1,8 @@
 ﻿using Demo.Enums;
 using Demo.Models;
-using Demo.Results;
 using FirmaXadesNet;
 using Helper.Model;
+using Helper.Results;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ namespace Demo.Handlers
             this.Core = coreHandler;
         }
 
-        public ProcessResult CoreDecision(string typeSignature, ObjetoModel model, bool usarComprobaciónPorOCSP)
+        public ProcessResult CoreDecision(string typeSignature, XmlToSign model, bool usarComprobaciónPorOCSP)
         {
             if (String.IsNullOrEmpty(typeSignature))
                 throw new CustomException(CustomException.ErrorsEnum.TypeSignatureNull);
@@ -41,7 +41,7 @@ namespace Demo.Handlers
             }
 
             int code = this.Core.SignatureHandler(model, service, usarComprobaciónPorOCSP, out List<string> listString);
-            
+
             return new ProcessResult()
             {
                 Data = listString,
@@ -49,7 +49,7 @@ namespace Demo.Handlers
             };
         }
 
-        public ProcessResult BulkCoreDecision(string typeSignature, List<ObjetoModel> list, bool usarComprobaciónPorOCSP)
+        public ProcessResult BulkCoreDecision(string typeSignature, List<XmlToSign> list, bool usarComprobaciónPorOCSP)
         {
 
             if (String.IsNullOrEmpty(typeSignature))
@@ -75,7 +75,8 @@ namespace Demo.Handlers
 
             int code = this.Core.BulkSignatureHandler(list, service, usarComprobaciónPorOCSP, out List<string> listString);
 
-            return new ProcessResult() {
+            return new ProcessResult()
+            {
                 Data = listString,
                 Code = code.ToString()
             };

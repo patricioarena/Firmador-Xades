@@ -1,31 +1,7 @@
-﻿using Helper.Model;
-using Demo.Results;
-using Helper.Services;
-using FirmaXadesNet;
-using FirmaXadesNet.Clients;
-using FirmaXadesNet.Crypto;
-using FirmaXadesNet.Signature;
-using FirmaXadesNet.Signature.Parameters;
-using FirmaXadesNet.Utils;
-using Newtonsoft.Json.Linq;
+﻿using Helper.Results;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Web.Http;
-using System.Xml;
-using Org.BouncyCastle.X509;
-using System.Configuration;
-using Demo.Enums;
-using System.Web.Services.Description;
-using System.Threading;
-using System.Windows.Controls;
-using Demo.Handlers;
-using Demo.Models;
-using System.Web.Http.Results;
 
 namespace Demo.Controllers
 {

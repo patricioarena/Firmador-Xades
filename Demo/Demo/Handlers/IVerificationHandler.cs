@@ -6,7 +6,7 @@ namespace Demo.Handlers
 {
     public interface IVerificationHandler
     {
-        List<JObject> CheckSignatures(ObjetoModel model);
-        JObject ExistOneOrMoreSignatures(ObjetoModel model);
+        List<JObject> CheckSignatures(XmlToSign model);
+        JObject ExistOneOrMoreSignatures(XmlToSign model);
     }
 }

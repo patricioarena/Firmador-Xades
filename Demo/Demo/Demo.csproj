@@ -116,7 +116,6 @@
     </Compile>
     <Compile Include="Enums\StatusSignProcess.cs" />
     <Compile Include="Enums\TypeService.cs" />
-    <Compile Include="Enums\TypeSignature.cs" />
     <Compile Include="Handlers\DecisionHandler.cs" />
     <Compile Include="Handlers\CoreHandler.cs" />
     <Compile Include="Handlers\ICoreHandler.cs" />
@@ -137,8 +136,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Results\CustomException.cs" />
-    <Compile Include="Results\ResponseApi.cs" />
     <Compile Include="CustomButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -195,7 +192,7 @@
       <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
