@@ -26,10 +26,10 @@
     <MapFileExtensions>false</MapFileExtensions>
     <UpdateUrl>\\devserver03\iis\_Recursos\aplicaciones\xadessigner\setup\</UpdateUrl>
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>16</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -252,6 +252,7 @@
     <None Include="Resources\telephone_18dp2.png" />
     <None Include="Resources\globe_18dp2.png" />
     <None Include="Resources\xmark_30dp3.png" />
+    <None Include="Resources\logo.png" />
     <Content Include="Site\Assets\baseline_business_black_18dp.png" />
     <Content Include="Site\Assets\baseline_call_black_18dp.png" />
     <Content Include="Site\Assets\baseline_home_black_18dp.png" />

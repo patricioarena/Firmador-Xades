@@ -380,7 +380,7 @@ namespace Demo
                         else
                         {
                             if (PDFSigner.Sign(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, reason, country, addVisibleSign))
-                                MessageBox.Show("Proceso finalizado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Proceso finalizado", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }

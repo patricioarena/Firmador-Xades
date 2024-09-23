@@ -146,24 +146,20 @@ namespace FirmarPDFLibrary
         /// <param name="right">Posición derecha de la firma visible en el PDF.</param>
         private static void SignPdfDocument(Stream targetStream, X509Certificate2 certificate, string reason, string country, bool addVisibleSign, PdfReader reader, BX509.X509Certificate[] objChain, string fieldName, float width, float height, float left, float right)
         {
-            using (PdfStamper stamper = PdfStamper.CreateSignature(reader, targetStream, '\0', null, true))
-            {
-                PdfSignatureAppearance appearance = stamper.SignatureAppearance;
+            PdfStamper stamper = PdfStamper.CreateSignature(reader, targetStream, '\0', null, true);
+            PdfSignatureAppearance appearance = stamper.SignatureAppearance;
 
-                string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "logo.png");
-                appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.GRAPHIC_AND_DESCRIPTION;
-                appearance.SignatureGraphic = Image.GetInstance(imagePath);
+            appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.NAME_AND_DESCRIPTION;
 
-                if (addVisibleSign)
-                    appearance.SetVisibleSignature(new Rectangle(left, height, right, width), reader.NumberOfPages, fieldName);
+            if (addVisibleSign)
+                appearance.SetVisibleSignature(new Rectangle(left, height, right, width), reader.NumberOfPages, fieldName);
 
-                appearance.Reason = reason;
-                appearance.Location = country;
-                appearance.Acro6Layers = true;
+            appearance.Reason = reason;
+            appearance.Location = country;
+            appearance.Acro6Layers = true;
 
-                IExternalSignature signature = new X509Certificate2Signature(certificate, "SHA-1");
-                MakeSignature.SignDetached(appearance, signature, objChain, null, null, null, 0, CryptoStandard.CMS);
-            }
+            IExternalSignature signature = new X509Certificate2Signature(certificate, "SHA-1");
+            MakeSignature.SignDetached(appearance, signature, objChain, null, null, null, 0, CryptoStandard.CMS);
         }
     }
 }
