@@ -131,7 +131,7 @@ import { saveAs } from "file-saver";
 
   firmaElectronica(objeto: XmlModel, tipoFirma: TiposDeFirma)
 
-  isAlive():
+  ping():
 
 ```
 

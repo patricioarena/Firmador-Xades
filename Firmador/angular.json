@@ -229,6 +229,8 @@
       }
     }
   },
-  "defaultProject": "searchApp"
+  "defaultProject": "searchApp",
+  "cli": {
+    "analytics": "aa3a987b-3e66-4711-82a6-d8d7f8e6a289"
+  }
 }
-

@@ -34,10 +34,17 @@
         class="fa fa-eye fa-fw" aria-hidden="true"></i>&nbsp;Vista Previa</button>
     <button type="button" class="btn btn-warning waves-effect waves-light" (click)="Verificar()"><i
         class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;Verificar Firmas</button>
-    <button type="button" class="btn btn-warning waves-effect waves-light" (click)="isAlive()"><i
-        class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;isAlive</button>
+    <button type="button" class="btn btn-warning waves-effect waves-light" (click)="ping()"><i
+        class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;ping</button>
     <button type="button" class="btn btn-warning waves-effect waves-light" (click)="pdfSignature()"><i
         class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;Firmar PDF</button>
+    <input type="file" id="pdfFileInput" style="display: none;" (change)="onFileSelected($event)">
+    <button type="button" class="btn btn-primary waves-effect waves-light" (click)="triggerFileInput()">
+      <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp;Firmar PDF(Base64)
+    </button>
+    <button type="button" class="btn btn-primary waves-effect waves-light" (click)="descargarbase64()">
+      <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp;Descargar PDF(Base64)
+    </button>
   </div>
 </div>
 

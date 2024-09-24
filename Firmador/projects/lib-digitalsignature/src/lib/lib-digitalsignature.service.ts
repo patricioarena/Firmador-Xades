@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { $ } from "protractor";
 import { map } from "rxjs/operators";
 
 export enum TiposDeFirma {
@@ -46,8 +47,8 @@ export class DigitalSignatureService {
     );
   }
 
-  public firmaDigital(objeto: XmlModel, tipoFirma: TiposDeFirma) {
-    const url = `${this.apiurl}api/Signature/Digital/Signature/${tipoFirma}`;
+  public firmaDigital(objeto: XmlModel, tipoFirma: TiposDeFirma, ocsp: boolean) {
+    const url = `${this.apiurl}api/Signature/Single/Typesignature/${tipoFirma}/oscp/${ocsp}`;
     return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
@@ -58,8 +59,8 @@ export class DigitalSignatureService {
     );
   }
 
-  public firmaElectronica(objeto: XmlModel, tipoFirma: TiposDeFirma) {
-    const url = `${this.apiurl}api/Signature/Electronic/Signature/${tipoFirma}`;
+  public firmaElectronica(objeto: XmlModel, tipoFirma: TiposDeFirma, ocsp: boolean) {
+    const url = `${this.apiurl}api/Signature/Single/Typesignature/${tipoFirma}/oscp/${ocsp}`;
     return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
@@ -70,16 +71,15 @@ export class DigitalSignatureService {
     );
   }
 
-  public isAlive() {
-    const url = `${this.apiurl}api/Signature/isAlive`;
+  public ping() {
+    const url = `${this.apiurl}api/Signature/ping`;
     return this.HttpClient.get(url, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
         .append("Access-Control-Allow-Origin", "*"),
-      responseType: "blob"
-      // tslint:disable-next-line: object-literal-sort-keys
-      , observe: "response",
-    }).pipe(map((res) => res as any));
+      responseType: "blob",
+      observe: "response",
+    }).pipe(map((res) => res));
   }
 
   public pdfSignature() {
@@ -94,4 +94,14 @@ export class DigitalSignatureService {
     }).pipe(map((res) => res as any));
   }
 
+  public pdfSign64(model: any) {
+    const url = `${this.apiurl}api/Signature/PDF/Signature/Sign/Base64`;
+    // Hacer la petición POST
+    return this.HttpClient.post(url, model, { 
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .append("Access-Control-Allow-Origin", "*") }).pipe(
+          map((res) => res as any),
+        );
+  }
 }

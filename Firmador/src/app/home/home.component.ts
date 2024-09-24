@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
     { key: "Xades-BES - Con ds:Object", value: TiposDeFirma.Xades_BES_Con_ds_Object },
   ];
   public TipoDeFirma = TiposDeFirma.Xades_BES_Sin_ds_Object;
+  public ocsp = true;
   public text: String;
   public textPreview: String = "";
   public objeto: XmlModel;
@@ -37,6 +38,7 @@ export class HomeComponent implements OnInit {
   public showPreview = false;
   public fileUrl;
   public responseFirma;
+  public Base64pdf;
 
   constructor(
     public signatureService: DigitalSignatureService,
@@ -62,7 +64,8 @@ export class HomeComponent implements OnInit {
     this.textPreview = "";
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
-    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma).subscribe((resp) => {
+    isDevMode() && (this.ocsp = false);
+    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma, this.ocsp).subscribe((resp) => {
       // tslint:disable-next-line: no-empty
       if (resp === "-1") {
       } else if (resp === "-2") {
@@ -84,9 +87,9 @@ export class HomeComponent implements OnInit {
     this.objeto = new XmlModel();
     this.objeto.Archivo = this.text;
 
-    isDevMode() && console.log(this.objeto);
+    isDevMode() && (this.ocsp=false);
 
-    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma).subscribe((resp) => {
+    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma,this.ocsp).subscribe((resp) => {
       isDevMode() && console.log({ resp });
       // tslint:disable-next-line: no-empty
       if (resp === "-1") {
@@ -153,11 +156,84 @@ export class HomeComponent implements OnInit {
     this.notificationService.showInfo("", "Documento copiado");
   }
 
-  public isAlive() {
-    this.signatureService.isAlive().subscribe(() => { })
+  public ping() {
+  this.signatureService.ping().subscribe(  (resp) => {
+    console.log("Ping exitoso:", resp); // Aquí haces algo con la respuesta
+    },
+    (err) => {
+      console.error("Error en el ping:", err); // Aquí manejas el error
+    }
+  );
   }
 
   public pdfSignature() {
     this.signatureService.pdfSignature().subscribe(() => { })
+  }
+
+  triggerFileInput() {
+    const fileInput = document.getElementById('pdfFileInput') as HTMLInputElement;
+    fileInput.click();
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      const base64String = (reader.result as string).split(',')[1]; // Remueve el prefijo de base64
+      const model = {
+        PdfBase64: base64String,
+        Reason: 'Prueba'
+      };
+  
+      // Llama al servicio con el PDF en base64
+      this.pdfSign64(model);
+    };
+  
+    reader.readAsDataURL(file);
+  }
+
+  public pdfSign64(model:any) {
+    this.signatureService.pdfSign64(model).subscribe((response) => {
+      this.Base64pdf = response.data.Data[0];
+      console.log('PDF firmado exitosamente:', response);
+    },
+    (error) => {
+      console.error('Error al firmar el PDF:', error);
+    });
+  }
+
+  public descargarbase64() {
+    if (this.Base64pdf!=""){
+        // Convierte la cadena base64 a un arreglo de bytes
+        const byteCharacters = atob(this.Base64pdf); // Decodifica el base64 a bytes
+        const byteNumbers = new Array(byteCharacters.length);
+      
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+      
+        // Crea un array de bytes (Uint8Array) y un Blob con el tipo MIME de PDF
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+      
+        // Crea una URL temporal para el archivo Blob
+        const blobUrl = window.URL.createObjectURL(blob);
+      
+        // Crea un enlace para descargar el archivo
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'documento_firmado.pdf'; // Nombre del archivo
+        document.body.appendChild(a);
+        a.click(); // Simula el clic en el enlace
+      
+        // Elimina el enlace temporal después de la descarga
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+    }
+    else{
+      console.log("Haga primero Firmar PDF(Base64)")
+    }
+    
   }
 }
