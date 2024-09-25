@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { saveAs } from "file-saver";
-import { DigitalSignatureService, TiposDeFirma, XmlModel } from "./lib-digitalsignature.service";
+import { DigitalSignatureService, TiposDeFirma, XmlModel } from "./digitalsignature.service";
 
 @Component({
   selector: "lib-digitalsignature",
@@ -391,7 +391,8 @@ export class DigitalSignatureComponent implements OnInit {
     this.showPreview = false;
     this.textPreview = "";
     this.objeto = new XmlModel();
-    this.objeto.Archivo = this.text;
+    this.objeto.XmlFile = this.text;
+    this.objeto.Extension = ".xml";
     this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma, true).subscribe(
       (resp) => {
         // tslint:disable-next-line: no-empty
@@ -415,7 +416,8 @@ export class DigitalSignatureComponent implements OnInit {
     this.showPreview = false;
     this.textPreview = "";
     this.objeto = new XmlModel();
-    this.objeto.Archivo = this.text;
+    this.objeto.XmlFile = this.text;
+    this.objeto.Extension = ".xml";
     this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma, true).subscribe(
       (resp) => {
         // tslint:disable-next-line: no-empty
@@ -454,8 +456,9 @@ export class DigitalSignatureComponent implements OnInit {
 
   public Verificar() {
     this.objeto = new XmlModel();
-    this.objeto.Archivo = this.text;
-    this.signatureService.verificar(this.objeto, this.TipoDeFirma).subscribe(
+    this.objeto.XmlFile = this.text;
+    this.objeto.Extension = ".xml";
+    this.signatureService.verificar(this.objeto).subscribe(
       (resp) => {
 
         const data = JSON.parse(JSON.stringify(resp.data));

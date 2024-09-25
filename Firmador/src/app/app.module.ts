@@ -15,7 +15,6 @@ import { FormsModule } from "@angular/forms";
 import { FileUploadModule } from "ng2-file-upload";
 
 import { HttpClientModule } from "@angular/common/http";
-import { DigitalSignatureModule } from "dist/lib-digitalsignature";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ClipboardModule } from "ngx-clipboard";
@@ -25,6 +24,7 @@ import { HeaderComponent } from "./header/header.component";
 import { ModalComponent } from "./modal/modal.component";
 import { RoutingModule } from "./modules/routing.module";
 import { NotificationService } from "./service/notification.service";
+import { DigitalSignatureComponent } from './digitalsignature/digitalsignature.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +34,7 @@ import { NotificationService } from "./service/notification.service";
     FooterComponent,
     HeaderComponent,
     ModalComponent,
+    DigitalSignatureComponent,
 
   ],
   imports: [
@@ -49,7 +50,6 @@ import { NotificationService } from "./service/notification.service";
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
     RoutingModule,
-    DigitalSignatureModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

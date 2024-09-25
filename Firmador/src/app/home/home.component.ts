@@ -1,5 +1,7 @@
 import { Component, isDevMode, OnInit } from "@angular/core";
-import { DigitalSignatureModule, DigitalSignatureService, TiposDeFirma, XmlModel } from "dist/lib-digitalsignature";
+import { DigitalSignatureService } from '../digitalsignature/digitalsignature.service';
+import { TiposDeFirma, XmlModel } from '../digitalsignature/digitalsignature.service';
+
 
 import { saveAs } from "file-saver";
 import { NotificationService } from "../service/notification.service";
@@ -63,7 +65,8 @@ export class HomeComponent implements OnInit {
     this.showPreview = false;
     this.textPreview = "";
     this.objeto = new XmlModel();
-    this.objeto.Archivo = this.text;
+    this.objeto.XmlFile = this.text;
+    this.objeto.Extension = ".xml";
     isDevMode() && (this.ocsp = false);
     this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma, this.ocsp).subscribe((resp) => {
       // tslint:disable-next-line: no-empty
@@ -85,8 +88,8 @@ export class HomeComponent implements OnInit {
     this.showPreview = false;
     this.textPreview = "";
     this.objeto = new XmlModel();
-    this.objeto.Archivo = this.text;
-
+    this.objeto.XmlFile = this.text;
+    this.objeto.Extension = ".xml";
     isDevMode() && (this.ocsp=false);
 
     this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma,this.ocsp).subscribe((resp) => {
@@ -107,8 +110,9 @@ export class HomeComponent implements OnInit {
 
   public Verificar() {
     this.objeto = new XmlModel();
-    this.objeto.Archivo = this.text;
-    this.signatureService.verificar(this.objeto, this.TipoDeFirma).subscribe((resp) => {
+    this.objeto.XmlFile = this.text;
+    this.objeto.Extension = ".xml";
+    this.signatureService.verificar(this.objeto).subscribe((resp) => {
 
       const data = JSON.parse(JSON.stringify(resp.data));
       const cantTotalDeFirmas = data.length;

@@ -10,12 +10,12 @@ export enum TiposDeFirma {
 
 export class XmlModel {
   // tslint:disable-next-line: ban-types
-  public Archivo: String;
+  public XmlFile: String;
   // tslint:disable-next-line: ban-types
   public Extension: String;
 
   constructor(objeto?: any) {
-    this.Archivo = objeto && objeto.Archivo || "";
+    this.XmlFile = objeto && objeto.Archivo || "";
     this.Extension = objeto && objeto.Extension || ".xml";
   }
 }
@@ -36,8 +36,8 @@ export class DigitalSignatureService {
   // tslint:disable-next-line: no-shadowed-variable
   constructor(private HttpClient: HttpClient) { }
 
-  public verificar(objeto: XmlModel, tipoFirma: TiposDeFirma) {
-    const url = `${this.apiurl}api/Signature/Verify/${tipoFirma}`;
+  public verificar(objeto: XmlModel) {
+    const url = `${this.apiurl}api/Signature/Verify/Exist/One/Or/More/Signatures`;
     return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
