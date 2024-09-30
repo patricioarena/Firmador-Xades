@@ -19,7 +19,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ClipboardModule } from "ngx-clipboard";
 import { ToastrModule } from "ngx-toastr";
-import { from } from "rxjs";
 import { HeaderComponent } from "./header/header.component";
 import { ModalComponent } from "./modal/modal.component";
 import { RoutingModule } from "./modules/routing.module";
@@ -27,35 +26,35 @@ import { NotificationService } from "./service/notification.service";
 import { DigitalSignatureComponent } from './digitalsignature/digitalsignature.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomeComponent,
-    FooterComponent,
-    HeaderComponent,
-    ModalComponent,
-    DigitalSignatureComponent,
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        HomeComponent,
+        FooterComponent,
+        HeaderComponent,
+        ModalComponent,
+        DigitalSignatureComponent,
+    ],
+    imports: [
+        ClipboardModule,
+        BrowserModule,
+        HttpClientModule,
+        FormsModule,
+        FileUploadModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
+        ModalModule.forRoot(),
+        RoutingModule,
+        RouterModule,
+    ],
 
-  ],
-  imports: [
-    ClipboardModule,
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    FileUploadModule,
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), // ToastrModule added
-    BsDropdownModule.forRoot(),
-    TooltipModule.forRoot(),
-    ModalModule.forRoot(),
-    TooltipModule.forRoot(),
-    RoutingModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [
-    NotificationService
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [ModalComponent],
+    providers: [NotificationService],
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    
+
+    
 })
 export class AppModule { }
