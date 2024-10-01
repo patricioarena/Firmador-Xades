@@ -121,7 +121,7 @@ namespace Demo
             }
             else
             {
-                assemblyName = "certiFisc";
+                assemblyName = "CertiFisc";
                 version = "Not Published";
             }
         }

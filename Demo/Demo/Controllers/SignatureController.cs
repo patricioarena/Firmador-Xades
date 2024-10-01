@@ -11,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace Demo.Controllers
 {
@@ -34,6 +36,29 @@ namespace Demo.Controllers
         {
             this.Decision = decision;
             this.Verification = verification;
+        }
+
+        [HttpGet]
+        [Route("version")]
+        public IHttpActionResult GetVersion()
+        {
+            try
+            {
+                InfoApp infoApp = new InfoApp { AssemblyName= "CertiFisc", Version= "Not Published" };
+
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+                {
+                    infoApp.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
+                    Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+                    infoApp.Version = string.Format("{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
+                }
+                return Ok(new ResponseApi<InfoApp>(HttpStatusCode.OK, "Desktop app version", infoApp));
+
+            }
+            catch (Exception ex)
+            {
+                return CustomErrorStatusCode(ex);
+            }
         }
 
         /// <summary>
