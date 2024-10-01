@@ -22,7 +22,7 @@ namespace CertUtilCustom.Services
     {
         private static StoreName StoreRoot = StoreName.Root;
         private static StoreName StoreMy = StoreName.My;
-        private static StoreLocation StoreLocation = StoreLocation.LocalMachine;
+        private static StoreLocation StoreLocation = StoreLocation.CurrentUser;
         private static string CertificateName = Properties.Settings.Default.CertificateName;
         private static string Password = RandomString();
         private static string AuthenticationServer = Properties.Settings.Default.AuthenticationServer;
