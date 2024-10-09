@@ -339,6 +339,17 @@ ASALocalRun/
 /e2e/*.js
 /e2e/*.map
 
+# misc
+/.angular/cache
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
 # System Files
 .DS_Store
 Thumbs.db
