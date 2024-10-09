@@ -383,3 +383,4 @@ FiscaliaDB/FiscaliaDB.jfm
 /Angular2App/*.ttf
 /Angular2App/*.jpg
 /Angular2App/*.txt
+yarn.lock
