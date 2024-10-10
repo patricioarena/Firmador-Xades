@@ -26,7 +26,11 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/web.config"
+              {
+                "glob": "web.config",
+                "input": "./",
+                "output": "./"
+              }
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css"
