@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Verdun Labs</Authors>
+    <Company>Fiscalía de Estado</Company>
+    <RepositoryUrl>https://github.com/newverdun/FirmaXadesNetCore</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/newverdun/FirmaXadesNetCore/blob/master/License/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/newverdun/FirmaXadesNetCore</PackageProjectUrl>
+    <PackageIconUrl>https://docs.microsoft.com/es-es/dotnet/images/hub/netcore.svg</PackageIconUrl>
+    <Description>FirmaXadesNetCore es una adaptacion a .NET Standard 2.0
+
+FirmaXadesNet es una librería desarrollada en C# para la generación de firmas XAdES realizada por el Dpto. de Nuevas Tecnologías de la Concejalía de Urbanismo del Ayuntamiento de Cartagena, la cual está basada en una modificación del XAdES starter kit desarrollado por Microsoft Francia.
+</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>3.1.1</Version>
+    <PackageReleaseNotes>Es una adaptacion del trabajo realizada por el Dpto. de Nuevas Tecnologías de la Concejalía de Urbanismo del Ayuntamiento de Cartagena sobre la cual se realizaron las modificaciones necesarias para complir con los requisitos establecidos por Fiscalía de Estado de la Provincia de Buenos Aires, Argentina.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.NetCore" Version="1.8.8" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

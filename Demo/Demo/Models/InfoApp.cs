@@ -2,7 +2,7 @@
 {
     public class InfoApp
     {
-        public string AssemblyName { get; set; }
+        public string ApplicationName { get; set; }
         public string Version { get; set; }
     }
 }

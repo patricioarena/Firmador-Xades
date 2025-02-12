@@ -1,55 +1,99 @@
-﻿using System.Web.Http;
-using Microsoft.Owin;
-using Microsoft.Owin.FileSystems;
-using Microsoft.Owin.StaticFiles;
-using Owin;
-using Autofac;
-using Autofac.Integration.WebApi;
-using Helper.Services;
+﻿using Autofac;
 using Demo.Handlers;
-using System.Reflection;
-
-[assembly: OwinStartup(typeof(Demo.Startup))]
+using Demo.Properties;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System.Linq;
 
 namespace Demo
 {
     public class Startup
     {
-        public void Configuration(IAppBuilder appBuilder)
+        private readonly IConfiguration _configuration;
+
+        private readonly bool _isSwaggerConfigured;
+        
+        public Startup(IConfiguration configuration)
         {
-            // Configuración de Autofac
-            var builder = new ContainerBuilder();
+            _configuration = configuration;
+            _isSwaggerConfigured = _configuration.GetSection("KestrelSettings")
+                .GetChildren().Any(x => x.Key == "Swagger");
+        }
+        
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
 
-            // Registra los controladores de Web API
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            // Agrega Swagger al contenedor de servicios
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = Settings.Default.ApplicationName,  
+                    Version = Settings.Default.Version,           
+                    Description = "Embedded kestrel server in application", 
+                });
+            });
 
+            // Configuración de CORS para aceptar cualquier dominio
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             // Registra tus dependencias aquí
             builder.RegisterType<CoreHandler>().As<ICoreHandler>();
-            builder.RegisterType<DecisionHandler>().As<IDecisionHandler>();
+            builder.RegisterType<SignatureSelectorHandler>().As<ISignatureSelectorHandler>();
             builder.RegisterType<VerificationHandler>().As<IVerificationHandler>();
+        }
 
-            var container = builder.Build();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
-            // Configura Autofac para Web API
-            var config = new HttpConfiguration();
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            if (_isSwaggerConfigured)
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    c.RoutePrefix = string.Empty;
+                });
+            }
+            
+            app.UseHttpsRedirection();
+            app.UseRouting();
 
-            // Resto de tu configuración de Owin
-            FileServerOptions options = new FileServerOptions();
-            options.EnableDirectoryBrowsing = true;
-            options.StaticFileOptions.ServeUnknownFileTypes = true;
+            // Habilitar CORS usando la política configurada
+            app.UseCors("AllowAll");
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}",
-                defaults: new { id = RouteParameter.Optional },
-                constraints: new { id = "\\d+" }
-            );
+            app.UseAuthorization();
 
-            config.MapHttpAttributeRoutes();
-            appBuilder.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
-            appBuilder.UseFileServer(options);
-            appBuilder.UseWebApi(config);
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

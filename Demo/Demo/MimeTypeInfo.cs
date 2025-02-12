@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo
 {
     class MimeTypeInfo
     {
-        private static readonly IDictionary<string, string> _mimeTypes = new Dictionary<string, string>
+        private static readonly IDictionary<string, string> MimeTypes = new Dictionary<string, string>
         {
             {"ai", "application/postscript"},
             {"aif", "audio/x-aiff"},
@@ -215,9 +211,9 @@ namespace Demo
         {
             string extension = Path.GetExtension(filename).Replace(".", string.Empty).ToLower();
 
-            if (_mimeTypes.Keys.Contains(extension))
+            if (MimeTypes.Keys.Contains(extension))
             {
-                return _mimeTypes[extension];
+                return MimeTypes[extension];
             }
             else
             {

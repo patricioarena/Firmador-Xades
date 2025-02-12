@@ -1,4 +1,6 @@
-﻿using FirmaXadesNet.Signature;
+﻿using Demo.Extensions;
+using FirmaXadesNetCore;
+using FirmaXadesNetCore.Signature;
 using Helper.Model;
 using Helper.Results;
 using Helper.Services;
@@ -17,28 +19,28 @@ namespace Demo.Handlers
         {
             try
             {
-                if (model == null)
+                if (model.IsNull())
                     throw new CustomException(CustomException.ErrorsEnum.ModelNull);
 
-                byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
-                FirmaXadesNet.XadesService service = new FirmaXadesNet.XadesService();
-                JObject SignatureList = new JObject();
+                byte[] bytes = model.XmlFile;
+                JObject signatureList = new JObject();
 
                 //Para hacer prubas usando un documento local en el escritorio 
                 //string pathFile = "C:\\Users\\parena\\Desktop\\Document.xml";
                 //using (FileStream stream = new FileStream(pathFile, FileMode.Open))
                 using (Stream stream = new MemoryStream(bytes))
                 {
+                    var service = new XadesService();
                     SignatureDocument[] signatureDocument = service.Load(stream);
                     foreach (var aFirma in signatureDocument)
                     {
-                        string Subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
-                        DateTime SigningTime = aFirma.XadesSignature.XadesObject.QualifyingProperties.SignedProperties.SignedSignatureProperties.SigningTime;
-                        JProperty Signature = new JProperty(Subject, SigningTime.ToString());
-                        SignatureList.Add(Signature);
+                        string subject = aFirma.XadesSignature.GetSigningCertificate().Subject;
+                        DateTime signingTime = aFirma.XadesSignature.XadesObject.QualifyingProperties.SignedProperties.SignedSignatureProperties.SigningTime;
+                        JProperty signature = new JProperty(subject, signingTime.ToString());
+                        signatureList.Add(signature);
                     }
                 }
-                return SignatureList;
+                return signatureList;
             }
             catch (Exception ex)
             {
@@ -50,17 +52,18 @@ namespace Demo.Handlers
         {
             XmlDocument doc = new XmlDocument();
             doc.PreserveWhitespace = true;
-            doc.LoadXml(model.XmlFile);
-            byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
-            List<JObject> SignatureList = new List<JObject>();
+            doc.LoadXml(Convert.ToBase64String(model.XmlFile));
+            byte[] bytes = model.XmlFile;
+            List<JObject> signatureList = new List<JObject>();
 
             //Servicio correspondiente a la libreria que uso y modifique un poco
-            Custom.FirmaXadesNet.XadesService_CIFE service = new Custom.FirmaXadesNet.XadesService_CIFE();
+            //Custom.FirmaXadesNet.XadesService_CIFE service = new Custom.FirmaXadesNet.XadesService_CIFE();
 
             using (Stream stream = new MemoryStream(bytes))
             {
                 // Esto es propio de la libreia que uso crea un arreglo de documentos firmados [[documento,firma 1]
                 // [documento,firma 2]] 
+                var service = new XadesService();
                 SignatureDocument[] signatureDocument = service.Load(stream);
 
                 //Recorro las firmas de atras para adelante
@@ -80,10 +83,10 @@ namespace Demo.Handlers
                         { "Message", validationResult.Message }
                     };
 
-                    SignatureList.Add(jObject);
+                    signatureList.Add(jObject);
 
                 }
-                return SignatureList;
+                return signatureList;
             }
         }
     }

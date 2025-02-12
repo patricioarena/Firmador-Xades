@@ -218,7 +218,6 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.jfm
-*.pfx
 *.publishsettings
 orleans.codegen.cs
 
@@ -374,3 +373,4 @@ FiscaliaDB/FiscaliaDB.jfm
 /Angular2App/*.ttf
 /Angular2App/*.jpg
 /Angular2App/*.txt
+/Demo/Authentica_Installer.exe

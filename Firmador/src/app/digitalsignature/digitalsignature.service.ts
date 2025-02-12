@@ -47,8 +47,8 @@ export class DigitalSignatureService {
     );
   }
 
-  public firmaDigital(objeto: XmlModel, tipoFirma: TiposDeFirma, ocsp: boolean) {
-    const url = `${this.apiurl}api/Signature/Single/Typesignature/${tipoFirma}/oscp/${ocsp}`;
+  public firmaDigital(objeto: XmlModel, ocsp: boolean) {
+    const url = `${this.apiurl}api/Signature/Single/oscp/${ocsp}`;
     return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
@@ -59,8 +59,8 @@ export class DigitalSignatureService {
     );
   }
 
-  public firmaElectronica(objeto: XmlModel, tipoFirma: TiposDeFirma, ocsp: boolean) {
-    const url = `${this.apiurl}api/Signature/Single/Typesignature/${tipoFirma}/oscp/${ocsp}`;
+  public firmaElectronica(objeto: XmlModel, ocsp: boolean) {
+    const url = `${this.apiurl}api/Signature/Single/oscp/${ocsp}`;
     return this.HttpClient.post(url, objeto, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
@@ -97,7 +97,7 @@ export class DigitalSignatureService {
   public pdfSign64(model: any) {
     const url = `${this.apiurl}api/Signature/PDF/Signature/Sign/Base64`;
     // Hacer la petición POST
-    return this.HttpClient.post(url, model, { 
+    return this.HttpClient.post(url, model, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
         .append("Access-Control-Allow-Origin", "*") }).pipe(

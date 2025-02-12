@@ -65,10 +65,10 @@ export class HomeComponent implements OnInit {
     this.showPreview = false;
     this.textPreview = "";
     this.objeto = new XmlModel();
-    this.objeto.XmlFile = this.text;
+    this.objeto.XmlFile = btoa(this.text.toString());
     this.objeto.Extension = ".xml";
     isDevMode() && (this.ocsp = false);
-    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma, this.ocsp).subscribe((resp) => {
+    this.signatureService.firmaDigital(this.objeto, this.ocsp).subscribe((resp) => {
       // tslint:disable-next-line: no-empty
       if (resp === "-1") {
       } else if (resp === "-2") {
@@ -88,11 +88,11 @@ export class HomeComponent implements OnInit {
     this.showPreview = false;
     this.textPreview = "";
     this.objeto = new XmlModel();
-    this.objeto.XmlFile = this.text;
+    this.objeto.XmlFile = btoa(this.text.toString());
     this.objeto.Extension = ".xml";
     isDevMode() && (this.ocsp=false);
 
-    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma,this.ocsp).subscribe((resp) => {
+    this.signatureService.firmaElectronica(this.objeto, this.ocsp).subscribe((resp) => {
       isDevMode() && console.log({ resp });
       // tslint:disable-next-line: no-empty
       if (resp === "-1") {
@@ -182,18 +182,18 @@ export class HomeComponent implements OnInit {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     const reader = new FileReader();
-  
+
     reader.onload = () => {
       const base64String = (reader.result as string).split(',')[1]; // Remueve el prefijo de base64
       const model = {
         PdfBase64: base64String,
         Reason: 'Prueba'
       };
-  
+
       // Llama al servicio con el PDF en base64
       this.pdfSign64(model);
     };
-  
+
     reader.readAsDataURL(file);
   }
 
@@ -212,25 +212,25 @@ export class HomeComponent implements OnInit {
         // Convierte la cadena base64 a un arreglo de bytes
         const byteCharacters = atob(this.Base64pdf); // Decodifica el base64 a bytes
         const byteNumbers = new Array(byteCharacters.length);
-      
+
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-      
+
         // Crea un array de bytes (Uint8Array) y un Blob con el tipo MIME de PDF
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: 'application/pdf' });
-      
+
         // Crea una URL temporal para el archivo Blob
         const blobUrl = window.URL.createObjectURL(blob);
-      
+
         // Crea un enlace para descargar el archivo
         const a = document.createElement('a');
         a.href = blobUrl;
         a.download = 'documento_firmado.pdf'; // Nombre del archivo
         document.body.appendChild(a);
         a.click(); // Simula el clic en el enlace
-      
+
         // Elimina el enlace temporal después de la descarga
         document.body.removeChild(a);
         window.URL.revokeObjectURL(blobUrl);
@@ -238,6 +238,6 @@ export class HomeComponent implements OnInit {
     else{
       console.log("Haga primero Firmar PDF(Base64)")
     }
-    
+
   }
 }

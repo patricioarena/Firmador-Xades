@@ -1,11 +1,13 @@
 ﻿using Demo.Enums;
-using FirmaXadesNet;
-using FirmaXadesNet.Crypto;
-using FirmaXadesNet.Signature;
-using FirmaXadesNet.Signature.Parameters;
-using FirmaXadesNet.Utils;
+using Demo.Properties;
+using Demo.Utils;
+using FirmaXadesNetCore;
+using FirmaXadesNetCore.Crypto;
+using FirmaXadesNetCore.Signature;
+using FirmaXadesNetCore.Signature.Parameters;
 using Helper.Model;
 using Helper.Results;
+using Helper.Services;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,90 +20,50 @@ namespace Demo.Handlers
 {
     public class CoreHandler : ICoreHandler
     {
-        public SignaturePolicyInfo ObtenerPolitica()
-        {
-            return new SignaturePolicyInfo()
-            {
-                PolicyIdentifier = Properties.Settings.Default.SignaturePolicyInfoPolicyIdentifier,
-                PolicyHash = Properties.Settings.Default.SignaturePolicyInfoPolicyHash,
-                PolicyUri = Properties.Settings.Default.SignaturePolicyInfoPolicyUri
-            };
-        }
-
-        public SignatureParameters ObtenerParametrosFirma()
-        {
-            SignatureParameters parametros = new SignatureParameters();
-            parametros.SignatureMethod = SignatureMethod.RSAwithSHA256;
-            parametros.SigningDate = DateTime.Now;
-
-            var sc = new SignatureCommitment(SignatureCommitmentType.ProofOfOrigin);
-            parametros.SignatureCommitments.Add(sc);
-
-            return parametros;
-        }
-
-        public bool VerifyX509Certificate(X509Certificate2 aCert)
-        {
-            try
-            {
-                if (!aCert.HasPrivateKey)
-                    return false;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public int SignatureHandler(XmlToSign model, IService service, bool usarComprobaciónPorOCSP, out List<string> listString)
+        public int SingleSignature(XmlToSign model, bool usarComprobaciónPorOcsp, out List<string> listString)
         {
             try
             {
                 listString = null;
 
-                if (service == null)
-                    throw new CustomException(CustomException.ErrorsEnum.ServiceNull);
-
-                if (model == null)
-                    throw new CustomException(CustomException.ErrorsEnum.ModelNull);
-
-                SignatureParameters parametros = ObtenerParametrosFirma();
-                SignatureDocument _signatureDocument;
-
-                parametros.SignaturePolicyInfo = ObtenerPolitica();
-                parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
-                parametros.DataFormat = new DataFormat();
-                parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
-
-                byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
-
-                X509Certificate2 aCert = CertUtil.SelectCertificate();
+                X509Certificate2 aCert = CertificateUtils.SelectCertificate();
 
                 if (aCert == null)
                     return (int)CustomException.ErrorsEnum.NoCert;
 
-                if (usarComprobaciónPorOCSP)
-                    comprobaciónPorOCSP(aCert);
+                if (usarComprobaciónPorOcsp)
+                    VerificationByOcsp(aCert);
 
                 if (VerifyX509Certificate(aCert)) // Certificado tiene una clave privada, sirve para firmar
                 {
-                    using (parametros.Signer = new Signer(aCert))
+                    SignatureParameters parameters = GetSignatureParameters();
+                    parameters.SignaturePolicyInfo = GetSignaturePolicyInfo();
+                    parameters.SignaturePackaging = SignaturePackaging.ENVELOPED;
+                    parameters.DataFormat = new DataFormat();
+                    parameters.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
+                    
+                    byte[] bytes = model.XmlFile;
+
+                    SignatureDocument signatureDocument;
+                    using (parameters.Signer = new Signer(aCert))
                     {
-                        if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
+                        
+                        if (parameters.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
                         {
                             using (Stream stream = new MemoryStream(bytes))
                             {
-                                _signatureDocument = service.Sign(stream, parametros);
+                                var service = new XadesService();
+                                signatureDocument = service.Sign(stream, parameters);
                             }
                         }
                         else
                         {
-                            _signatureDocument = service.Sign(null, parametros);
+                            var service = new XadesService();
+                            signatureDocument = service.Sign(null, parameters);
                         }
                     }
                     //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
-                    XmlDocument xmlDocument = _signatureDocument.Document;
+                    XmlDocument xmlDocument = signatureDocument.Document;
 
                     var listStringAux = new List<string>
                     {
@@ -119,42 +81,34 @@ namespace Demo.Handlers
             }
         }
 
-        public int BulkSignatureHandler(List<XmlToSign> list, IService service, bool usarComprobaciónPorOCSP, out List<string> listString)
+        public int BulkSignature(List<XmlToSign> list, bool usarComprobaciónPorOcsp, out List<string> listString)
         {
             try
             {
                 listString = null;
 
-                if (service == null)
-                    throw new CustomException(CustomException.ErrorsEnum.ServiceNull);
-
-                if (list.Count == 0)
-                    throw new CustomException(CustomException.ErrorsEnum.ListOfModelNullorEmpty);
-
-                X509Certificate2 aCert = CertUtil.SelectCertificate();
+                X509Certificate2 aCert = CertificateUtils.SelectCertificate();
 
                 if (aCert == null)
                     return (int)CustomException.ErrorsEnum.NoCert;
 
-                if (usarComprobaciónPorOCSP)
-                    comprobaciónPorOCSP(aCert);
+                if (usarComprobaciónPorOcsp)
+                    VerificationByOcsp(aCert);
 
                 if (VerifyX509Certificate(aCert))
                 {
                     var outXmlElement = new List<XmlElement>();
                     foreach (var model in list)
                     {
-                        SignatureParameters parametros = ObtenerParametrosFirma();
-                        SignatureDocument _signatureDocument;
+                        SignatureParameters parameters = GetSignatureParameters();
+                        parameters.SignaturePolicyInfo = GetSignaturePolicyInfo();
+                        parameters.SignaturePackaging = SignaturePackaging.ENVELOPED;
+                        parameters.DataFormat = new DataFormat();
+                        parameters.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
+                        
+                        byte[] bytes = model.XmlFile;
 
-                        parametros.SignaturePolicyInfo = ObtenerPolitica();
-                        parametros.SignaturePackaging = SignaturePackaging.ENVELOPED;
-                        parametros.DataFormat = new DataFormat();
-                        parametros.DataFormat.MimeType = MimeTypeInfo.GetMimeType(model.Extension);
-
-                        byte[] bytes = Encoding.ASCII.GetBytes(model.XmlFile);
-
-                        _signatureDocument = SignXmlDocumentAndReturnSignatureDocument(service, outXmlElement, parametros, bytes, aCert);
+                        SignXmlDocumentAndReturnSignatureDocument(outXmlElement, parameters, bytes, aCert);
                     }
 
                     var listStringAux = new List<string>();
@@ -172,37 +126,73 @@ namespace Demo.Handlers
                 throw ex;
             }
         }
-
-        public static SignatureDocument SignXmlDocumentAndReturnSignatureDocument(IService service, List<XmlElement> OutXmlElement, SignatureParameters parametros, byte[] bytes, X509Certificate2 aCert)
-        {
-            SignatureDocument _signatureDocument;
-            using (parametros.Signer = new Signer(aCert))
+        
+        private SignaturePolicyInfo GetSignaturePolicyInfo() =>
+            new()
             {
-                if (parametros.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
+                PolicyIdentifier = Settings.Default.SignaturePolicyInfoPolicyIdentifier,
+                PolicyHash = Settings.Default.SignaturePolicyInfoPolicyHash,
+                PolicyUri = Settings.Default.SignaturePolicyInfoPolicyUri
+            };
+
+        private SignatureParameters GetSignatureParameters()
+        {
+            SignatureParameters parameters = new SignatureParameters();
+            parameters.SignatureMethod = SignatureMethod.RSAwithSHA256;
+            parameters.SigningDate = DateTime.Now;
+
+            var sc = new SignatureCommitment(SignatureCommitmentType.ProofOfOrigin);
+            parameters.SignatureCommitments.Add(sc);
+
+            return parameters;
+        }
+
+        private bool VerifyX509Certificate(X509Certificate2 aCert)
+        {
+            try
+            {
+                if (!aCert.HasPrivateKey)
+                    return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private static void SignXmlDocumentAndReturnSignatureDocument(List<XmlElement> outXmlElement,
+            SignatureParameters parameters, byte[] bytes, X509Certificate2 aCert)
+        {
+            SignatureDocument signatureDocument;
+            using (parameters.Signer = new Signer(aCert))
+            {
+                if (parameters.SignaturePackaging != SignaturePackaging.EXTERNALLY_DETACHED)
                 {
                     using (Stream stream = new MemoryStream(bytes))
                     {
-                        _signatureDocument = service.Sign(stream, parametros);
+                        var service = new XadesService();
+                        signatureDocument = service.Sign(stream, parameters);
                     }
                 }
                 else
                 {
-                    _signatureDocument = service.Sign(null, parametros);
+                    var service = new XadesService();
+                    signatureDocument = service.Sign(null, parameters);
                 }
             }
             //_signatureDocument.Save("C:\\Users\\parena\\Desktop\\objecto_Firmado.xml"); // Guardar automaticamente en el escritorio
-            XmlDocument xmlDocument = _signatureDocument.Document;
-            OutXmlElement.Add(xmlDocument.DocumentElement);
-            return _signatureDocument;
+            XmlDocument xmlDocument = signatureDocument.Document;
+            outXmlElement.Add(xmlDocument.DocumentElement);
         }
 
-        public int comprobaciónPorOCSP(X509Certificate2 aCert)
+        private int VerificationByOcsp(X509Certificate2 aCert)
         {
-            Helper.Services.OcspClient client = new Helper.Services.OcspClient();
-            Helper.Services.CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
+            OcspClient client = new OcspClient();
+            CertificateStatus resp = client.Validate_Certificate_Using_OCSP_Protocol(aCert);
             JObject T = client.x509ChainVerify(aCert);
 
-            if (T.Count > 0 || resp != Helper.Services.CertificateStatus.Good)
+            if (T.Count > 0 || resp != CertificateStatus.Good)
                 return (int)CustomException.ErrorsEnum.InvalidCert;
             return 0;
         }

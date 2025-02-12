@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace FirmarPDFLibrary
+namespace FirmarPDFLibrary;
+
+public class ValidatorBase
 {
-    public class ValidatorBase
+    protected static bool IsValidX509Certificate2(X509Certificate2 aCert)
     {
-        public static bool IsValidX509Certificate2(X509Certificate2 aCert)
+        try
         {
-            try
-            {
-                if (!aCert.HasPrivateKey)
-                    return false;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            if (!aCert.HasPrivateKey)
+                return false;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
         }
     }
 }

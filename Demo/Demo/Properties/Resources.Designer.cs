@@ -61,6 +61,16 @@ namespace Demo.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] arrow_left_from_bracket {
+            get {
+                object obj = ResourceManager.GetObject("arrow-left-from-bracket", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap arrow_right_from_bracket {
@@ -71,22 +81,29 @@ namespace Demo.Properties {
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        ///   Busca un recurso adaptado de tipo System.Byte[].
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_right_from_bracket_20dp {
+        internal static byte[] Authentica {
             get {
-                object obj = ResourceManager.GetObject("arrow_right_from_bracket_20dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                object obj = ResourceManager.GetObject("Authentica", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        ///   Busca una cadena traducida similar a -----BEGIN CERTIFICATE-----
+        ///MIIFBjCCAu6gAwIBAgIIbypojB20TkowDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
+        ///AxMKQXV0aGVudGljYTAeFw0yNDExMDEwNDM2NDVaFw0zNDEwMzEwNDM2NDVaMBUx
+        ///EzARBgNVBAMTCkF1dGhlbnRpY2EwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIK
+        ///AoICAQDU43IXR/b5pRkeN34285cVpWcME9tnGDR7DjCK+oiCPKVZegEqAJxXp0F9
+        ///cJiJqUIk6gYrEKXfzLobU+yrojN4Y+XDqDNKFR6YUEe69u7d20TDTh2AS2gaZkvV
+        ///JpynRh/G6yNIpWVH+ODyqIXlTE/B3wJ5EQ9aEUqzTDl7fvjx3bJDhcBW9MWHwmSs
+        ///PsiDXiDvyc0Os4IOdF00bwhCpsNGX7MbbjLXUfk63Drpv+W0QexPnTm+4KuU1aAw
+        ///ryX2CK6zWs5N+HGum9rn1 [resto de la cadena truncado]&quot;;.
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_right_from_bracket_20dp__1_ {
+        internal static string Authentica_cer {
             get {
-                object obj = ResourceManager.GetObject("arrow_right_from_bracket_20dp (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("Authentica_cer", resourceCulture);
             }
         }
         
@@ -153,6 +170,26 @@ namespace Demo.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap boton_certificados {
+            get {
+                object obj = ResourceManager.GetObject("boton_certificados", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boton_certificados_hover {
+            get {
+                object obj = ResourceManager.GetObject("boton_certificados_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap boton1 {
             get {
                 object obj = ResourceManager.GetObject("boton1", resourceCulture);
@@ -166,16 +203,6 @@ namespace Demo.Properties {
         internal static System.Drawing.Bitmap cucarda {
             get {
                 object obj = ResourceManager.GetObject("cucarda", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap favicon {
-            get {
-                object obj = ResourceManager.GetObject("favicon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -237,6 +264,16 @@ namespace Demo.Properties {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] logo_authentica {
+            get {
+                object obj = ResourceManager.GetObject("logo-authentica", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

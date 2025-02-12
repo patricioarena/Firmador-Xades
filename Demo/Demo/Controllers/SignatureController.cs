@@ -1,57 +1,48 @@
 ﻿using Demo.Enums;
+using Demo.Extensions;
 using Demo.Handlers;
 using Demo.Models;
+using Demo.Utils;
 using FirmarPDFLibrary;
-using FirmaXadesNet.Crypto;
-using FirmaXadesNet.Utils;
+using FirmaXadesNetCore.Crypto;
 using Helper.Model;
 using Helper.Results;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Web.Http;
-using System.Web.Http.Results;
 
 namespace Demo.Controllers
 {
-    [RoutePrefix("api/Signature")]
-    public class SignatureController : BaseController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SignatureController(ISignatureSelectorHandler signatureSelector, IVerificationHandler verification) : ControllerBase
     {
-        private static string reason = Properties.Settings.Default.Reason;
+        private static readonly string Reason = Properties.Settings.Default.Reason;
 
-        private static string country = Properties.Settings.Default.Country;
+        private static readonly string Country = Properties.Settings.Default.Country;
 
-        private static bool addVisibleSign = Properties.Settings.Default.AddVisibleSign;
+        private ISignatureSelectorHandler SignatureSelector { get; } = signatureSelector;
 
-        private IDecisionHandler Decision { get; set; }
-
-        private IVerificationHandler Verification { get; set; }
-
-        public SignatureController(IDecisionHandler decision, IVerificationHandler verification)
-        {
-            this.Decision = decision;
-            this.Verification = verification;
-        }
+        private IVerificationHandler Verification { get; } = verification;
 
         [HttpGet]
         [Route("version")]
-        public IHttpActionResult GetVersion()
+        public IActionResult GetVersion()
         {
             try
             {
-                InfoApp infoApp = new InfoApp { AssemblyName= "CertiFisc", Version= "Not Published" };
-
-                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-                {
-                    infoApp.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
-                    Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
-                    infoApp.Version = string.Format("{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
-                }
+                InfoApp infoApp = new InfoApp { ApplicationName = "Authentica", Version = "Not Published" };
+#if DEBUG
+                infoApp.ApplicationName = Properties.Settings.Default.ApplicationName;
+                infoApp.Version = "Not Published";
+#else
+                infoApp.ApplicationName = Properties.Settings.Default.ApplicationName;
+                infoApp.Version = Properties.Settings.Default.Version;
+#endif
                 return Ok(new ResponseApi<InfoApp>(HttpStatusCode.OK, "Desktop app version", infoApp));
 
             }
@@ -67,12 +58,12 @@ namespace Demo.Controllers
         /// </summary>
         [HttpGet]
         [Route("")]
-        public IHttpActionResult Get()
+        public IActionResult Get()
         {
             try
             {
-                X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
-                return Ok(certificate);
+                X509Certificate2 certificate = new Signer(CertificateUtils.SelectCertificate()).Certificate;
+                return Ok(new ResponseApi<string>(HttpStatusCode.OK, "Certificate Thumbprint", certificate.Thumbprint));
             }
             catch (Exception ex)
             {
@@ -84,29 +75,10 @@ namespace Demo.Controllers
         /// Verifica que la aplicación esté corriendo correctamente. Utilizado para pruebas de conectividad desde otras aplicaciones.
         /// </summary>
         [HttpGet]
-        [Route("ping")]
-        public IHttpActionResult Ping()
+        [Route("Ping")]
+        public IActionResult Ping()
         {
-            return Content(HttpStatusCode.OK, true, Configuration.Formatters.JsonFormatter);
-        }
-
-        /// <summary>
-        /// Permite firmar un archivo PDF/A en la máquina del usuario abriendo el explorador de archivos.
-        /// El PDF firmado se guarda localmente, simulando el proceso manual de firma mediante la UI.
-        /// </summary>
-        [HttpGet]
-        [Route("PDF/Signature")]
-        public void PDFSignature()
-        {
-            Thread _thread = new Thread((ThreadStart)(() =>
-            {
-                Signature.GetInstance().PDFSignatureHandler();
-            }));
-
-            // Ejecute el código desde un hilo con estado STA para el manejo adecuado de UI
-            _thread.SetApartmentState(ApartmentState.STA);
-            _thread.Start();
-            _thread.Join();
+            return StatusCode((int)HttpStatusCode.OK, true);
         }
 
         /// <summary>
@@ -116,37 +88,37 @@ namespace Demo.Controllers
         /// <param name="model">El modelo que contiene el PDF a firmar y los detalles de la firma.</param>
         /// <returns>El PDF/A firmado en formato Base64.</returns>
         [HttpPost]
-        [Route("PDF/Signature/Sign/Base64")]
-        public IHttpActionResult PDFSignatureSign([FromBody] PdfToSign model)
+        [Route("Pdf/Signature/Sign/Base64")]
+        public IActionResult PdfSignatureSign([FromBody] PdfToSign model)
         {
             try
             {
-                if (model == null)
+                if (model.IsNull())
                     throw new CustomException(CustomException.ErrorsEnum.ModelNull);
 
                 if (string.IsNullOrWhiteSpace(model.PdfBase64))
                     throw new CustomException(CustomException.ErrorsEnum.PdfNull);
 
                 if (string.IsNullOrEmpty(model.Reason))
-                    model.Reason = reason;
+                    model.Reason = Reason;
 
                 byte[] data = Convert.FromBase64String(model.PdfBase64);
                 if (!ValidatorForRestful.IsValidPDFA(new MemoryStream(data)))
                     throw new CustomException(CustomException.ErrorsEnum.PdfInvalido);
 
-                X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
+                X509Certificate2 certificate = new Signer(CertificateUtils.SelectCertificate()).Certificate;
                 if (!ValidatorForRestful.IsValidX509Certificate2(certificate))
                     throw new CustomException(CustomException.ErrorsEnum.InvalidCert);
 
-                var signedPdfBase64 = PDFSigner.Sign(new MemoryStream(data), certificate, reason, country, addVisibleSign);
+                var signedPdfBase64 = PdfSigner.Sign(new MemoryStream(data), certificate, Reason, Country);
 
-                ProcessResult result = new ProcessResult
+                ProcessDataResultForPdf result = new ProcessDataResultForPdf
                 {
                     Data = new List<string> { signedPdfBase64 },
-                    Code = StatusSignProcess.Good.ToString()
+                    Code = ((int)StatusSignProcess.Good).ToString(),
                 };
 
-                return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, "Firmas Electronicas", result));
+                return Ok(new ResponseApi<ProcessDataResultForPdf>(HttpStatusCode.OK, "Firmas", result));
             }
             catch (Exception ex)
             {
@@ -157,18 +129,17 @@ namespace Demo.Controllers
         /// <summary>
         /// Realiza una firma electrónica única sobre un archivo XML, con opción de utilizar la verificación mediante OCSP.
         /// </summary>
-        /// <param name="typeSignature">Tipo de firma electrónica. Original(1) o CIFE(2)</param>
         /// <param name="model">El modelo que contiene los datos del XML a firmar.</param>
-        /// <param name="usarComprobaciónPorOCSP">Indica si se debe utilizar verificación por OCSP.</param>
+        /// <param name="usarComprobaciónPorOcsp">Indica si se debe utilizar verificación por OCSP.</param>
         /// <returns>Resultado de la firma electrónica.</returns>
         [HttpPost]
-        [Route("Single/TypeSignature/{typeSignature}/oscp/{usarComprobaciónPorOCSP}")]
-        public IHttpActionResult SingleElectronic(string typeSignature, [FromBody] XmlToSign model, bool usarComprobaciónPorOCSP)
+        [Route("Single/Oscp/{usarComprobaciónPorOcsp}")]
+        public IActionResult Single([FromBody] XmlToSign model, bool usarComprobaciónPorOcsp)
         {
             try
             {
-                ProcessResult result = this.Decision.CoreDecision(typeSignature, model, usarComprobaciónPorOCSP);
-                return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, usarComprobaciónPorOCSP ? "Firmas Digitales" : "Firmas Electronicas", result));
+                ProcessDataResultForXml result = SignatureSelector.Single(model, usarComprobaciónPorOcsp);
+                return Ok(new ResponseApi<ProcessDataResultForXml>(HttpStatusCode.OK, usarComprobaciónPorOcsp ? "Firmas Digitales" : "Firmas Electronicas", result));
             }
             catch (Exception ex)
             {
@@ -179,18 +150,17 @@ namespace Demo.Controllers
         /// <summary>
         /// Realiza una firma electrónica en masa sobre múltiples archivos XML, con opción de utilizar la verificación mediante OCSP.
         /// </summary>
-        /// <param name="typeSignature">Tipo de firma electrónica. Original(1) o CIFE(2)</param>
         /// <param name="model">Lista de modelos XML a firmar.</param>
-        /// <param name="usarComprobaciónPorOCSP">Indica si se debe utilizar verificación por OCSP.</param>
+        /// <param name="usarComprobaciónPorOcsp">Indica si se debe utilizar verificación por OCSP.</param>
         /// <returns>Resultado de la firma electrónica en masa.</returns>
         [HttpPost]
-        [Route("Bulk/TypeSignature/{typeSignature}/oscp/{usarComprobaciónPorOCSP}")]
-        public IHttpActionResult BulkElectronic(string typeSignature, [FromBody] List<XmlToSign> model, bool usarComprobaciónPorOCSP)
+        [Route("Bulk/Oscp/{usarComprobaciónPorOcsp}")]
+        public IActionResult Bulk([FromBody] List<XmlToSign> model, bool usarComprobaciónPorOcsp)
         {
             try
             {
-                ProcessResult result = this.Decision.BulkCoreDecision(typeSignature, model, usarComprobaciónPorOCSP);
-                return Ok(new ResponseApi<ProcessResult>(HttpStatusCode.OK, usarComprobaciónPorOCSP ? "Firmas Digitales" : "Firmas Electronicas", result));
+                ProcessDataResultForXml result = SignatureSelector.Bulk(model, usarComprobaciónPorOcsp);
+                return Ok(new ResponseApi<ProcessDataResultForXml>(HttpStatusCode.OK, usarComprobaciónPorOcsp ? "Firmas Digitales" : "Firmas Electronicas", result));
             }
             catch (Exception ex)
             {
@@ -205,12 +175,12 @@ namespace Demo.Controllers
         /// <returns>Un objeto JSON que indica si hay una o más firmas presentes.</returns>
         [HttpPost]
         [Route("Verify/Exist/One/Or/More/Signatures")]
-        public IHttpActionResult ExistSignatures([FromBody] XmlToSign model)
+        public IActionResult ExistSignatures([FromBody] XmlToSign model)
         {
             try
             {
-                JObject SignatureList = this.Verification.ExistOneOrMoreSignatures(model);
-                return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", SignatureList));
+                JObject signatureList = Verification.ExistOneOrMoreSignatures(model);
+                return Ok(new ResponseApi<JObject>(HttpStatusCode.OK, "Firmas", signatureList));
             }
             catch (Exception ex)
             {
@@ -225,16 +195,62 @@ namespace Demo.Controllers
         /// <returns>Una lista de objetos JSON con los resultados de la verificación de las firmas.</returns>
         [HttpPost]
         [Route("Verify/Multi/Signatures")]
-        public IHttpActionResult CheckMultiSignatures([FromBody] XmlToSign model)
+        public IActionResult CheckMultiSignatures([FromBody] XmlToSign model)
         {
             try
             {
-                List<JObject> SignatureList = this.Verification.CheckSignatures(model);
-                return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", SignatureList));
+                List<JObject> signatureList = Verification.CheckSignatures(model);
+                return Ok(new ResponseApi<List<JObject>>(HttpStatusCode.OK, "Firmas", signatureList));
             }
             catch (Exception ex)
             {
                 return CustomErrorStatusCode(ex);
+            }
+        }
+
+        private IActionResult CustomErrorStatusCode(Exception e)
+        {
+            if (e is CustomException customEx)
+            {
+                var errorCode = customEx.errorCode;
+                var message = customEx.Message;
+
+                if (errorCode == 403)
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden,
+                        new ResponseApi<object>(
+                            HttpStatusCode.Forbidden,
+                            "ha ocurrido un error",
+                            null,
+                            customEx.InnerException != null ? customEx.InnerException.Message : message,
+                            errorCode,
+                            ex: e.ToString()
+                        ));
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.PreconditionFailed,
+                        new ResponseApi<object>(
+                            HttpStatusCode.PreconditionFailed,
+                            "ha ocurrido un error",
+                            null,
+                            customEx.InnerException != null ? customEx.InnerException.Message : message,
+                            errorCode,
+                            ex: e.ToString()
+                        ));
+                }
+            }
+            else
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    new ResponseApi<object>(
+                        HttpStatusCode.InternalServerError,
+                        "ha ocurrido un error",
+                        null,
+                        e.InnerException != null ? e.InnerException.Message : e.Message,
+                        -1, // Código de error genérico
+                        ex: e.ToString()
+                    ));
             }
         }
     }

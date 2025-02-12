@@ -2,7 +2,7 @@
 {
     public class XmlToSign
     {
-        public string XmlFile { get; set; }
+        public byte[] XmlFile { get; set; }
         public string Extension { get; set; }
     }
 }

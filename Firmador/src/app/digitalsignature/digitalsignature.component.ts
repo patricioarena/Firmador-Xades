@@ -393,7 +393,7 @@ export class DigitalSignatureComponent implements OnInit {
     this.objeto = new XmlModel();
     this.objeto.XmlFile = this.text;
     this.objeto.Extension = ".xml";
-    this.signatureService.firmaDigital(this.objeto, this.TipoDeFirma, true).subscribe(
+    this.signatureService.firmaDigital(this.objeto, true).subscribe(
       (resp) => {
         // tslint:disable-next-line: no-empty
         if (resp === "-1") {
@@ -418,7 +418,7 @@ export class DigitalSignatureComponent implements OnInit {
     this.objeto = new XmlModel();
     this.objeto.XmlFile = this.text;
     this.objeto.Extension = ".xml";
-    this.signatureService.firmaElectronica(this.objeto, this.TipoDeFirma, true).subscribe(
+    this.signatureService.firmaElectronica(this.objeto, false).subscribe(
       (resp) => {
         // tslint:disable-next-line: no-empty
         if (resp === "-1") {
@@ -445,14 +445,14 @@ export class DigitalSignatureComponent implements OnInit {
           console.log(reader.result); // Aquí se mostrará el contenido en la consola
         };
         reader.readAsText(blob);
-      }, 
+      },
       (err) => {
         const message = err.error.ExceptionMessage;
         console.log(message);
       }
     );
   }
-  
+
 
   public Verificar() {
     this.objeto = new XmlModel();

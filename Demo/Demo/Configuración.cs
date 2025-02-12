@@ -1,70 +1,76 @@
-﻿using FirmarPDFLibrary;
-using FirmaXadesNet.Crypto;
-using FirmaXadesNet.Utils;
+﻿using Demo.Properties;
 using Helper.Model;
-using Helper.Services;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Demo
 {
     public partial class Signature : Form
     {
-        private static readonly List<IDataNode> listDataNode = new List<IDataNode>();
+        private static List<IDataNode> _listDataNode = new List<IDataNode>();
 
-        private static Color colorLinks = Color.Blue;
+        private static Color _colorLinks = Color.Blue;
 
-        private static string assemblyName;
+        private static string _applicationName;
 
-        private static string keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        private static string _keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
-        private static string path = Assembly.GetExecutingAssembly().Location;
+        private static string _path = AppDomain.CurrentDomain.BaseDirectory;
 
-        private static string version;
+        private static string appExe = Path.Combine(_path, "Authentica.exe");
 
-        private static string mapsUrl = Properties.Settings.Default.FiscaliaEnGoogleMAps;
+        private const string RegistryPath = @"Software\AuthenticaApp";
 
-        private static string fiscaliaWeb = Properties.Settings.Default.FiscaliaWeb;
+        private const string FirstRunKey = "FirstRun";
 
-        private static string reason = Properties.Settings.Default.Reason;
+        private const string StartupKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
-        private static string country = Properties.Settings.Default.Country;
+        private const string AppName = "Authentica"; // Nombre de la aplicación en el Registro
 
-        private static bool addVisibleSign = Properties.Settings.Default.AddVisibleSign;
+        private static string _version;
+
+        private static string _mapsUrl = Settings.Default.FiscaliaEnGoogleMAps;
+
+        private static string _fiscaliaWeb = Settings.Default.FiscaliaWeb;
+
+        private static string _reason = Settings.Default.Reason;
+
+        private static string _country = Settings.Default.Country;
 
         private static Signature _instance;
 
-        private PictureBox pictureBox;
+        private PictureBox _pictureBox;
 
         public Signature()
         {
             this.InitializeComponent();
+
+            if (IsFirstRun())
+            {
+                RegisterStartup();
+            }
+
             var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
             position = pictureBox12.PointToClient(position);
             rotatedLabel1.Parent = pictureBox12;
             rotatedLabel1.Location = position;
             rotatedLabel1.BackColor = Color.Transparent;
-            var position2 = rotatedLabel2.Parent.PointToScreen(rotatedLabel2.Location);
-            position2 = pictureBox14.PointToClient(position2);
-            rotatedLabel2.Parent = pictureBox14;
-            rotatedLabel2.Location = position;
-            rotatedLabel2.BackColor = Color.Transparent;
             this.PublishVersion();
-            this.LoadCheckeds();
+            LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
             this.panel7.Visible = true;
             this.panel2.Visible = true;
             this.panel3.Visible = false;
-            this.panel5.Visible = false;
-            this.CheckSSLCertificateInStores();
         }
 
         public static Signature GetInstance()
@@ -104,39 +110,21 @@ namespace Demo
 
         private void Configuración_Load(object sender, EventArgs e)
         {
-            //this.label1.Text = String.Format("      Version: {0}", version);
-            this.rotatedLabel1.Text = String.Format("V {0}", version);
-            this.rotatedLabel2.Text = String.Format("V {0}", version);
-            this.notifyIcon.Text = assemblyName;
-            this.Text = assemblyName;
+            this.labelVersion.Text = String.Format("{0}", _version);
+            this.rotatedLabel1.Text = String.Format("{0}", _version);
+            this.notifyIcon.Text = _applicationName;
+            this.Text = _applicationName;
         }
 
         public void PublishVersion()
         {
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-            {
-                assemblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString();
-                Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
-                version = string.Format("{0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
-            }
-            else
-            {
-                assemblyName = "CertiFisc";
-                version = "Not Published";
-            }
-        }
-
-        private void CheckSSLCertificateInStores()
-        {
-            DualCheck dual = CertificateControl.CheckStores();
-            if (dual.My.Equals(false) || dual.Root.Equals(false))
-            {
-                this.label13.Image = pictureBox10.Image;
-            }
-            else
-            {
-                this.label13.Image = pictureBox9.Image;
-            }
+#if DEBUG
+            _applicationName = Settings.Default.ApplicationName;
+            _version = "Not Published";
+#else
+            _applicationName = Properties.Settings.Default.ApplicationName;
+            _version = Properties.Settings.Default.Version;
+#endif
         }
 
         private void ListView1MouseDoubleClick(object sender, MouseEventArgs e)
@@ -221,58 +209,58 @@ namespace Demo
                 string thumbprint = cert.Thumbprint;
                 bool isValid = cert.Verify();
                 IDataNode m = new DataNode(subject, friendlyName, thumbprint, isValid);
-                listDataNode.Add(m);
+                _listDataNode.Add(m);
             }
         }
         private void LoadViewList()
         {
-            listDataNode.Clear();
+            _listDataNode.Clear();
             ObtainModel();
             listView1.Items.Clear();
             listView1.Refresh();
-            for (int i = 0; i < listDataNode.Count; i++)
+            for (int i = 0; i < _listDataNode.Count; i++)
             {
-                IDataNode item = listDataNode[i];
+                IDataNode item = _listDataNode[i];
                 ListViewItem listViewItem = new ListViewItem();
-                ListViewItem.ListViewSubItem subItem_flag = new ListViewItem.ListViewSubItem();
-                ListViewItem.ListViewSubItem subItem_Thumbprint = new ListViewItem.ListViewSubItem();
+                ListViewItem.ListViewSubItem subItemFlag = new ListViewItem.ListViewSubItem();
+                ListViewItem.ListViewSubItem subItemThumbprint = new ListViewItem.ListViewSubItem();
 
                 listViewItem.Text = item.Subject;
-                subItem_Thumbprint.Text = item.Thumbprint;
-                subItem_flag.Font = new Font(listViewItem.Font, FontStyle.Bold);
+                subItemThumbprint.Text = item.Thumbprint;
+                subItemFlag.Font = new Font(listViewItem.Font, FontStyle.Bold);
                 listViewItem.UseItemStyleForSubItems = false;
 
                 if (item.isValid)
                 {
-                    subItem_flag.Text = "Valido";
-                    subItem_flag.ForeColor = Color.Green;
+                    subItemFlag.Text = "Valido";
+                    subItemFlag.ForeColor = Color.Green;
                 }
                 else
                 {
-                    subItem_flag.Text = "No valido";
-                    subItem_flag.ForeColor = Color.Red;
+                    subItemFlag.Text = "No valido";
+                    subItemFlag.ForeColor = Color.Red;
                 }
 
                 listView1.Items.Add(listViewItem);
-                listViewItem.SubItems.Add(subItem_flag);
-                listViewItem.SubItems.Add(subItem_Thumbprint);
+                listViewItem.SubItems.Add(subItemFlag);
+                listViewItem.SubItems.Add(subItemThumbprint);
             }
         }
         private void ViewCert(ListViewItem item)
         {
-            String Thumbprint = item.SubItems[2].Text;
+            String thumbprint = item.SubItems[2].Text;
             X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
             X509Certificate2Collection collection = (X509Certificate2Collection)store.Certificates;
-            X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == Thumbprint).FirstOrDefault();
+            X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == thumbprint).FirstOrDefault();
             X509Certificate2UI.DisplayCertificate(certificate);
         }
         private void LoadCheckeds()
         {
-            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(keyName))
+            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(_keyName))
             {
                 List<string> names = registry.GetValueNames().ToList();
-                if (names.Contains(assemblyName).Equals(true))
+                if (names.Contains(_applicationName).Equals(true))
                 {
                     checkBox1.Checked = true;
                 }
@@ -295,15 +283,19 @@ namespace Demo
         {
             if (checkBox1.Checked == true)
             {
-                //Console.WriteLine($"checkBox1 => True {checkBox1}");
-                Registry.CurrentUser.CreateSubKey(keyName).SetValue(assemblyName, path, RegistryValueKind.String);
+                Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
             }
             else
             {
-                //Console.WriteLine($"checkBox1 => False {checkBox1}");
-                Registry.CurrentUser.OpenSubKey(keyName, true).DeleteValue(assemblyName);
+                Registry.CurrentUser.OpenSubKey(_keyName, true).DeleteValue(_applicationName);
             }
         }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Program._ontiChecked = !Program._ontiChecked;
+        }
+
         void listView1_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
             e.NewWidth = this.listView1.Columns[e.ColumnIndex].Width;
@@ -312,25 +304,26 @@ namespace Demo
 
         private void label5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(mapsUrl);
+            Process.Start(_mapsUrl);
         }
 
         private void label6_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(fiscaliaWeb);
+            //Process.Start(_fiscaliaWeb);
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = _fiscaliaWeb,
+                    UseShellExecute = true // Required in .NET 5+ to open a URL
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error opening URL: {ex.Message}");
+            }
         }
 
-        private void label5_MouseLeave(object sender, EventArgs e)
-        {
-            label5.ForeColor = Color.Black;
-        }
-
-        private void label5_MouseMove(object sender, MouseEventArgs e)
-        {
-            label5.ForeColor = colorLinks;
-        }
-
-        ///
         private void label6_MouseLeave(object sender, EventArgs e)
         {
             label6.ForeColor = Color.Black;
@@ -338,7 +331,7 @@ namespace Demo
 
         private void label6_MouseMove(object sender, MouseEventArgs e)
         {
-            label6.ForeColor = colorLinks;
+            label6.ForeColor = _colorLinks;
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -346,45 +339,6 @@ namespace Demo
             Show();
             WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.CheckSSLCertificateInStores();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Program.ExecuteCertUtilCustom();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            PDFSignatureHandler();
-        }
-
-        public void PDFSignatureHandler()
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                if (!ValidatorForDesktop.IsValidPDFA(openFileDialog1.FileName))
-                    MessageBox.Show("Se requiere un PDF/A.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else
-                {
-                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                    {
-                        X509Certificate2 certificate = new Signer(CertUtil.SelectCertificate()).Certificate;
-
-                        if (!ValidatorForDesktop.IsValidX509Certificate2(certificate))
-                            MessageBox.Show("El certificado no tiene asociada una clave privada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        else
-                        {
-                            if (PDFSigner.Sign(openFileDialog1.FileName, saveFileDialog1.FileName, certificate, reason, country, addVisibleSign))
-                                MessageBox.Show("Proceso finalizado", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                }
-            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -429,11 +383,9 @@ namespace Demo
         private void customButton5_Click(object sender, EventArgs e)
         {
             panel2.Visible = !panel2.Visible;
-            panel5.Visible = !panel5.Visible;
 
             if (panel2.Visible == true)
             {
-                panel5.SendToBack();
                 panel3.SendToBack();
                 panel2.BringToFront();
                 panel7.BringToFront();
@@ -445,55 +397,22 @@ namespace Demo
                 panel2.SendToBack();
                 panel7.SendToBack();
                 panel3.SendToBack();
-                panel5.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            panel5.Refresh();
             //Console.WriteLine("cambie la prop visible del panel");
         }
 
         private void customButton6_Click(object sender, EventArgs e)
         {
             panel2.Visible = !panel2.Visible;
-            panel5.Visible = !panel5.Visible;
-
-            if (panel5.Visible == true)
-            {
-                panel5.BringToFront();
-                panel3.SendToBack();
-                panel2.SendToBack();
-                panel7.SendToBack();
-            }
-            if (panel5.Visible == false)
-            {
-                panel2.BringToFront();
-                panel7.BringToFront();
-                panel3.SendToBack();
-                panel5.SendToBack();
-            }
             panel2.Refresh();
             //Console.WriteLine("cambie la prop visible del panel");
-        }
-
-        private void customButton2_Click(object sender, EventArgs e)
-        {
-            this.CheckSSLCertificateInStores();
         }
 
         private void label8_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void customButton3_Click(object sender, EventArgs e)
-        {
-            Program.ExecuteCertUtilCustom();
-        }
-
-        private void customButton4_Click(object sender, EventArgs e)
-        {
-            PDFSignatureHandler();
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -541,6 +460,70 @@ namespace Demo
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_MouseHover(object sender, EventArgs e)
+        {
+            button1.BackgroundImage =
+                (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton_certificados_hover");
+        }
+
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            button1.BackgroundImage =
+                (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton_certificados");
+        }
+
+        private void CreateSubKeyFirstRun()
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(_keyName, true))
+            {
+                if (key != null && key.GetValue(_applicationName) != null)
+                {
+                    key.DeleteValue(_applicationName, false);
+                }
+            }
+
+            if (checkBox1.Checked)
+            {
+                Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
+            }
+        }
+
+        private bool IsFirstRun()
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryPath, true))
+            {
+                if (key == null || key.GetValue(FirstRunKey) == null)
+                {
+                    using (RegistryKey newKey = Registry.CurrentUser.CreateSubKey(RegistryPath))
+                    {
+                        newKey.SetValue(FirstRunKey, "1", RegistryValueKind.String);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void RegisterStartup()
+        {
+            string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentica.exe");
+
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKeyPath, true))
+            {
+                if (key.GetValue(AppName) == null)
+                {
+                    key.SetValue(AppName, $"\"{appPath}\"", RegistryValueKind.String);
+                    this.CreateSubKeyFirstRun();
+                    MessageBox.Show("Se ha registrado la aplicación para iniciarse con Windows automáticamente.");
+                }
+            }
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
         {
 
         }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Demo
@@ -11,34 +8,34 @@ namespace Demo
     internal class RotatedLabel : Control
     {
 
-        private float rotationAngle = -45f;
-        private PictureBox pictureBox;
-        private Color backgroundColor = Color.Transparent;
+        private float _rotationAngle = -45f;
+        private PictureBox _pictureBox;
+        private Color _backgroundColor = Color.Transparent;
 
         public RotatedLabel()
         {
-            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            this.AutoSize = false;
-            this.BackColor = Color.Transparent;
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            AutoSize = false;
+            BackColor = Color.Transparent;
             UpdateStyles();
         }
 
         public float RotationAngle
         {
-            get { return rotationAngle; }
+            get { return _rotationAngle; }
             set
             {
-                rotationAngle = value;
+                _rotationAngle = value;
                 Invalidate();
             }
         }
 
         public Color BackgroundColor
         {
-            get { return backgroundColor; }
+            get { return _backgroundColor; }
             set
             {
-                backgroundColor = value;
+                _backgroundColor = value;
                 Invalidate();
             }
         }
@@ -55,7 +52,7 @@ namespace Demo
             base.OnPaintBackground(e);
 
             // Obtener el color del componente que está detrás
-            Color backgroundColor = this.Parent.BackColor;
+            Color backgroundColor = Parent.BackColor;
 
             // Dibujar el fondo del RotatedLabel utilizando el color del componente de fondo
             using (SolidBrush brush = new SolidBrush(backgroundColor))
@@ -70,19 +67,16 @@ namespace Demo
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            using (Brush backgroundBrush = new SolidBrush(backgroundColor))
+            using (Brush backgroundBrush = new SolidBrush(_backgroundColor))
             using (Brush textBrush = new SolidBrush(ForeColor))
             {
                 SizeF textSize = e.Graphics.MeasureString(Text, Font);
-
                 PointF center = new PointF(ClientSize.Width / 2f, ClientSize.Height / 2f);
 
                 g.TranslateTransform(center.X, center.Y);
-                g.RotateTransform(rotationAngle);
+                g.RotateTransform(_rotationAngle);
                 g.TranslateTransform(-center.X, -center.Y);
-
-                g.DrawString(Text, Font, textBrush, center.X - textSize.Width / 2f, center.Y - textSize.Height / 2f);
-
+                g.DrawString(Text, Font, textBrush, center.X - (textSize.Width / 2f), center.Y - (textSize.Height / 2f));
                 g.ResetTransform();
             }
         }

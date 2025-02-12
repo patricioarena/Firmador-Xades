@@ -1,85 +1,88 @@
-﻿using Helper.Model;
-using Helper.Services;
-using Microsoft.Owin.Hosting;
+﻿using Autofac.Extensions.DependencyInjection;
+using Demo.Extensions;
+using Demo.Properties;
+using Demo.Usecases;
+using Demo.UseCases;
+using Demo.Utils;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
-using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Demo
 {
-    static class Program
+    internal static class Program
     {
-        private static int port = Properties.Settings.Default.WebAppPort;
-        private static string baseUrl = Properties.Settings.Default.WebAppBaseUrl;
+        private static readonly int Port = Settings.Default.Port;
+        public static bool _ontiChecked = true;
 
-        public static string AssemblyGuidString(Assembly assembly)
+        private static void Start(string[] args)
         {
-            object[] objects = assembly.GetCustomAttributes(typeof(GuidAttribute), false);
-            if (objects.Length > 0)
-                return ((GuidAttribute)objects[0]).Value;
-            return String.Empty;
-        }
-
-        public static int ExecuteCertUtilCustom()
-        {
-            int exitCode;
-            string arguments = Program.AssemblyGuidString(typeof(Program).Assembly) + " " + Program.port;
-            string assamblyName = Assembly.GetExecutingAssembly().GetName().Name.ToString() + ".exe";
-            var dir = Assembly.GetExecutingAssembly().Location.Replace(assamblyName, "") + "CertUtilCustom.exe";
-            using (Process process = new Process())
+            // Inicia Kestrel en un hilo separado
+            Task.Run(() =>
             {
-                process.StartInfo.Arguments = arguments;
-                process.StartInfo.FileName = dir;
-                process.StartInfo.UseShellExecute = true;
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.Verb = "runas";
-                process.Start();
-                process.WaitForExit();
-                exitCode = process.ExitCode;
-            }
-            return exitCode;
-        }
-
-        public static void Start()
-        {
-            WebApp.Start<Startup>($"{Program.baseUrl}:{Program.port}/");
+                CreateHostBuilder(args).Build().Run();
+            });
+        
+            // Inicia la interfaz gráfica
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(Signature.GetInstance());
+        
         }
 
+        private static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((config) =>
+            {
+                config.AddJsonFile("AppSettings.json", optional: false, reloadOnChange: true);
+            })
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseKestrel(options =>
+                {
+                    options.ListenAnyIP(Port, listenOptions =>
+                    {
+                        listenOptions.UseHttps(CertificateUtils.GetDefaultCertificate());
+                    });
+                });
+                webBuilder.UseStartup<Startup>();
+            });
+
         [STAThread]
-        static void Main()
+        private static async Task Main(string[] args)
         {
-            bool alreadyRunning = false;
-            using (Mutex mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name.ToString(), out alreadyRunning))
+            using (new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var alreadyRunning))
             {
                 if (alreadyRunning)
                 {
-                    DualCheck dual = CertificateControl.CheckStores();
+                    //Start(args);
 
-                    if (dual.My.Equals(false) || dual.Root.Equals(false))
+                    var isInstalledCertificate = await IsInstalledCertificate.TestAsync();
+                    if (isInstalledCertificate.IsFalse())
                     {
                         WindowsIdentity wi = WindowsIdentity.GetCurrent();
                         WindowsPrincipal wp = new WindowsPrincipal(wi);
 
-                        if (!wp.IsInRole(WindowsBuiltInRole.Administrator))
+                        if (wp.IsInRole(WindowsBuiltInRole.Administrator).IsTrue())
                         {
-                            Program.ExecuteCertUtilCustom();
+                            await UninstallCertificate.ExecuteAsync();
+                            await InstallCertificate.ExecuteAsync();
+                            Start(args);
                         }
-                        else
-                        {
-                            Program.ExecuteCertUtilCustom();
-                        }
-                        Program.Start();
+
+                        await UninstallCertificate.ExecuteAsync();
+                        await InstallCertificate.ExecuteAsync();
+                        Start(args);
                     }
                     else
                     {
-                        Program.Start();
+                        Start(args);
                     }
                 }
                 else

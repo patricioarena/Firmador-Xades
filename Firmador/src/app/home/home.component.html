@@ -16,11 +16,13 @@
   <div class="form-group">
     <textarea class="form-control" id="Textarea1" rows="13" style="resize: none;" [(ngModel)]="text"></textarea>
   </div>
-  <select class="custom-select" (change)="changeType($event)">
-    <option *ngFor="let aType of TiposDeFirma" [ngValue]="aType">{{aType.key}}</option>
-  </select>
 </div>
 
+<div class="container">
+  <ul>La firma digital utiliza la comprobacion por OSCP</ul>
+  <ul> La firma electronica para nuestros casos de uso realiza exactamente los mismos pasos pero sin realizar la comprobacion por OSCP.</ul>
+  <ul>Todas las respuestas del firmador NET 8 son JSON y el contenido de interes esta en el data.</ul>
+</div>
 
 <br>
 

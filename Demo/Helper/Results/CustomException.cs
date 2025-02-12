@@ -11,13 +11,11 @@ namespace Helper.Results
         {
             NoCert = -1,
             InvalidCert = -2,
-
             ServiceNull = 1,
             ModelNull = 2,
-            TypeSignatureNull = 3,
-            ListOfModelNullorEmpty = 4,
-            PdfInvalido = 5,
-            PdfNull = 6
+            ListOfModelNullorEmpty = 3,
+            PdfInvalido = 4,
+            PdfNull = 5
         };
 
         public int errorCode = 0;
@@ -27,21 +25,17 @@ namespace Helper.Results
 
         public CustomException(ErrorsEnum errorsEnum)
         {
-            //declaracion de tipos de error
             _errors = new Dictionary<ErrorsEnum, string>
             {
                 { ErrorsEnum.ServiceNull, "Service is null" },
                 { ErrorsEnum.ModelNull, "Model is null" },
                 { ErrorsEnum.ListOfModelNullorEmpty, "List is null or empty" },
-                { ErrorsEnum.TypeSignatureNull, "TypeSignature is null" },
-
                 { ErrorsEnum.NoCert, "No se selecciono certificado" },
                 { ErrorsEnum.InvalidCert, "Certificado no valido " },
                 { ErrorsEnum.PdfInvalido, "Se requiere un PDF/A." },
                 { ErrorsEnum.PdfNull, "El archivo PDF no puede estar vacío o ser nulo." }
             };
-
-            //se asigna el mensaje
+            
             Message = _errors[errorsEnum];
             errorCode = (int)errorsEnum;
 

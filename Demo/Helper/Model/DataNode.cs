@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Helper.Model
+﻿namespace Helper.Model
 {
 
     public interface IDataNode

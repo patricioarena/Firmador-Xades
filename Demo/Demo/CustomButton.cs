@@ -1,73 +1,70 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.ComponentModel;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Demo
 {
     internal class CustomButton : Button
     {
         //Fields
-        private int borderSize = 0;
-        private int borderRadius = 20;
-        private Color borderColor = Color.Silver;
-        private Image icon;
+        private int _borderSize = 0;
+        private int _borderRadius = 20;
+        private Color _borderColor = Color.Silver;
+        private Image _icon;
 
         //Properties
         [Category("Border Size")]
         public int BorderSize
         {
-            get { return borderSize; }
+            get { return _borderSize; }
             set
             {
-                borderSize = value;
-                this.Invalidate();
+                _borderSize = value;
+                Invalidate();
             }
         }
         [Category("Border Radius")]
         public int BorderRadius
         {
-            get { return borderRadius; }
+            get { return _borderRadius; }
             set
             {
-                borderRadius = value;
-                this.Invalidate();
+                _borderRadius = value;
+                Invalidate();
             }
         }
         [Category("Border Color")]
         public Color BorderColor
         {
-            get { return borderColor; }
+            get { return _borderColor; }
             set
             {
-                borderColor = value;
-                this.Invalidate();
+                _borderColor = value;
+                Invalidate();
             }
         }
         [Category("Background Color")]
         public Color BackgroundColor
         {
-            get { return this.BackColor; }
-            set { this.BackColor = value; }
+            get { return BackColor; }
+            set { BackColor = value; }
         }
         [Category("Text Color")]
         public Color TextColor
         {
-            get { return this.ForeColor; }
-            set { this.ForeColor = value; }
+            get { return ForeColor; }
+            set { ForeColor = value; }
         }
         [Category("Image Icon")]
         public Image Icon
         {
-            get { return icon; }
+            get { return _icon; }
             set
             {
-                icon = value;
+                _icon = value;
                 Invalidate();
             }
         }
@@ -75,18 +72,18 @@ namespace Demo
         //Constructor
         public CustomButton()
         {
-            this.FlatStyle = FlatStyle.Flat;
-            this.FlatAppearance.BorderSize = 0;
-            this.Size = new Size(150, 40);
-            this.BackColor = Color.White;
-            this.ForeColor = Color.White;
-            this.Resize += new EventHandler(Button_Resize);
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            Size = new Size(150, 40);
+            BackColor = Color.White;
+            ForeColor = Color.White;
+            Resize += new EventHandler(Button_Resize);
 
         }
         private void Button_Resize(object sender, EventArgs e)
         {
-            if (borderRadius > this.Height)
-                borderRadius = this.Height;
+            if (_borderRadius > Height)
+                _borderRadius = Height;
         }
 
         //Methods
@@ -108,28 +105,28 @@ namespace Demo
         {
             base.OnPaint(pevent);
 
-            Rectangle rectSurface = this.ClientRectangle;
-            Rectangle rectBorder = Rectangle.Inflate(rectSurface, borderSize, borderSize);
+            Rectangle rectSurface = ClientRectangle;
+            Rectangle rectBorder = Rectangle.Inflate(rectSurface, _borderSize, _borderSize);
             int smoothSize = 2;
 
-            if (borderSize > 0)
-                smoothSize = borderSize;
+            if (_borderSize > 0)
+                smoothSize = _borderSize;
 
-            if (borderRadius > 2) //Rounded button
+            if (_borderRadius > 2) //Rounded button
             {
-                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
-                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
-                using (Pen penSurface = new Pen(this.Parent.BackColor, smoothSize))
-                using (Pen penBorder = new Pen(borderColor, borderSize))
+                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, _borderRadius))
+                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, _borderRadius - _borderSize))
+                using (Pen penSurface = new Pen(Parent.BackColor, smoothSize))
+                using (Pen penBorder = new Pen(_borderColor, _borderSize))
                 {
                     pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     //Button surface
-                    this.Region = new Region(pathSurface);
+                    Region = new Region(pathSurface);
                     //Draw surface border for HD result
                     pevent.Graphics.DrawPath(penSurface, pathSurface);
 
                     //Button border                    
-                    if (borderSize >= 1)
+                    if (_borderSize >= 1)
                         //Draw control border
                         pevent.Graphics.DrawPath(penBorder, pathBorder);
 
@@ -139,30 +136,30 @@ namespace Demo
             {
                 pevent.Graphics.SmoothingMode = SmoothingMode.None;
                 //Button surface
-                this.Region = new Region(rectSurface);
+                Region = new Region(rectSurface);
                 //Button border
-                if (borderSize >= 1)
+                if (_borderSize >= 1)
                 {
-                    using (Pen penBorder = new Pen(borderColor, borderSize))
+                    using (Pen penBorder = new Pen(_borderColor, _borderSize))
                     {
                         penBorder.Alignment = PenAlignment.Inset;
-                        pevent.Graphics.DrawRectangle(penBorder, 0, 0, this.Width - 1, this.Height - 1);
+                        pevent.Graphics.DrawRectangle(penBorder, 0, 0, Width - 1, Height - 1);
 
                     }
                 }
             }
 
-            if (icon != null)
+            if (_icon != null)
             {
                 int iconX = 5; // Ajustar la posición X según tus necesidades
-                int iconY = (Height - icon.Height) / 2;
-                pevent.Graphics.DrawImage(icon, iconX, iconY);
+                int iconY = (Height - _icon.Height) / 2;
+                pevent.Graphics.DrawImage(_icon, iconX, iconY);
             }
 
-            dropShadow(pevent.Graphics);
+            DropShadow(pevent.Graphics);
         }
 
-        private void dropShadow(Graphics graphics)
+        private void DropShadow(Graphics graphics)
         {
             Color[] shadow = new Color[3];
             shadow[0] = Color.FromArgb(181, 181, 181);
@@ -189,12 +186,12 @@ namespace Demo
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
-            this.Parent.BackColorChanged += new EventHandler(Container_BackColorChanged);
+            Parent.BackColorChanged += new EventHandler(Container_BackColorChanged);
         }
 
         private void Container_BackColorChanged(object sender, EventArgs e)
         {
-            this.Invalidate();
+            Invalidate();
         }
     }
 }
