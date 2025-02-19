@@ -9,11 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Demo.Extensions;
+using System.Runtime.InteropServices;
 
 namespace Demo.Utils
 {
     public static class CertificateUtils
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
         private static readonly string CertificateKey = Properties.Settings.Default.CertificateKey;
 
         private static readonly string CertificateName = Properties.Settings.Default.CertificateName;
@@ -120,17 +124,13 @@ namespace Demo.Utils
                 if (Program._ontiChecked)
                     fcollection = filterBySerialNumber(fcollection);
 
-                if (string.IsNullOrEmpty(message))
-                {
-                    message = "Seleccione un certificado.";
-                }
-
                 if (string.IsNullOrEmpty(title))
                 {
-                    title = "Firmar archivo";
+                    title = "Seleccione un certificado.";
                 }
                 //A X509Certificate2UI window always on top
                 IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
+                SetForegroundWindow(windowHandle);
                 X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(fcollection, title, message, X509SelectionFlag.SingleSelection, windowHandle);
 
                 if (scollection != null && scollection.Count == 1)
