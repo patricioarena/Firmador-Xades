@@ -32,7 +32,7 @@ namespace Demo
                 return;
 
             // Confirm user wants to close
-            DialogResult result = MessageBox.Show(this, "¿Desea minimizar al área de notificaciones?", "Minimizar", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show(this, "¿Desea cerrar la aplicación?", "Cerrar", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 this.Hide();
@@ -76,7 +76,6 @@ namespace Demo
             rotatedLabel1 = new RotatedLabel();
             pictureBox12 = new PictureBox();
             pictureBox11 = new PictureBox();
-            customButton7 = new CustomButton();
             checkBox1 = new CheckBox();
             label1 = new Label();
             labelVersion = new Label();
@@ -357,31 +356,6 @@ namespace Demo
             pictureBox11.Visible = false;
             pictureBox11.WaitOnLoad = true;
             // 
-            // customButton7
-            // 
-            customButton7.BackColor = System.Drawing.Color.GhostWhite;
-            customButton7.BackgroundColor = System.Drawing.Color.GhostWhite;
-            customButton7.BorderColor = System.Drawing.Color.Silver;
-            customButton7.BorderRadius = 5;
-            customButton7.BorderSize = 1;
-            customButton7.FlatAppearance.BorderSize = 0;
-            customButton7.FlatStyle = FlatStyle.Flat;
-            customButton7.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            customButton7.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            customButton7.Icon = null;
-            customButton7.Image = (System.Drawing.Image)resources.GetObject("customButton7.Image");
-            customButton7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            customButton7.Location = new System.Drawing.Point(296, 444);
-            customButton7.Name = "customButton7";
-            customButton7.Padding = new Padding(6, 0, 6, 0);
-            customButton7.Size = new System.Drawing.Size(105, 33);
-            customButton7.TabIndex = 20;
-            customButton7.Text = "Salir";
-            customButton7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            customButton7.TextColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            customButton7.UseVisualStyleBackColor = false;
-            customButton7.Click += customButton7_Click;
-            // 
             // checkBox1
             // 
             checkBox1.BackColor = System.Drawing.Color.Silver;
@@ -449,7 +423,6 @@ namespace Demo
             Controls.Add(rotatedLabel1);
             Controls.Add(checkBox1);
             Controls.Add(pictureBox12);
-            Controls.Add(customButton7);
             Controls.Add(panel2);
             Controls.Add(label1);
             Controls.Add(pictureBox11);
@@ -498,7 +471,6 @@ namespace Demo
         private Label label2;
         private Label label3;
         private Panel panel3;
-        private CustomButton customButton7;
         private Label label1;
         private CheckBox checkBox1;
         private PictureBox pictureBox7;

@@ -135,9 +135,6 @@ namespace Demo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(panel2.Visible);
-            Console.WriteLine(panel7.Visible);
-
             panel3.Visible = !panel3.Visible;
             panel7.Visible = !panel7.Visible;
 
@@ -158,7 +155,6 @@ namespace Demo
                 LoadViewList();
             }
             panel7.Refresh();
-            Console.WriteLine("cambie la prop visible del panel");
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -309,7 +305,6 @@ namespace Demo
 
         private void label6_Click(object sender, EventArgs e)
         {
-            //Process.Start(_fiscaliaWeb);
             try
             {
                 Process.Start(new ProcessStartInfo
@@ -400,14 +395,12 @@ namespace Demo
                 listView1.Refresh();
                 LoadViewList();
             }
-            //Console.WriteLine("cambie la prop visible del panel");
         }
 
         private void customButton6_Click(object sender, EventArgs e)
         {
             panel2.Visible = !panel2.Visible;
             panel2.Refresh();
-            //Console.WriteLine("cambie la prop visible del panel");
         }
 
         private void label8_Click(object sender, EventArgs e)

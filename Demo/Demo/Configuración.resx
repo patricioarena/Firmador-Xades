@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
-    Microsoft ResX Schema 
+    Microsoft ResX Schema
 
     Version 2.0
 
@@ -48,7 +48,7 @@
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
@@ -3531,31 +3531,6 @@
         q96CQrsVBXc7iu9OFOFdKMZ7UJT3xkR9FMX7eCTqUyjoZyJRXwQvRaK+joL/lyNqf0fUYWBEJOpY4Io6
         DSLNpKjRrkpRSyNR3wMfxET9FHwOKOoykBIVpEQFFHUVRQUUdfeumiSqs6vusajRrloXyZpO1M3NEvUH
         iFkGigCeQV0nW8n/AaLAnGFWIkAfAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="customButton7.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAABGdBTUEAALGeYUxB9wAAACBjSFJNAACH
-        EAAAjBIAAP1NAACBPgAAWesAARIPAAA85gAAGc66ySIyAAABJmlDQ1BBZG9iZSBSR0IgKDE5OTgpAAAo
-        z2NgYDJwdHFyZRJgYMjNKykKcndSiIiMUmA/z8DGwMwABonJxQWOAQE+IHZefl4qAwb4do2BEURf1gWZ
-        xUAa4EouKCoB0n+A2CgltTiZgYHRAMjOLi8pAIozzgGyRZKywewNIHZRSJAzkH0EyOZLh7CvgNhJEPYT
-        ELsI6Akg+wtIfTqYzcQBNgfClgGxS1IrQPYyOOcXVBZlpmeUKBhaWloqOKbkJ6UqBFcWl6TmFit45iXn
-        FxXkFyWWpKYA1ULcBwaCEIWgENMAarTQZKAyAMUDhPU5EBy+jGJnEGIIkFxaVAZlMjIZE+YjzJgjwcDg
-        v5SBgeUPQsykl4FhgQ4DA/9UhJiaIQODgD4Dw745AMDGT/0ZOjZcAAAACXBIWXMAAAsMAAALDAE/QCLI
-        AAAC+0lEQVQ4T42US09TQRTHjxR5KBs3CBjjVh6VWOj7yaO93N4W2lugLYWCBVYoJlJQQGOICyImUiMq
-        CyAaE8WFkWDc4hdQv4FxpZuuVQrB+j/TQgS74CT/3LkzZ35zZuacoeNasFulnkhvqdlmiev0TfeguWaj
-        /q7VYYvIivcMvtRkaM575211bY0cLU4KqEHqUgPETq/WX4sxpdNHvi5/lcFs/AzYLpRhAbJttJjeyIpc
-        2eZpF77CVlZX6NLlRgEM90VKgiG11NnqEiC2cDRCQ4krRVikESAJcutNBslkNT8FdM/mtCcra84KX3q2
-        vEwNjVpyuJyE8Kvg9Nxitz4cG796MjEyLHyisT4aTAwR+gkwIbPVwv4X9EbDd8xZ33y/WURLT5aoTltP
-        dpeDZJ+AvcWKWUycX0wtFg2PjgjgUdv6uEWSt4NVg7P8xvPgX0wX62tzMMVbbbKY3wH2BwefUntCFTwh
-        NtCfR/xvAijngGYAU49SxYS9U4ci1wC2AdgOIlu4MTlRcrlZR7UNdSL6fdVq68RWA6HcpRUEovMcRwbH
-        LG7wK6KdAfSa1W4bx1eI2/n/6wgghBQqDQJaEOhqawmg4xcDEWEG7Z/Q70LicaTIF1+nv5pvXwDzZ3gA
-        ROgVWPkBnPc4wlZ3WwzpYodchYQAtJFYVIPUKgx0d3iQY+FyQBcA3UUEG16/UoV/kSJHxRcYi/eLNCoI
-        RETkkSWK9EUZep8jBfQD+s5zpej0R8rpHysITKfTxCXDUKxaBug8oFmkzouJyWRxYiSRn37YHiN/kR0M
-        rGbgQR6yMbRdcvONUW9EbH8C0Y0lp5Ka/cQW9R0MEMrtoFK4jSOrBzCNAF5ms9kTwpmNoW7Jw9VCZafL
-        RR/X78BgXLTFaxMWr00vYDehKYBu4SK38N1B2ca5SA5ZJpOh6dkZmr1zG5pFezo/QoRUEa+N0Wz6BNgO
-        tA1xOv3AInNqt3pK8ecekmMZUoUSo8MaHIUOIB+kYMuyq9XVgEdE40G2tEtu+gvoPEHcub7QfQAAAABJ
-        RU5ErkJggg==
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
