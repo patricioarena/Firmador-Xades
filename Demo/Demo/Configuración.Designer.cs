@@ -32,7 +32,7 @@ namespace Demo
                 return;
 
             // Confirm user wants to close
-            DialogResult result = MessageBox.Show(this, "¿Desea cerrar la aplicación?", "Cerrar", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show(this, "        ¿Desea cerrar la aplicación?", "Cerrar", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 this.Hide();
