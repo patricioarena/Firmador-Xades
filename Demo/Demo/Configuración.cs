@@ -71,6 +71,8 @@ namespace Demo
             this.panel7.Visible = true;
             this.panel2.Visible = true;
             this.panel3.Visible = false;
+            this.settings_panel.Visible = false;
+            this.onti_checkBox.Visible = false;
         }
 
         public static Signature GetInstance()
@@ -140,6 +142,7 @@ namespace Demo
 
             if (panel3.Visible == true)
             {
+                button2.Enabled = false;
                 panel7.SendToBack();
                 panel2.SendToBack();
                 panel3.BringToFront();
@@ -148,6 +151,7 @@ namespace Demo
             }
             if (panel3.Visible == false)
             {
+                button2.Enabled = true;
                 panel3.SendToBack();
                 panel2.SendToBack();
                 panel7.BringToFront();
@@ -156,6 +160,23 @@ namespace Demo
             }
             panel7.Refresh();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            settings_panel.Visible = !settings_panel.Visible;
+            if (settings_panel.Visible == true)
+            {
+                button1.Enabled = false;
+                settings_panel.BringToFront();
+            }
+            if (settings_panel.Visible == false)
+            {
+                button1.Enabled = true;
+                settings_panel.SendToBack();
+            }
+            panel7.Refresh();
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             Close();

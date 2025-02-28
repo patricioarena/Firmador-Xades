@@ -58,6 +58,10 @@ namespace Demo
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             panel2 = new Panel();
+            settings_panel = new Panel();
+            onti_checkBox = new CheckBox();
+            checkBox1 = new CheckBox();
+            button2 = new Button();
             panel7 = new Panel();
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
@@ -76,12 +80,11 @@ namespace Demo
             rotatedLabel1 = new RotatedLabel();
             pictureBox12 = new PictureBox();
             pictureBox11 = new PictureBox();
-            checkBox1 = new CheckBox();
             label1 = new Label();
             labelVersion = new Label();
-            checkBox2 = new CheckBox();
             contextMenuStrip1.SuspendLayout();
             panel2.SuspendLayout();
+            settings_panel.SuspendLayout();
             panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -128,6 +131,8 @@ namespace Demo
             // panel2
             // 
             panel2.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            panel2.Controls.Add(settings_panel);
+            panel2.Controls.Add(button2);
             panel2.Controls.Add(panel7);
             panel2.Controls.Add(pictureBox7);
             panel2.Controls.Add(panel3);
@@ -137,6 +142,62 @@ namespace Demo
             panel2.Size = new System.Drawing.Size(413, 410);
             panel2.TabIndex = 6;
             panel2.Paint += panel2_Paint;
+            // 
+            // settings_panel
+            // 
+            settings_panel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            settings_panel.Controls.Add(onti_checkBox);
+            settings_panel.Location = new System.Drawing.Point(0, 202);
+            settings_panel.Name = "settings_panel";
+            settings_panel.Size = new System.Drawing.Size(413, 208);
+            settings_panel.TabIndex = 22;
+            // 
+            // onti_checkBox
+            // 
+            onti_checkBox.BackColor = System.Drawing.Color.Silver;
+            onti_checkBox.Checked = true;
+            onti_checkBox.CheckState = CheckState.Checked;
+            onti_checkBox.FlatStyle = FlatStyle.Flat;
+            onti_checkBox.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            onti_checkBox.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            onti_checkBox.Location = new System.Drawing.Point(154, 99);
+            onti_checkBox.Name = "onti_checkBox";
+            onti_checkBox.Size = new System.Drawing.Size(94, 37);
+            onti_checkBox.TabIndex = 24;
+            onti_checkBox.Text = "Onti";
+            onti_checkBox.UseVisualStyleBackColor = false;
+            onti_checkBox.Visible = false;
+            onti_checkBox.CheckedChanged += checkBox2_CheckedChanged;
+            // 
+            // checkBox1
+            // 
+            checkBox1.BackColor = System.Drawing.Color.Silver;
+            checkBox1.FlatStyle = FlatStyle.Flat;
+            checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            checkBox1.Location = new System.Drawing.Point(10, 442);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new System.Drawing.Size(163, 37);
+            checkBox1.TabIndex = 0;
+            checkBox1.Text = "Iniciar con Windows";
+            checkBox1.UseVisualStyleBackColor = false;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
+            // button2
+            // 
+            button2.BackColor = System.Drawing.Color.Transparent;
+            button2.BackgroundImage = Properties.Resources.gear_40dp1;
+            button2.BackgroundImageLayout = ImageLayout.Stretch;
+            button2.Cursor = Cursors.Hand;
+            button2.FlatAppearance.BorderSize = 0;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            button2.Location = new System.Drawing.Point(359, 137);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(42, 38);
+            button2.TabIndex = 24;
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // panel7
             // 
@@ -356,20 +417,6 @@ namespace Demo
             pictureBox11.Visible = false;
             pictureBox11.WaitOnLoad = true;
             // 
-            // checkBox1
-            // 
-            checkBox1.BackColor = System.Drawing.Color.Silver;
-            checkBox1.FlatStyle = FlatStyle.Flat;
-            checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox1.Location = new System.Drawing.Point(15, 443);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(163, 37);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "Iniciar con Windows";
-            checkBox1.UseVisualStyleBackColor = false;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
-            // 
             // label1
             // 
             label1.BackColor = System.Drawing.Color.Silver;
@@ -395,33 +442,15 @@ namespace Demo
             labelVersion.TabIndex = 23;
             labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // checkBox2
-            // 
-            checkBox2.BackColor = System.Drawing.Color.Silver;
-            checkBox2.Checked = true;
-            checkBox2.CheckState = CheckState.Checked;
-            checkBox2.FlatStyle = FlatStyle.Flat;
-            checkBox2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox2.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox2.Location = new System.Drawing.Point(184, 444);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new System.Drawing.Size(94, 37);
-            checkBox2.TabIndex = 24;
-            checkBox2.Text = "Onti";
-            checkBox2.UseVisualStyleBackColor = false;
-            checkBox2.Visible = false;
-            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
-            // 
             // Signature
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.SystemColors.Control;
             ClientSize = new System.Drawing.Size(413, 484);
-            Controls.Add(checkBox2);
+            Controls.Add(checkBox1);
             Controls.Add(labelVersion);
             Controls.Add(rotatedLabel1);
-            Controls.Add(checkBox1);
             Controls.Add(pictureBox12);
             Controls.Add(panel2);
             Controls.Add(label1);
@@ -438,6 +467,7 @@ namespace Demo
             Resize += Form_Hide;
             contextMenuStrip1.ResumeLayout(false);
             panel2.ResumeLayout(false);
+            settings_panel.ResumeLayout(false);
             panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -478,7 +508,9 @@ namespace Demo
         private PictureBox pictureBox12;
         private RotatedLabel rotatedLabel1;
         private Label labelVersion;
-        private CheckBox checkBox2;
+        private CheckBox onti_checkBox;
+        private Button button2;
+        private Panel settings_panel;
     }
 }
 
