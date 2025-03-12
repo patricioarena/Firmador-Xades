@@ -34,15 +34,15 @@ public abstract class ValidatorForRestful : ValidatorBase
     {
         try
         {
-            using var pdfReader = new iText.Kernel.Pdf.PdfReader(pdfStream);
-            var pdfDocument = new iText.Kernel.Pdf.PdfDocument(pdfReader);
-            var pdfVersion = pdfDocument.GetPdfVersion()
-                .ToString().Replace("PDF-", "");
-            var pdfVersions = new List<string> { "1.4", "1.5", "1.6", "1.7" };
+            //using var pdfReader = new iText.Kernel.Pdf.PdfReader(pdfStream);
+            //var pdfDocument = new iText.Kernel.Pdf.PdfDocument(pdfReader);
+            //var pdfVersion = pdfDocument.GetPdfVersion()
+            //    .ToString().Replace("PDF-", "");
+            //var pdfVersions = new List<string> { "1.4", "1.5", "1.6", "1.7" };
 
-            if (pdfVersions.Contains(pdfVersion))
+            //if (pdfVersions.Contains(pdfVersion))
                 return true;
-            return false;
+            //    return false;
         }
         catch (Exception ex)
         {
