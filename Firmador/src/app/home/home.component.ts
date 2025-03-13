@@ -1,9 +1,12 @@
 import { Component, isDevMode, OnInit } from "@angular/core";
-import { DigitalSignatureService } from '../digitalsignature/digitalsignature.service';
-import { TiposDeFirma, XmlModel } from '../digitalsignature/digitalsignature.service';
-
+import {
+  DigitalSignatureService,
+  TiposDeFirma,
+  XmlModel,
+} from "../digitalsignature/digitalsignature.service";
 
 import { saveAs } from "file-saver";
+import { ToastrService } from "ngx-toastr";
 import { NotificationService } from "../service/notification.service";
 
 @Component({
@@ -23,13 +26,17 @@ import { NotificationService } from "../service/notification.service";
 
 // }
 
-
 // Advanced Usage - Service
 export class HomeComponent implements OnInit {
-
   public TiposDeFirma: any = [
-    { key: "Xades-BES - Sin ds:Object", value: TiposDeFirma.Xades_BES_Sin_ds_Object },
-    { key: "Xades-BES - Con ds:Object", value: TiposDeFirma.Xades_BES_Con_ds_Object },
+    {
+      key: "Xades-BES - Sin ds:Object",
+      value: TiposDeFirma.Xades_BES_Sin_ds_Object,
+    },
+    {
+      key: "Xades-BES - Con ds:Object",
+      value: TiposDeFirma.Xades_BES_Con_ds_Object,
+    },
   ];
   public TipoDeFirma = TiposDeFirma.Xades_BES_Sin_ds_Object;
   public ocsp = true;
@@ -45,10 +52,12 @@ export class HomeComponent implements OnInit {
   constructor(
     public signatureService: DigitalSignatureService,
     private notificationService: NotificationService,
-  ) { }
+    private toastr: ToastrService
+  ) {}
 
   public ngOnInit() {
-    this.text = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n' +
+    this.text =
+      '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n' +
       "<Tour>\n" +
       "   <NombreTour> The Offspring y Bad Religion </NombreTour> \n" +
       "   <Fecha> 24/10/2019 19:00:00 </Fecha>\n" +
@@ -68,19 +77,25 @@ export class HomeComponent implements OnInit {
     this.objeto.XmlFile = btoa(this.text.toString());
     this.objeto.Extension = ".xml";
     isDevMode() && (this.ocsp = false);
-    this.signatureService.firmaDigital(this.objeto, this.ocsp).subscribe((resp) => {
-      // tslint:disable-next-line: no-empty
-      if (resp === "-1") {
-      } else if (resp === "-2") {
-        this.notificationService.showInfo("Certificado", "Certificado no valido");
-      } else {
-        this.responseFirma = resp;
-        this.isEnabled = true;
+    this.signatureService.firmaDigital(this.objeto, this.ocsp).subscribe(
+      (resp) => {
+        // tslint:disable-next-line: no-empty
+        if (resp === "-1") {
+        } else if (resp === "-2") {
+          this.notificationService.showInfo(
+            "Certificado",
+            "Certificado no valido"
+          );
+        } else {
+          this.responseFirma = resp;
+          this.isEnabled = true;
+        }
+      },
+      (err) => {
+        const message = JSON.parse(err.error).ExceptionMessage;
+        this.notificationService.showError("Certificado", message);
       }
-    }, (err) => {
-      const message = JSON.parse(err.error).ExceptionMessage;
-      this.notificationService.showError("Certificado", message);
-    });
+    );
   }
 
   public FirmarElectronica() {
@@ -90,58 +105,76 @@ export class HomeComponent implements OnInit {
     this.objeto = new XmlModel();
     this.objeto.XmlFile = btoa(this.text.toString());
     this.objeto.Extension = ".xml";
-    isDevMode() && (this.ocsp=false);
+    isDevMode() && (this.ocsp = false);
 
-    this.signatureService.firmaElectronica(this.objeto, this.ocsp).subscribe((resp) => {
-      isDevMode() && console.log({ resp });
-      // tslint:disable-next-line: no-empty
-      if (resp === "-1") {
-      } else if (resp === "-2") {
-        this.notificationService.showInfo("Certificado", "Certificado no valido");
-      } else {
-        this.responseFirma = resp;
-        this.isEnabled = true;
+    this.signatureService.firmaElectronica(this.objeto, this.ocsp).subscribe(
+      (resp) => {
+        isDevMode() && console.log({ resp });
+        // tslint:disable-next-line: no-empty
+        if (resp === "-1") {
+        } else if (resp === "-2") {
+          this.notificationService.showInfo(
+            "Certificado",
+            "Certificado no valido"
+          );
+        } else {
+          this.responseFirma = resp;
+          this.isEnabled = true;
+        }
+      },
+      (err) => {
+        const message = JSON.parse(err.error).ExceptionMessage;
+        this.notificationService.showInfo("Certificado", message);
       }
-    }, (err) => {
-      const message = JSON.parse(err.error).ExceptionMessage;
-      this.notificationService.showInfo("Certificado", message);
-    });
+    );
   }
 
   public Verificar() {
     this.objeto = new XmlModel();
     this.objeto.XmlFile = this.text;
     this.objeto.Extension = ".xml";
-    this.signatureService.verificar(this.objeto).subscribe((resp) => {
+    this.signatureService.verificar(this.objeto).subscribe(
+      (resp) => {
+        const data = JSON.parse(JSON.stringify(resp.data));
+        const cantTotalDeFirmas = data.length;
+        let firmasValidas = 0;
+        let firmasInvalidas = 0;
 
-      const data = JSON.parse(JSON.stringify(resp.data));
-      const cantTotalDeFirmas = data.length;
-      let firmasValidas = 0;
-      let firmasInvalidas = 0;
+        data.forEach((element) => {
+          if (data[data.indexOf(element)].IsValid === true) {
+            firmasValidas = firmasValidas + 1;
+          }
+        });
 
-      data.forEach((element) => {
-        if (data[data.indexOf(element)].IsValid === true) {
-          firmasValidas = firmasValidas + 1;
+        firmasInvalidas = cantTotalDeFirmas - firmasValidas;
+
+        if (cantTotalDeFirmas === firmasValidas) {
+          // tslint:disable-next-line: max-line-length
+          this.notificationService.showVerify(
+            "Verificación de firmas satisfactoria",
+            `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`,
+            data
+          );
+        } else {
+          // tslint:disable-next-line: max-line-length
+          this.notificationService.showNoVerify(
+            "Verificación de firmas no satisfactoria",
+            `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`,
+            data
+          );
         }
-      });
-
-      firmasInvalidas = cantTotalDeFirmas - firmasValidas;
-
-      if (cantTotalDeFirmas === firmasValidas) {
-        // tslint:disable-next-line: max-line-length
-        this.notificationService.showVerify("Verificación de firmas satisfactoria", `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
-      } else {
-        // tslint:disable-next-line: max-line-length
-        this.notificationService.showNoVerify("Verificación de firmas no satisfactoria", `Validas: ${firmasValidas} / Invalidas: ${firmasInvalidas}`, data);
+      },
+      (err) => {
+        const message = err.error.ExceptionMessage;
+        this.notificationService.showError("Firmas", message);
       }
-    }, (err) => {
-      const message = err.error.ExceptionMessage;
-      this.notificationService.showError("Firmas", message);
-    });
+    );
   }
 
   public downloadFile() {
-    const blob = new Blob([this.responseFirma], { type: "text/xml; charset=utf-8" });
+    const blob = new Blob([this.responseFirma], {
+      type: "text/xml; charset=utf-8",
+    });
     saveAs(blob, "Document.xml");
   }
 
@@ -161,21 +194,26 @@ export class HomeComponent implements OnInit {
   }
 
   public ping() {
-  this.signatureService.ping().subscribe(  (resp) => {
-    console.log("Ping exitoso:", resp); // Aquí haces algo con la respuesta
-    },
-    (err) => {
-      console.error("Error en el ping:", err); // Aquí manejas el error
-    }
-  );
+    this.signatureService.ping().subscribe(
+      (resp) => {
+        console.log("Ping exitoso:", resp); // Aquí haces algo con la respuesta
+        this.toastr.success("Ping exitoso.");
+      },
+      (err) => {
+        console.error("Error en el ping:", err); // Aquí manejas el error
+        this.toastr.error("No se logro hacer conectar.");
+      }
+    );
   }
 
   public pdfSignature() {
-    this.signatureService.pdfSignature().subscribe(() => { })
+    this.signatureService.pdfSignature().subscribe(() => {});
   }
 
   triggerFileInput() {
-    const fileInput = document.getElementById('pdfFileInput') as HTMLInputElement;
+    const fileInput = document.getElementById(
+      "pdfFileInput"
+    ) as HTMLInputElement;
     fileInput.click();
   }
 
@@ -184,10 +222,10 @@ export class HomeComponent implements OnInit {
     const reader = new FileReader();
 
     reader.onload = () => {
-      const base64String = (reader.result as string).split(',')[1]; // Remueve el prefijo de base64
+      const base64String = (reader.result as string).split(",")[1]; // Remueve el prefijo de base64
       const model = {
         PdfBase64: base64String,
-        Reason: 'Prueba'
+        Reason: "Prueba",
       };
 
       // Llama al servicio con el PDF en base64
@@ -197,47 +235,51 @@ export class HomeComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  public pdfSign64(model:any) {
-    this.signatureService.pdfSign64(model).subscribe((response) => {
-      this.Base64pdf = response.data.Data[0];
-      console.log('PDF firmado exitosamente:', response);
-    },
-    (error) => {
-      console.error('Error al firmar el PDF:', error);
-    });
+  public pdfSign64(model: any) {
+    this.signatureService.pdfSign64(model).subscribe(
+      (response: any) => {
+        this.Base64pdf = response.data.data[0];
+        console.log("PDF firmado exitosamente:", response);
+        this.toastr.success("PDF firmado exitosamente");
+      },
+      (error) => {
+        console.error("Error al firmar el PDF:", error);
+        this.toastr.error("Error al firmar el PDF:", error);
+      }
+    );
   }
 
   public descargarbase64() {
-    if (this.Base64pdf!=""){
-        // Convierte la cadena base64 a un arreglo de bytes
-        const byteCharacters = atob(this.Base64pdf); // Decodifica el base64 a bytes
-        const byteNumbers = new Array(byteCharacters.length);
+    if (this.Base64pdf != "") {
+      // Convierte la cadena base64 a un arreglo de bytes
+      const byteCharacters = atob(this.Base64pdf); // Decodifica el base64 a bytes
+      const byteNumbers = new Array(byteCharacters.length);
 
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
 
-        // Crea un array de bytes (Uint8Array) y un Blob con el tipo MIME de PDF
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'application/pdf' });
+      // Crea un array de bytes (Uint8Array) y un Blob con el tipo MIME de PDF
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
 
-        // Crea una URL temporal para el archivo Blob
-        const blobUrl = window.URL.createObjectURL(blob);
+      // Crea una URL temporal para el archivo Blob
+      const blobUrl = window.URL.createObjectURL(blob);
 
-        // Crea un enlace para descargar el archivo
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = 'documento_firmado.pdf'; // Nombre del archivo
-        document.body.appendChild(a);
-        a.click(); // Simula el clic en el enlace
+      // Crea un enlace para descargar el archivo
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = "documento_firmado.pdf"; // Nombre del archivo
+      document.body.appendChild(a);
+      a.click(); // Simula el clic en el enlace
 
-        // Elimina el enlace temporal después de la descarga
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(blobUrl);
+      // Elimina el enlace temporal después de la descarga
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+      this.toastr.success("PDF descargado exitosamente");
+    } else {
+      console.log("Haga primero Firmar PDF(Base64)");
+      this.toastr.error("Error al descargar PDF");
     }
-    else{
-      console.log("Haga primero Firmar PDF(Base64)")
-    }
-
   }
 }
