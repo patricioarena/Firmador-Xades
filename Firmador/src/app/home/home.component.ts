@@ -197,11 +197,13 @@ export class HomeComponent implements OnInit {
     this.signatureService.ping().subscribe(
       (resp) => {
         console.log("Ping exitoso:", resp); // Aquí haces algo con la respuesta
-        this.toastr.success("Ping exitoso.");
+        this.toastr.success("El firmador funciona correctamente.");
       },
       (err) => {
         console.error("Error en el ping:", err); // Aquí manejas el error
-        this.toastr.error("No se logro hacer conectar.");
+        this.toastr.error(
+          "No se logro conectar con el firmador, por favor reinicie la computadora."
+        );
       }
     );
   }
@@ -281,5 +283,39 @@ export class HomeComponent implements OnInit {
       console.log("Haga primero Firmar PDF(Base64)");
       this.toastr.error("Error al descargar PDF");
     }
+  }
+
+  verificarVersion() {
+    this.signatureService.ping().subscribe(
+      (resp) => {
+        console.log("Ping exitoso:", resp); // Aquí haces algo con la respuesta
+        if (resp) {
+          this.signatureService.versionSignature().subscribe({
+            next: (response) => {
+              console.log("A", response);
+              const versionAuthenticaFirmador = response.data.version;
+              if (
+                versionAuthenticaFirmador <
+                this.signatureService.versionAuthentica
+              ) {
+                const showConfirm = () => {
+                  const result = window.confirm(
+                    "Authentica no se encuentra actualizado.\nPara continuar debe descargarlo nuevamente o cerrarlo y abrirlo si ya lo posee, para luego reiniciar la computadora.\nSi no lo posee puede descargarlo apretando aceptar."
+                  );
+                  if (result) {
+                    window.location.replace("https://authentica.fepba.gov.ar/");
+                  }
+                };
+                showConfirm();
+              }
+            },
+          });
+        }
+      },
+      (err) => {
+        console.error("Error en el ping:", err); // Aquí manejas el error
+        this.toastr.error("No se logro hacer conectar.");
+      }
+    );
   }
 }

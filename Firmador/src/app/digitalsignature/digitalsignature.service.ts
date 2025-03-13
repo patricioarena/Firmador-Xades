@@ -26,6 +26,8 @@ export class XmlModel {
 export class DigitalSignatureService {
   private _apiurl = "https://localhost:8400/";
 
+  public versionAuthentica: string = "3.0.7";
+
   public get apiurl() {
     return this._apiurl;
   }
@@ -71,6 +73,19 @@ export class DigitalSignatureService {
       responseType: "blob",
       observe: "response",
     }).pipe(map((res) => res));
+  }
+
+  public versionSignature() {
+    const url = `${this.apiurl}api/Signature/version`;
+    return this.HttpClient.get(url, {
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .append("Access-Control-Allow-Origin", "*"),
+    }).pipe(
+      map((res) => {
+        return res as any;
+      })
+    );
   }
 
   public pdfSignature() {
