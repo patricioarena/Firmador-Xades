@@ -307,6 +307,10 @@ export class HomeComponent implements OnInit {
                   }
                 };
                 showConfirm();
+              } else {
+                this.toastr.success(
+                  "La versión del firmador esta actualizada."
+                );
               }
             },
           });
