@@ -1,6 +1,7 @@
 ﻿using Demo.Properties;
 using Demo.Utils;
 using Helper.Model;
+using iText.Kernel.XMP.Impl.XPath;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -280,16 +281,60 @@ namespace Demo
         {
             //Console.WriteLine("entré al boton");
         }
+        //private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (checkBox1.Checked == true)
+        //    {
+        //        Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
+        //    }
+        //    else
+        //    {
+        //        Registry.CurrentUser.OpenSubKey(_keyName, true).DeleteValue(_applicationName);
+        //    }
+        //}
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked == true)
+            string shortcut = GetClickOnceShortcut();
+
+            if (string.IsNullOrEmpty(shortcut) || !File.Exists(shortcut))
             {
-                Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
+                MessageBox.Show("Could not find the application shortcut. Please check installation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string command = $"cmd.exe /c start \"\" \"{shortcut}\"";
+
+            if (checkBox1.Checked)
+            {
+                Registry.CurrentUser.CreateSubKey(_keyName)?.SetValue(_applicationName, command, RegistryValueKind.String);
             }
             else
             {
-                Registry.CurrentUser.OpenSubKey(_keyName, true).DeleteValue(_applicationName);
+                using (var key = Registry.CurrentUser.OpenSubKey(_keyName, true))
+                {
+                    key?.DeleteValue(_applicationName, false);
+                }
             }
+        }
+
+        public static string GetClickOnceShortcut()
+        {
+            string localAppsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs));
+
+            if (Directory.Exists(localAppsPath))
+            {
+
+                var possibleFolders = Directory.GetFiles(localAppsPath, "*", SearchOption.AllDirectories)
+                                             .Where(f => Path.GetFileName(f).Contains(_applicationName+ ".appref-ms", StringComparison.OrdinalIgnoreCase))
+                                             .ToList();
+
+                if (possibleFolders.Count > 0)
+                {
+                    return possibleFolders[0]; // Return first found ClickOnce app folder
+                }
+            }
+
+            return "ClickOnce folder not found.";
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)

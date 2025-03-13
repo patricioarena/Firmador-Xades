@@ -145,7 +145,7 @@ namespace Demo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3.0.7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3.0.8")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
