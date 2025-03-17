@@ -26,7 +26,7 @@ export class XmlModel {
 export class DigitalSignatureService {
   private _apiurl = "https://localhost:8400/";
 
-  public versionAuthentica: string = "3.0.7";
+  public versionAuthentica: string = "3.0.8";
 
   public get apiurl() {
     return this._apiurl;
