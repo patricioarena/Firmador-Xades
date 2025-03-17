@@ -394,6 +394,7 @@ namespace Demo
             checkBox1.TabIndex = 0;
             checkBox1.Text = "Iniciar con Windows";
             checkBox1.UseVisualStyleBackColor = false;
+            checkBox1.Visible = false;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // label1

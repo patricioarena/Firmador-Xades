@@ -22,6 +22,10 @@ internal static class StartupRegistryHelpers
         // Create batch script content
         string batchContent = $@"
                 @echo off
+                if exist ""HKCU\{registryKeyPath}"" /v ""{_applicationName}"" >nul 2>&1 (
+                    reg delete ""HKCU\{registryKeyPath}"" /v ""{_applicationName}"" /f
+                )
+
                 if exist ""{appPath}"" (
                     start """" ""{appPath}""
                 ) else (
