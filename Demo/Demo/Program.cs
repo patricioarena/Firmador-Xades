@@ -7,7 +7,10 @@ using Demo.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Win32;
 using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
@@ -23,6 +26,9 @@ namespace Demo
 
         private static void Start(string[] args)
         {
+            if (StartupRegistryHelpers.IsFirstRun())
+                StartupRegistryHelpers.RegisterStartupScript(true);
+            
             // Inicia Kestrel en un hilo separado
             Task.Run(() =>
             {
