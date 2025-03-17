@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,15 +8,16 @@ using System.Windows.Forms;
 internal static class StartupRegistryHelpers
 {
     private static string _applicationName = "Authentica";
+    private static string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+    private static string registryValueName = "AuthenticaLauncher";
 
-    private static string _keyName = @"Software\Microsoft\Windows\CurrentVersion\Run";
     public static void RegisterStartupScript(bool isChecked)
     {
         // made by chatgpt
         string appPath = GetClickOnceShortcut();//Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "Authentica.appref-ms");
         string batchFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "launch_authentica.bat");
-        string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        string registryValueName = "AuthenticaLauncher";
+        //string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        //string registryValueName = "AuthenticaLauncher";
 
         // Create batch script content
         string batchContent = $@"
@@ -76,5 +78,14 @@ internal static class StartupRegistryHelpers
         }
 
         return "";
+    }
+
+    public static bool GetIniciarConWindows()
+    {
+        using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(registryKeyPath))
+        {
+            List<string> names = registry.GetValueNames().ToList();
+            return (names.Contains(registryValueName).Equals(true));
+        }
     }
 }

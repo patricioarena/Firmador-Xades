@@ -57,10 +57,10 @@ namespace Demo
         {
             this.InitializeComponent();
 
-            if (IsFirstRun())
-            {
-                RegisterStartup();
-            }
+            //if (IsFirstRun())
+            //{
+            //    RegisterStartup();
+            //}
 
             var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
             position = pictureBox12.PointToClient(position);
@@ -257,19 +257,31 @@ namespace Demo
             X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == thumbprint).FirstOrDefault();
             X509Certificate2UI.DisplayCertificate(certificate);
         }
+        //private void LoadCheckeds()
+        //{
+        //    using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(_keyName))
+        //    {
+        //        List<string> names = registry.GetValueNames().ToList();
+        //        if (names.Contains(_applicationName).Equals(true))
+        //        {
+        //            checkBox1.Checked = true;
+        //        }
+        //        else
+        //        {
+        //            checkBox1.Checked = false;
+        //        }
+        //    }
+        //}
+
         private void LoadCheckeds()
         {
-            using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(_keyName))
+            if (StartupRegistryHelpers.GetIniciarConWindows())
             {
-                List<string> names = registry.GetValueNames().ToList();
-                if (names.Contains(_applicationName).Equals(true))
-                {
-                    checkBox1.Checked = true;
-                }
-                else
-                {
-                    checkBox1.Checked = false;
-                }
+                checkBox1.Checked = true;
+            }
+            else
+            {
+                checkBox1.Checked = false;
             }
         }
 
@@ -523,52 +535,53 @@ namespace Demo
                 (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton_certificados");
         }
 
-        private void CreateSubKeyFirstRun()
-        {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(_keyName, true))
-            {
-                if (key != null && key.GetValue(_applicationName) != null)
-                {
-                    key.DeleteValue(_applicationName, false);
-                }
-            }
+        //private void CreateSubKeyFirstRun()
+        //{
+        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(_keyName, true))
+        //    {
+        //        if (key != null && key.GetValue(_applicationName) != null)
+        //        {
+        //            key.DeleteValue(_applicationName, false);
+        //        }
+        //    }
 
-            if (checkBox1.Checked)
-            {
-                Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
-            }
-        }
+        //    if (checkBox1.Checked)
+        //    {
+        //        Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
+        //    }
+        //}
 
-        private bool IsFirstRun()
-        {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryPath, true))
-            {
-                if (key == null || key.GetValue(FirstRunKey) == null)
-                {
-                    using (RegistryKey newKey = Registry.CurrentUser.CreateSubKey(RegistryPath))
-                    {
-                        newKey.SetValue(FirstRunKey, "1", RegistryValueKind.String);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
+        //private bool IsFirstRun()
+        //{
+        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryPath, true))
+        //    {
+        //        if (key == null || key.GetValue(FirstRunKey) == null)
+        //        {
+        //            using (RegistryKey newKey = Registry.CurrentUser.CreateSubKey(RegistryPath))
+        //            {
+        //                newKey.SetValue(FirstRunKey, "1", RegistryValueKind.String);
+        //            }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        private void RegisterStartup()
-        {
-            string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentica.exe");
+        //private void RegisterStartup()
+        //{
+        //    string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentica.exe");
 
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKeyPath, true))
-            {
-                if (key.GetValue(AppName) == null)
-                {
-                    key.SetValue(AppName, $"\"{appPath}\"", RegistryValueKind.String);
-                    this.CreateSubKeyFirstRun();
-                    MessageBox.Show("Se ha registrado la aplicación para iniciarse con Windows automáticamente.");
-                }
-            }
-        }
+        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKeyPath, true))
+        //    {
+        //        if (key.GetValue(AppName) == null)
+        //        {
+        //            key.SetValue(AppName, $"\"{appPath}\"", RegistryValueKind.String);
+        //            //this.CreateSubKeyFirstRun();
+        //            StartupRegistryHelpers.RegisterStartupScript(true);
+        //            MessageBox.Show("Se ha registrado la aplicación para iniciarse con Windows automáticamente.");
+        //        }
+        //    }
+        //}
 
         private void pictureBox5_Click(object sender, EventArgs e)
         {
