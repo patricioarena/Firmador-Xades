@@ -26,7 +26,9 @@ namespace Demo
 
         private static void Start(string[] args)
         {
-            StartupRegistryHelpers.RegisterStartupScript(true);
+            if (StartupRegistryHelpers.IsFirstRun())
+                StartupRegistryHelpers.RegisterStartupScript(true);
+            
             // Inicia Kestrel en un hilo separado
             Task.Run(() =>
             {

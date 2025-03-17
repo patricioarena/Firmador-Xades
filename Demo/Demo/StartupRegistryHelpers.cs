@@ -10,14 +10,14 @@ internal static class StartupRegistryHelpers
     private static string _applicationName = "Authentica";
     private static string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private static string registryValueName = "AuthenticaLauncher";
+    private const string authenticaConfigPath = @"Software\AuthenticaApp";
+    private const string FirstRunKey = "FirstRun";
 
     public static void RegisterStartupScript(bool isChecked)
     {
         // made by chatgpt
         string appPath = GetClickOnceShortcut();//Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "Authentica.appref-ms");
         string batchFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "launch_authentica.bat");
-        //string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        //string registryValueName = "AuthenticaLauncher";
 
         // Create batch script content
         string batchContent = $@"
@@ -26,6 +26,7 @@ internal static class StartupRegistryHelpers
                     start """" ""{appPath}""
                 ) else (
                     reg delete HKCU\{registryKeyPath} /v {registryValueName} /f
+                    reg delete HKCU\{authenticaConfigPath} /f
                 )
                 ";
 
@@ -87,5 +88,21 @@ internal static class StartupRegistryHelpers
             List<string> names = registry.GetValueNames().ToList();
             return (names.Contains(registryValueName).Equals(true));
         }
+    }
+
+    public static bool IsFirstRun()
+    {
+        using (RegistryKey key = Registry.CurrentUser.OpenSubKey(authenticaConfigPath, true))
+        {
+            if (key == null || key.GetValue(FirstRunKey) == null)
+            {
+                using (RegistryKey newKey = Registry.CurrentUser.CreateSubKey(authenticaConfigPath))
+                {
+                    newKey.SetValue(FirstRunKey, "1", RegistryValueKind.String);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
