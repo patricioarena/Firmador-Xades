@@ -134,19 +134,13 @@ namespace Demo.Utils
                 }
                 // Asegurar que la ventana del dialogo esté al frente
                 IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
-
-                if (IsIconic(windowHandle))
-                {
-                    ShowWindow(windowHandle, SW_RESTORE);
-                }
-
+                ShowWindow(windowHandle, SW_RESTORE);
                 SetForegroundWindow(windowHandle);
                 X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(
                     fcollection,
                     title,
                     message,
-                    X509SelectionFlag.SingleSelection,
-                    windowHandle
+                    X509SelectionFlag.SingleSelection
                 );
                 if (scollection != null && scollection.Count == 1)
                 {
