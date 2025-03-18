@@ -125,18 +125,27 @@ namespace Demo.Utils
                     title = "Seleccione un certificado.";
                 }
 
+                X509Certificate2Collection scollection = null;
+
                 IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
                 if(windowHandle != IntPtr.Zero)
                 {
                     SetForegroundWindow(windowHandle);
-                }
 
-                X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(
+                    scollection = X509Certificate2UI.SelectFromCollection(
                     fcollection,
                     title,
                     message,
-                    X509SelectionFlag.SingleSelection
-                );
+                    X509SelectionFlag.SingleSelection,
+                    windowHandle);
+                } else
+                {
+                    scollection = X509Certificate2UI.SelectFromCollection(
+                    fcollection,
+                    title,
+                    message,
+                    X509SelectionFlag.SingleSelection);
+                }
 
                 if (scollection != null && scollection.Count == 1)
                 {
