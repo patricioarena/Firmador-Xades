@@ -1,6 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-.dev{
-    background-color: aqua;
-    padding: 10px 10px;
+.dev {
+  background-color: aqua;
+  padding: 10px 10px;
 }
 
+#toast-container {
+  bottom: 15px;
+  right: 0;
+  width: 100%;
+}
+
+#toast-container > div {
+  margin: auto;
+}

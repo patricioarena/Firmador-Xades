@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { $ } from "protractor";
 import { map } from "rxjs/operators";
 
 export enum TiposDeFirma {
@@ -15,8 +14,8 @@ export class XmlModel {
   public Extension: String;
 
   constructor(objeto?: any) {
-    this.XmlFile = objeto && objeto.Archivo || "";
-    this.Extension = objeto && objeto.Extension || ".xml";
+    this.XmlFile = (objeto && objeto.Archivo) || "";
+    this.Extension = (objeto && objeto.Extension) || ".xml";
   }
 }
 
@@ -24,17 +23,17 @@ export class XmlModel {
 @Injectable({
   providedIn: "root",
 })
-
 export class DigitalSignatureService {
-
   private _apiurl = "https://localhost:8400/";
+
+  public versionAuthentica: string = "3.0.8";
 
   public get apiurl() {
     return this._apiurl;
   }
 
   // tslint:disable-next-line: no-shadowed-variable
-  constructor(private HttpClient: HttpClient) { }
+  constructor(private HttpClient: HttpClient) {}
 
   public verificar(objeto: XmlModel) {
     const url = `${this.apiurl}api/Signature/Verify/Exist/One/Or/More/Signatures`;
@@ -42,9 +41,7 @@ export class DigitalSignatureService {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
         .append("Access-Control-Allow-Origin", "*"),
-    }).pipe(
-      map((res) => res as any),
-    );
+    }).pipe(map((res) => res as any));
   }
 
   public firmaDigital(objeto: XmlModel, ocsp: boolean) {
@@ -54,9 +51,7 @@ export class DigitalSignatureService {
         .set("Content-Type", "application/json")
         .append("Access-Control-Allow-Origin", "*"),
       responseType: "text",
-    }).pipe(
-      map((res) => res as any),
-    );
+    }).pipe(map((res) => res as any));
   }
 
   public firmaElectronica(objeto: XmlModel, ocsp: boolean) {
@@ -66,9 +61,7 @@ export class DigitalSignatureService {
         .set("Content-Type", "application/json")
         .append("Access-Control-Allow-Origin", "*"),
       responseType: "text",
-    }).pipe(
-      map((res) => res as any),
-    );
+    }).pipe(map((res) => res as any));
   }
 
   public ping() {
@@ -82,15 +75,28 @@ export class DigitalSignatureService {
     }).pipe(map((res) => res));
   }
 
+  public versionSignature() {
+    const url = `${this.apiurl}api/Signature/version`;
+    return this.HttpClient.get(url, {
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .append("Access-Control-Allow-Origin", "*"),
+    }).pipe(
+      map((res) => {
+        return res as any;
+      })
+    );
+  }
+
   public pdfSignature() {
     const url = `${this.apiurl}api/Signature/PDF/Signature`;
     return this.HttpClient.get(url, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
         .append("Access-Control-Allow-Origin", "*"),
-      responseType: "blob"
+      responseType: "blob",
       // tslint:disable-next-line: object-literal-sort-keys
-      , observe: "response",
+      observe: "response",
     }).pipe(map((res) => res as any));
   }
 
@@ -100,8 +106,12 @@ export class DigitalSignatureService {
     return this.HttpClient.post(url, model, {
       headers: new HttpHeaders()
         .set("Content-Type", "application/json")
-        .append("Access-Control-Allow-Origin", "*") }).pipe(
-          map((res) => res as any),
-        );
+        .append("Access-Control-Allow-Origin", "*"),
+    }).pipe(
+      map((res) => {
+        console.log(res);
+        return res;
+      })
+    );
   }
 }
