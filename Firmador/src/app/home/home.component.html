@@ -40,6 +40,10 @@
         class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;Verificar Firmas</button> -->
     <button type="button" class="btn btn-primary waves-effect waves-light" (click)="ping()"><i
         class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;Comprobar Firmador</button>
+    <button type="button" class="btn btn-primary waves-effect waves-light" (click)="verificarVersion()">
+      <i class="fa fa-refresh" aria-hidden="true"></i>
+      &nbsp;Comprobar Actualizaciones
+    </button>
     <!-- <button type="button" class="btn btn-warning waves-effect waves-light" (click)="pdfSignature()"><i
         class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp;Firmar PDF</button> -->
     <input type="file" id="pdfFileInput" style="display: none;" (change)="onFileSelected($event)">
@@ -50,10 +54,6 @@
       (click)="descargarbase64()">
       <i class="fa fa-download" aria-hidden="true"></i>
       &nbsp;Descargar PDF
-    </button>
-    <button type="button" class="btn btn-primary waves-effect waves-light" (click)="verificarVersion()">
-      <i class="fa fa-refresh" aria-hidden="true"></i>
-      &nbsp;Comprobar Actualizaciones
     </button>
   </div>
 </div>

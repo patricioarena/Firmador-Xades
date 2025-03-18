@@ -302,3 +302,12 @@ fieldset:disabled .btn {
   background-color: #e9ecef;
   opacity: 1;
 }
+
+.text-center {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+button {
+  font-size: 1rem !important;
+}

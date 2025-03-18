@@ -49,6 +49,8 @@ export class HomeComponent implements OnInit {
   public responseFirma;
   public Base64pdf;
 
+  private defaultTime: number = 8000;
+
   constructor(
     public signatureService: DigitalSignatureService,
     private notificationService: NotificationService,
@@ -197,12 +199,16 @@ export class HomeComponent implements OnInit {
     this.signatureService.ping().subscribe(
       (resp) => {
         console.log("Ping exitoso:", resp); // Aquí haces algo con la respuesta
-        this.toastr.success("El firmador funciona correctamente.");
+        this.toastr.success("El firmador funciona correctamente.", "", {
+          timeOut: this.defaultTime,
+        });
       },
       (err) => {
         console.error("Error en el ping:", err); // Aquí manejas el error
         this.toastr.error(
-          "No se logro conectar con el firmador, por favor reinicie la computadora."
+          "No se logro conectar con el firmador, por favor reinicie la computadora.",
+          "",
+          { timeOut: this.defaultTime }
         );
       }
     );
@@ -242,11 +248,15 @@ export class HomeComponent implements OnInit {
       (response: any) => {
         this.Base64pdf = response.data.data[0];
         console.log("PDF firmado exitosamente:", response);
-        this.toastr.success("PDF firmado exitosamente");
+        this.toastr.success("PDF firmado exitosamente", "", {
+          timeOut: this.defaultTime,
+        });
       },
       (error) => {
         console.error("Error al firmar el PDF:", error);
-        this.toastr.error("Error al firmar el PDF:", error);
+        this.toastr.error("Error al firmar el PDF:", error, {
+          timeOut: this.defaultTime,
+        });
       }
     );
   }
@@ -278,10 +288,14 @@ export class HomeComponent implements OnInit {
       // Elimina el enlace temporal después de la descarga
       document.body.removeChild(a);
       window.URL.revokeObjectURL(blobUrl);
-      this.toastr.success("PDF descargado exitosamente");
+      this.toastr.success("PDF descargado exitosamente", "", {
+        timeOut: this.defaultTime,
+      });
     } else {
       console.log("Haga primero Firmar PDF(Base64)");
-      this.toastr.error("Error al descargar PDF");
+      this.toastr.error("Error al descargar PDF", "", {
+        timeOut: this.defaultTime,
+      });
     }
   }
 
@@ -309,7 +323,9 @@ export class HomeComponent implements OnInit {
                 showConfirm();
               } else {
                 this.toastr.success(
-                  "La versión del firmador esta actualizada."
+                  "La versión del firmador esta actualizada.",
+                  "",
+                  { timeOut: this.defaultTime }
                 );
               }
             },
@@ -318,7 +334,9 @@ export class HomeComponent implements OnInit {
       },
       (err) => {
         console.error("Error en el ping:", err); // Aquí manejas el error
-        this.toastr.error("No se logro hacer conectar.");
+        this.toastr.error("No se logro hacer conectar.", "", {
+          timeOut: this.defaultTime,
+        });
       }
     );
   }

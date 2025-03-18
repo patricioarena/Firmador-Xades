@@ -35,18 +35,17 @@ import { NotificationService } from "./service/notification.service";
     DigitalSignatureComponent,
   ],
   imports: [
+    ToastrModule.forRoot({
+      positionClass: "toast-bottom-center",
+      progressBar: true,
+      progressAnimation: "increasing",
+    }),
     ClipboardModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
     FileUploadModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      timeOut: 6000,
-      positionClass: "toast-bottom-center",
-      progressBar: true,
-      progressAnimation: "increasing",
-    }),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     RoutingModule,
