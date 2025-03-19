@@ -18,14 +18,6 @@ namespace Demo.Utils
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
-        private static extern bool IsIconic(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        private const int SW_RESTORE = 9;
-
         private static readonly string CertificateKey = Properties.Settings.Default.CertificateKey;
         private static readonly string CertificateName = Properties.Settings.Default.CertificateName;
         private static readonly string AuthenticationServer = Properties.Settings.Default.AuthenticationServer;
@@ -132,22 +124,29 @@ namespace Demo.Utils
                 {
                     title = "Seleccione un certificado.";
                 }
-                // Asegurar que la ventana del dialogo esté al frente
+
+                X509Certificate2Collection scollection = null;
+
                 IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
-
-                if (IsIconic(windowHandle))
+                if(windowHandle != IntPtr.Zero)
                 {
-                    ShowWindow(windowHandle, SW_RESTORE);
-                }
+                    SetForegroundWindow(windowHandle);
 
-                SetForegroundWindow(windowHandle);
-                X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(
+                    scollection = X509Certificate2UI.SelectFromCollection(
                     fcollection,
                     title,
                     message,
                     X509SelectionFlag.SingleSelection,
-                    windowHandle
-                );
+                    windowHandle);
+                } else
+                {
+                    scollection = X509Certificate2UI.SelectFromCollection(
+                    fcollection,
+                    title,
+                    message,
+                    X509SelectionFlag.SingleSelection);
+                }
+
                 if (scollection != null && scollection.Count == 1)
                 {
                     cert = scollection[0];
