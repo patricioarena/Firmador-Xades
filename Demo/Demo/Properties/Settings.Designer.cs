@@ -73,7 +73,7 @@ namespace Demo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://authentica.fepba.gov.ar")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://authentica.fepba.gov.ar/")]
         public string FiscaliaWeb {
             get {
                 return ((string)(this["FiscaliaWeb"]));
@@ -145,7 +145,7 @@ namespace Demo.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3.0.4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3.0.8")]
         public string Version {
             get {
                 return ((string)(this["Version"]));

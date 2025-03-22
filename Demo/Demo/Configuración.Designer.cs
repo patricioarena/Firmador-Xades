@@ -417,6 +417,21 @@ namespace Demo
             pictureBox11.Visible = false;
             pictureBox11.WaitOnLoad = true;
             // 
+            // checkBox1
+            // 
+            checkBox1.BackColor = System.Drawing.Color.Silver;
+            checkBox1.FlatStyle = FlatStyle.Flat;
+            checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            checkBox1.Location = new System.Drawing.Point(15, 443);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new System.Drawing.Size(163, 37);
+            checkBox1.TabIndex = 0;
+            checkBox1.Text = "Iniciar con Windows";
+            checkBox1.UseVisualStyleBackColor = false;
+            checkBox1.Visible = false;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // label1
             // 
             label1.BackColor = System.Drawing.Color.Silver;
