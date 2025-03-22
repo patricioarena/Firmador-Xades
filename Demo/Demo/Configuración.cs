@@ -10,9 +10,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Demo
@@ -57,6 +59,8 @@ namespace Demo
         {
             this.InitializeComponent();
 
+            GetDataAsync().ContinueWith(Console.WriteLine);
+
             //if (IsFirstRun())
             //{
             //    RegisterStartup();
@@ -84,6 +88,21 @@ namespace Demo
                 _instance = new Signature();
             }
             return _instance;
+        }
+
+        private static async Task<string> GetDataAsync()
+        {
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage response = await httpClient.GetAsync("https://localhost:8400/api/signature/ping");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                return $"Error: {ex.Message}";
+            }
         }
 
         private void pictureBox11_Paint(object sender, PaintEventArgs e)
