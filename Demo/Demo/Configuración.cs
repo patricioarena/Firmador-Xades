@@ -311,7 +311,6 @@ namespace Demo
             //Console.WriteLine("entré al boton");
         }
 
-        
         // ahora no se registra mas la app si no un script intermedio para que la desisntalaacion sea lipia
         // la version anterior dejaba el registro con la referencia a Authentica
 
@@ -511,6 +510,26 @@ namespace Demo
         {
             button1.BackgroundImage =
                 (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton_certificados");
+        }
+        private void resetWindows_MouseHover(object sender, EventArgs e)
+        {
+            resetWindowsButton.BackgroundImage =
+                (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton-reiniciar-hover");
+        }
+
+        private void resetWindows_MouseLeave(object sender, EventArgs e)
+        {
+            resetWindowsButton.BackgroundImage =
+                (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton-reiniciar");
+        }
+
+        private void resetWindows_Leave(object sender, EventArgs e)
+        {
+            //Console.WriteLine("sali del boton");
+        }
+        private void resetWindows_Enter(object sender, EventArgs e)
+        {
+            //Console.WriteLine("entré al boton");
         }
 
         //private void CreateSubKeyFirstRun()

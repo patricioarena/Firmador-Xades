@@ -58,6 +58,9 @@ namespace Demo
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             panel2 = new Panel();
+            panelServiceStatus = new Panel();
+            resetWindowsButton = new Button();
+            flowErrorLayoutPanel = new FlowLayoutPanel();
             settings_panel = new Panel();
             onti_checkBox = new CheckBox();
             checkBox1 = new CheckBox();
@@ -84,6 +87,7 @@ namespace Demo
             labelVersion = new Label();
             contextMenuStrip1.SuspendLayout();
             panel2.SuspendLayout();
+            panelServiceStatus.SuspendLayout();
             settings_panel.SuspendLayout();
             panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -131,6 +135,7 @@ namespace Demo
             // panel2
             // 
             panel2.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            panel2.Controls.Add(panelServiceStatus);
             panel2.Controls.Add(settings_panel);
             panel2.Controls.Add(button2);
             panel2.Controls.Add(panel7);
@@ -143,10 +148,50 @@ namespace Demo
             panel2.TabIndex = 6;
             panel2.Paint += panel2_Paint;
             // 
+            // panelServiceStatus
+            // 
+            panelServiceStatus.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            panelServiceStatus.Controls.Add(resetWindowsButton);
+            panelServiceStatus.Controls.Add(flowErrorLayoutPanel);
+            panelServiceStatus.Location = new System.Drawing.Point(3, 110);
+            panelServiceStatus.Name = "panelServiceStatus";
+            panelServiceStatus.Size = new System.Drawing.Size(407, 297);
+            panelServiceStatus.TabIndex = 25;
+            // 
+            // resetWindowsButton
+            // 
+            resetWindowsButton.BackColor = System.Drawing.Color.Transparent;
+            resetWindowsButton.BackgroundImage = (System.Drawing.Image)resources.GetObject("resetWindowsButton.BackgroundImage");
+            resetWindowsButton.BackgroundImageLayout = ImageLayout.Stretch;
+            resetWindowsButton.Cursor = Cursors.Hand;
+            resetWindowsButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            resetWindowsButton.FlatAppearance.BorderSize = 0;
+            resetWindowsButton.FlatStyle = FlatStyle.Flat;
+            resetWindowsButton.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            resetWindowsButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            resetWindowsButton.Location = new System.Drawing.Point(90, 136);
+            resetWindowsButton.Name = "resetWindowsButton";
+            resetWindowsButton.Size = new System.Drawing.Size(227, 46);
+            resetWindowsButton.TabIndex = 1;
+            resetWindowsButton.UseVisualStyleBackColor = false;
+            resetWindowsButton.Enter += resetWindows_Enter;
+            resetWindowsButton.Leave += resetWindows_Leave;
+            resetWindowsButton.MouseLeave += resetWindows_MouseLeave;
+            resetWindowsButton.MouseHover += resetWindows_MouseHover;
+            // 
+            // flowErrorLayoutPanel
+            // 
+            flowErrorLayoutPanel.BackgroundImage = Properties.Resources.authentica_alert;
+            flowErrorLayoutPanel.Location = new System.Drawing.Point(28, 31);
+            flowErrorLayoutPanel.Name = "flowErrorLayoutPanel";
+            flowErrorLayoutPanel.Size = new System.Drawing.Size(351, 73);
+            flowErrorLayoutPanel.TabIndex = 0;
+            // 
             // settings_panel
             // 
             settings_panel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
             settings_panel.Controls.Add(onti_checkBox);
+            settings_panel.Controls.Add(checkBox1);
             settings_panel.Location = new System.Drawing.Point(0, 202);
             settings_panel.Name = "settings_panel";
             settings_panel.Size = new System.Drawing.Size(413, 208);
@@ -160,7 +205,7 @@ namespace Demo
             onti_checkBox.FlatStyle = FlatStyle.Flat;
             onti_checkBox.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             onti_checkBox.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            onti_checkBox.Location = new System.Drawing.Point(154, 99);
+            onti_checkBox.Location = new System.Drawing.Point(156, 89);
             onti_checkBox.Name = "onti_checkBox";
             onti_checkBox.Size = new System.Drawing.Size(94, 37);
             onti_checkBox.TabIndex = 24;
@@ -175,12 +220,13 @@ namespace Demo
             checkBox1.FlatStyle = FlatStyle.Flat;
             checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox1.Location = new System.Drawing.Point(10, 442);
+            checkBox1.Location = new System.Drawing.Point(121, 19);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new System.Drawing.Size(163, 37);
             checkBox1.TabIndex = 0;
             checkBox1.Text = "Iniciar con Windows";
             checkBox1.UseVisualStyleBackColor = false;
+            checkBox1.Visible = false;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // button2
@@ -192,7 +238,7 @@ namespace Demo
             button2.FlatAppearance.BorderSize = 0;
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            button2.Location = new System.Drawing.Point(359, 137);
+            button2.Location = new System.Drawing.Point(368, 9);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(42, 38);
             button2.TabIndex = 24;
@@ -417,21 +463,6 @@ namespace Demo
             pictureBox11.Visible = false;
             pictureBox11.WaitOnLoad = true;
             // 
-            // checkBox1
-            // 
-            checkBox1.BackColor = System.Drawing.Color.Silver;
-            checkBox1.FlatStyle = FlatStyle.Flat;
-            checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox1.Location = new System.Drawing.Point(15, 443);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(163, 37);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "Iniciar con Windows";
-            checkBox1.UseVisualStyleBackColor = false;
-            checkBox1.Visible = false;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
-            // 
             // label1
             // 
             label1.BackColor = System.Drawing.Color.Silver;
@@ -463,7 +494,6 @@ namespace Demo
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.SystemColors.Control;
             ClientSize = new System.Drawing.Size(413, 484);
-            Controls.Add(checkBox1);
             Controls.Add(labelVersion);
             Controls.Add(rotatedLabel1);
             Controls.Add(pictureBox12);
@@ -482,6 +512,7 @@ namespace Demo
             Resize += Form_Hide;
             contextMenuStrip1.ResumeLayout(false);
             panel2.ResumeLayout(false);
+            panelServiceStatus.ResumeLayout(false);
             settings_panel.ResumeLayout(false);
             panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -526,6 +557,9 @@ namespace Demo
         private CheckBox onti_checkBox;
         private Button button2;
         private Panel settings_panel;
+        private Panel panelServiceStatus;
+        private FlowLayoutPanel flowErrorLayoutPanel;
+        private Button resetWindowsButton;
     }
 }
 
