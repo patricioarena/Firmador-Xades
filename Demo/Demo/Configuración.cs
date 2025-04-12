@@ -73,6 +73,7 @@ namespace Demo
             this.settingsPanel.Visible = false;
             this.ontiCheckBox.Visible = true;
             this.serviceStatusPanel.Visible = false;
+            this.settingsButton.Visible = true;
             this.mainPanel.BringToFront();
 
             GetDataAsync().ContinueWith(task =>
@@ -107,8 +108,10 @@ namespace Demo
 
         private void ShouldBeShowErrorView(bool isNeedViewError)
         {
-            if (!isNeedViewError)
+            if (isNeedViewError)
             {
+                this.settingsButton.Visible = false;
+
                 this.mainPanel.SendToBack();
                 this.mainPanel.Visible = false;
 
@@ -180,7 +183,7 @@ namespace Demo
 
             if (certPanel.Visible == true)
             {
-                button2.Enabled = false;
+                settingsButton.Enabled = false;
                 mainPanel.SendToBack();
                 certPanel.BringToFront();
                 listView1.Refresh();
@@ -188,7 +191,7 @@ namespace Demo
             }
             if (certPanel.Visible == false)
             {
-                button2.Enabled = true;
+                settingsButton.Enabled = true;
                 certPanel.SendToBack();
                 mainPanel.BringToFront();
                 listView1.Refresh();

@@ -76,7 +76,7 @@ namespace Demo
             pictureErrorBox = new PictureBox();
             resetWindowsButton = new Button();
             button1 = new Button();
-            button2 = new Button();
+            settingsButton = new Button();
             rotatedLabel1 = new RotatedLabel();
             pictureBox12 = new PictureBox();
             pictureBox11 = new PictureBox();
@@ -385,21 +385,21 @@ namespace Demo
             button1.MouseLeave += button1_MouseLeave;
             button1.MouseHover += button1_MouseHover;
             // 
-            // button2
+            // settingsButton
             // 
-            button2.BackColor = System.Drawing.Color.Transparent;
-            button2.BackgroundImage = Properties.Resources.gear_40dp1;
-            button2.BackgroundImageLayout = ImageLayout.Stretch;
-            button2.Cursor = Cursors.Hand;
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            button2.Location = new System.Drawing.Point(371, -1);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(42, 38);
-            button2.TabIndex = 24;
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
+            settingsButton.BackColor = System.Drawing.Color.Transparent;
+            settingsButton.BackgroundImage = Properties.Resources.gear_40dp1;
+            settingsButton.BackgroundImageLayout = ImageLayout.Stretch;
+            settingsButton.Cursor = Cursors.Hand;
+            settingsButton.FlatAppearance.BorderSize = 0;
+            settingsButton.FlatStyle = FlatStyle.Flat;
+            settingsButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            settingsButton.Location = new System.Drawing.Point(371, -1);
+            settingsButton.Name = "settingsButton";
+            settingsButton.Size = new System.Drawing.Size(42, 38);
+            settingsButton.TabIndex = 24;
+            settingsButton.UseVisualStyleBackColor = false;
+            settingsButton.Click += button2_Click;
             // 
             // rotatedLabel1
             // 
@@ -480,7 +480,7 @@ namespace Demo
             Controls.Add(serviceStatusPanel);
             Controls.Add(mainPanel);
             Controls.Add(button1);
-            Controls.Add(button2);
+            Controls.Add(settingsButton);
             Controls.Add(pictureBox7);
             Controls.Add(labelVersion);
             Controls.Add(rotatedLabel1);
@@ -535,7 +535,7 @@ namespace Demo
         private RotatedLabel rotatedLabel1;
         private Label labelVersion;
         private CheckBox ontiCheckBox;
-        private Button button2;
+        private Button settingsButton;
         private Panel settingsPanel;
         private Panel serviceStatusPanel;
         private Button resetWindowsButton;
