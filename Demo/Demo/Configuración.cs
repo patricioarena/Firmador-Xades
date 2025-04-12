@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
@@ -59,13 +60,6 @@ namespace Demo
         {
             this.InitializeComponent();
 
-            GetDataAsync().ContinueWith(Console.WriteLine);
-
-            //if (IsFirstRun())
-            //{
-            //    RegisterStartup();
-            //}
-
             var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
             position = pictureBox12.PointToClient(position);
             rotatedLabel1.Parent = pictureBox12;
@@ -74,11 +68,17 @@ namespace Demo
             this.PublishVersion();
             LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
-            this.panel7.Visible = true;
-            this.panel2.Visible = true;
-            this.panel3.Visible = false;
-            this.settings_panel.Visible = false;
-            this.onti_checkBox.Visible = false;
+            this.mainPanel.Visible = true;
+            this.certPanel.Visible = false;
+            this.settingsPanel.Visible = false;
+            this.ontiCheckBox.Visible = true;
+            this.serviceStatusPanel.Visible = false;
+            this.mainPanel.BringToFront();
+
+            GetDataAsync().ContinueWith(task =>
+            {
+                this.Invoke(() => this.ShouldBeShowErrorView(task.Result));
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public static Signature GetInstance()
@@ -90,19 +90,36 @@ namespace Demo
             return _instance;
         }
 
-        private static async Task<string> GetDataAsync()
+        public static async Task<bool> GetDataAsync()
         {
             try
             {
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage response = await httpClient.GetAsync("https://localhost:8400/api/signature/ping");
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
+                return response.StatusCode != HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
-                return $"Error: {ex.Message}";
+                Console.WriteLine($"Error en GetDataAsync: {ex.Message}"); // Mejor loguear el error
+                return false;
             }
+        }
+
+        private void ShouldBeShowErrorView(bool isNeedViewError)
+        {
+            if (!isNeedViewError)
+            {
+                this.mainPanel.SendToBack();
+                this.mainPanel.Visible = false;
+
+                this.certPanel.SendToBack();
+                this.certPanel.Visible = false ;
+
+                this.serviceStatusPanel.BringToFront();
+                this.serviceStatusPanel.Visible = true;
+            }
+            this.Invalidate();
+            this.Refresh();
         }
 
         private void pictureBox11_Paint(object sender, PaintEventArgs e)
@@ -158,44 +175,42 @@ namespace Demo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            panel3.Visible = !panel3.Visible;
-            panel7.Visible = !panel7.Visible;
+            certPanel.Visible = !certPanel.Visible;
+            mainPanel.Visible = !mainPanel.Visible;
 
-            if (panel3.Visible == true)
+            if (certPanel.Visible == true)
             {
                 button2.Enabled = false;
-                panel7.SendToBack();
-                panel2.SendToBack();
-                panel3.BringToFront();
+                mainPanel.SendToBack();
+                certPanel.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            if (panel3.Visible == false)
+            if (certPanel.Visible == false)
             {
                 button2.Enabled = true;
-                panel3.SendToBack();
-                panel2.SendToBack();
-                panel7.BringToFront();
+                certPanel.SendToBack();
+                mainPanel.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            panel7.Refresh();
+            mainPanel.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            settings_panel.Visible = !settings_panel.Visible;
-            if (settings_panel.Visible == true)
+            settingsPanel.Visible = !settingsPanel.Visible;
+            if (settingsPanel.Visible == true)
             {
                 button1.Enabled = false;
-                settings_panel.BringToFront();
+                settingsPanel.BringToFront();
             }
-            if (settings_panel.Visible == false)
+            if (settingsPanel.Visible == false)
             {
                 button1.Enabled = true;
-                settings_panel.SendToBack();
+                settingsPanel.SendToBack();
             }
-            panel7.Refresh();
+            mainPanel.Refresh();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -293,21 +308,6 @@ namespace Demo
             X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == thumbprint).FirstOrDefault();
             X509Certificate2UI.DisplayCertificate(certificate);
         }
-        //private void LoadCheckeds()
-        //{
-        //    using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(_keyName))
-        //    {
-        //        List<string> names = registry.GetValueNames().ToList();
-        //        if (names.Contains(_applicationName).Equals(true))
-        //        {
-        //            checkBox1.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            checkBox1.Checked = false;
-        //        }
-        //    }
-        //}
 
         private void LoadCheckeds()
         {
@@ -323,27 +323,11 @@ namespace Demo
 
         private void button1_Leave(object sender, EventArgs e)
         {
-            //Console.WriteLine("sali del boton");
         }
         private void button1_Enter(object sender, EventArgs e)
         {
-            //Console.WriteLine("entré al boton");
         }
 
-        // ahora no se registra mas la app si no un script intermedio para que la desisntalaacion sea lipia
-        // la version anterior dejaba el registro con la referencia a Authentica
-
-        //private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (checkBox1.Checked == true)
-        //    {
-        //        Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
-        //    }
-        //    else
-        //    {
-        //        Registry.CurrentUser.OpenSubKey(_keyName, true).DeleteValue(_applicationName);
-        //    }
-        //}
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             StartupRegistryHelpers.RegisterStartupScript(checkBox1.Checked);
@@ -439,21 +423,19 @@ namespace Demo
 
         private void customButton5_Click(object sender, EventArgs e)
         {
-            panel2.Visible = !panel2.Visible;
+            certPanel.Visible = !certPanel.Visible;
 
-            if (panel2.Visible == true)
+            if (certPanel.Visible == true)
             {
-                panel3.SendToBack();
-                panel2.BringToFront();
-                panel7.BringToFront();
+                certPanel.SendToBack();
+                mainPanel.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            if (panel2.Visible == false)
+            if (certPanel.Visible == false)
             {
-                panel2.SendToBack();
-                panel7.SendToBack();
-                panel3.SendToBack();
+                certPanel.SendToBack();
+                mainPanel.SendToBack();
                 listView1.Refresh();
                 LoadViewList();
             }
@@ -461,8 +443,8 @@ namespace Demo
 
         private void customButton6_Click(object sender, EventArgs e)
         {
-            panel2.Visible = !panel2.Visible;
-            panel2.Refresh();
+            certPanel.Visible = !certPanel.Visible;
+            certPanel.Refresh();
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -544,62 +526,21 @@ namespace Demo
 
         private void resetWindows_Leave(object sender, EventArgs e)
         {
-            //Console.WriteLine("sali del boton");
         }
         private void resetWindows_Enter(object sender, EventArgs e)
         {
-            //Console.WriteLine("entré al boton");
         }
 
-        //private void CreateSubKeyFirstRun()
-        //{
-        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(_keyName, true))
-        //    {
-        //        if (key != null && key.GetValue(_applicationName) != null)
-        //        {
-        //            key.DeleteValue(_applicationName, false);
-        //        }
-        //    }
-
-        //    if (checkBox1.Checked)
-        //    {
-        //        Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
-        //    }
-        //}
-
-        //private bool IsFirstRun()
-        //{
-        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryPath, true))
-        //    {
-        //        if (key == null || key.GetValue(FirstRunKey) == null)
-        //        {
-        //            using (RegistryKey newKey = Registry.CurrentUser.CreateSubKey(RegistryPath))
-        //            {
-        //                newKey.SetValue(FirstRunKey, "1", RegistryValueKind.String);
-        //            }
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
-        //private void RegisterStartup()
-        //{
-        //    string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentica.exe");
-
-        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKeyPath, true))
-        //    {
-        //        if (key.GetValue(AppName) == null)
-        //        {
-        //            key.SetValue(AppName, $"\"{appPath}\"", RegistryValueKind.String);
-        //            //this.CreateSubKeyFirstRun();
-        //            StartupRegistryHelpers.RegisterStartupScript(true);
-        //            MessageBox.Show("Se ha registrado la aplicación para iniciarse con Windows automáticamente.");
-        //        }
-        //    }
-        //}
-
         private void pictureBox5_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void resetWindowsButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("shutdown", "/r /f /t 0");
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }
