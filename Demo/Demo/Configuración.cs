@@ -59,6 +59,13 @@ namespace Demo
         public Signature()
         {
             this.InitializeComponent();
+            var saraba = (bool)Properties.Settings.Default["Minimized"];
+            if ((bool)Properties.Settings.Default["Minimized"])
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
+                this.Hide();
+            }
 
             var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
             position = pictureBox12.PointToClient(position);
@@ -71,7 +78,7 @@ namespace Demo
             this.mainPanel.Visible = true;
             this.certPanel.Visible = false;
             this.settingsPanel.Visible = false;
-            this.ontiCheckBox.Visible = true;
+            this.CheckBoxOnti.Visible = true;
             this.serviceStatusPanel.Visible = false;
             this.settingsButton.Visible = true;
             this.mainPanel.BringToFront();
@@ -116,7 +123,7 @@ namespace Demo
                 this.mainPanel.Visible = false;
 
                 this.certPanel.SendToBack();
-                this.certPanel.Visible = false ;
+                this.certPanel.Visible = false;
 
                 this.serviceStatusPanel.BringToFront();
                 this.serviceStatusPanel.Visible = true;
@@ -316,11 +323,11 @@ namespace Demo
         {
             if (StartupRegistryHelpers.GetIniciarConWindows())
             {
-                checkBox1.Checked = true;
+                checkBoxIniciarConWindows.Checked = true;
             }
             else
             {
-                checkBox1.Checked = false;
+                checkBoxIniciarConWindows.Checked = false;
             }
         }
 
@@ -333,12 +340,14 @@ namespace Demo
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            StartupRegistryHelpers.RegisterStartupScript(checkBox1.Checked);
+            StartupRegistryHelpers.RegisterStartupScript(checkBoxIniciarConWindows.Checked);
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            Program._ontiChecked = !Program._ontiChecked;
+            //Program._ontiChecked = !Program._ontiChecked;
+            Properties.Settings.Default["OnlyOnti"] = this.CheckBoxOnti.Checked;
+            Properties.Settings.Default.Save();
         }
 
         void listView1_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -546,6 +555,12 @@ namespace Demo
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBoxMinimizado_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["Minimized"] = this.checkBoxMinimizado.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

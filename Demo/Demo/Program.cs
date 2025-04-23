@@ -25,13 +25,12 @@ namespace Demo
     {
         private static readonly int Port = Settings.Default.Port;
 
-        public static bool _ontiChecked = true;
+        //public static bool _ontiChecked = (bool)Properties.Settings.Default["OnlyOnti"];
 
         private static void Start(string[] args)
         {
-            //if (StartupRegistryHelpers.IsFirstRun())
-            //nahuel pidio que ahora se lo desabilitemos
-            StartupRegistryHelpers.RegisterStartupScript(true);
+            if (StartupRegistryHelpers.IsFirstRun())
+                StartupRegistryHelpers.RegisterStartupScript(true);
             
             // Inicia Kestrel en un hilo separado
             Task.Run(() =>

@@ -33,7 +33,7 @@ namespace Demo
 
             // Confirm user wants to close
             DialogResult result = MessageBox.Show(this, "        ¿Desea cerrar la aplicación?", "Cerrar", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            if (result == DialogResult.No)
             {
                 this.Hide();
                 this.notifyIcon.Visible = true;
@@ -63,14 +63,15 @@ namespace Demo
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
             mainPanel = new Panel();
+            settingsPanel = new Panel();
+            checkBoxMinimizado = new CheckBox();
+            CheckBoxOnti = new CheckBox();
+            checkBoxIniciarConWindows = new CheckBox();
             panel4 = new Panel();
             pictureBox5 = new PictureBox();
             label6 = new Label();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
-            settingsPanel = new Panel();
-            ontiCheckBox = new CheckBox();
-            checkBox1 = new CheckBox();
             panel9 = new Panel();
             serviceStatusPanel = new Panel();
             pictureErrorBox = new PictureBox();
@@ -86,11 +87,11 @@ namespace Demo
             contextMenuStrip1.SuspendLayout();
             certPanel.SuspendLayout();
             mainPanel.SuspendLayout();
+            settingsPanel.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            settingsPanel.SuspendLayout();
             serviceStatusPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureErrorBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
@@ -199,16 +200,70 @@ namespace Demo
             // mainPanel
             // 
             mainPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            mainPanel.Controls.Add(settingsPanel);
             mainPanel.Controls.Add(panel4);
             mainPanel.Controls.Add(pictureBox1);
             mainPanel.Controls.Add(pictureBox2);
-            mainPanel.Controls.Add(settingsPanel);
             mainPanel.Controls.Add(panel9);
             mainPanel.Location = new System.Drawing.Point(1, 194);
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new System.Drawing.Size(411, 224);
             mainPanel.TabIndex = 21;
             mainPanel.Paint += panel7_Paint_2;
+            // 
+            // settingsPanel
+            // 
+            settingsPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            settingsPanel.Controls.Add(checkBoxMinimizado);
+            settingsPanel.Controls.Add(CheckBoxOnti);
+            settingsPanel.Controls.Add(checkBoxIniciarConWindows);
+            settingsPanel.Location = new System.Drawing.Point(0, 1);
+            settingsPanel.Name = "settingsPanel";
+            settingsPanel.Size = new System.Drawing.Size(413, 208);
+            settingsPanel.TabIndex = 22;
+            // 
+            // checkBoxMinimizado
+            // 
+            checkBoxMinimizado.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            checkBoxMinimizado.FlatStyle = FlatStyle.System;
+            checkBoxMinimizado.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBoxMinimizado.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            checkBoxMinimizado.Location = new System.Drawing.Point(33, 78);
+            checkBoxMinimizado.Name = "checkBoxMinimizado";
+            checkBoxMinimizado.Size = new System.Drawing.Size(163, 37);
+            checkBoxMinimizado.TabIndex = 25;
+            checkBoxMinimizado.Text = "Iniciar Minimizado";
+            checkBoxMinimizado.UseVisualStyleBackColor = false;
+            checkBoxMinimizado.CheckedChanged += checkBoxMinimizado_CheckedChanged;
+            // 
+            // CheckBoxOnti
+            // 
+            CheckBoxOnti.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            CheckBoxOnti.Cursor = Cursors.Hand;
+            CheckBoxOnti.FlatStyle = FlatStyle.System;
+            CheckBoxOnti.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            CheckBoxOnti.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            CheckBoxOnti.Location = new System.Drawing.Point(33, 33);
+            CheckBoxOnti.Name = "CheckBoxOnti";
+            CheckBoxOnti.Size = new System.Drawing.Size(80, 20);
+            CheckBoxOnti.TabIndex = 24;
+            CheckBoxOnti.Text = "Onti";
+            CheckBoxOnti.UseVisualStyleBackColor = false;
+            CheckBoxOnti.CheckedChanged += checkBox2_CheckedChanged;
+            // 
+            // checkBoxIniciarConWindows
+            // 
+            checkBoxIniciarConWindows.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            checkBoxIniciarConWindows.FlatStyle = FlatStyle.System;
+            checkBoxIniciarConWindows.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBoxIniciarConWindows.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            checkBoxIniciarConWindows.Location = new System.Drawing.Point(33, 51);
+            checkBoxIniciarConWindows.Name = "checkBoxIniciarConWindows";
+            checkBoxIniciarConWindows.Size = new System.Drawing.Size(163, 37);
+            checkBoxIniciarConWindows.TabIndex = 0;
+            checkBoxIniciarConWindows.Text = "Iniciar con Windows";
+            checkBoxIniciarConWindows.UseVisualStyleBackColor = false;
+            checkBoxIniciarConWindows.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // panel4
             // 
@@ -269,49 +324,6 @@ namespace Demo
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 2;
             pictureBox2.TabStop = false;
-            // 
-            // settingsPanel
-            // 
-            settingsPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
-            settingsPanel.Controls.Add(ontiCheckBox);
-            settingsPanel.Controls.Add(checkBox1);
-            settingsPanel.Location = new System.Drawing.Point(0, 1);
-            settingsPanel.Name = "settingsPanel";
-            settingsPanel.Size = new System.Drawing.Size(413, 208);
-            settingsPanel.TabIndex = 22;
-            // 
-            // ontiCheckBox
-            // 
-            ontiCheckBox.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
-            ontiCheckBox.Checked = true;
-            ontiCheckBox.CheckState = CheckState.Checked;
-            ontiCheckBox.Cursor = Cursors.Hand;
-            ontiCheckBox.Enabled = false;
-            ontiCheckBox.FlatStyle = FlatStyle.System;
-            ontiCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            ontiCheckBox.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            ontiCheckBox.Location = new System.Drawing.Point(169, 33);
-            ontiCheckBox.Name = "ontiCheckBox";
-            ontiCheckBox.Size = new System.Drawing.Size(80, 20);
-            ontiCheckBox.TabIndex = 24;
-            ontiCheckBox.Text = "Onti";
-            ontiCheckBox.UseVisualStyleBackColor = false;
-            ontiCheckBox.CheckedChanged += checkBox2_CheckedChanged;
-            // 
-            // checkBox1
-            // 
-            checkBox1.BackColor = System.Drawing.Color.Silver;
-            checkBox1.FlatStyle = FlatStyle.Flat;
-            checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox1.Location = new System.Drawing.Point(247, 168);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(163, 37);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "Iniciar con Windows";
-            checkBox1.UseVisualStyleBackColor = false;
-            checkBox1.Visible = false;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // panel9
             // 
@@ -388,15 +400,15 @@ namespace Demo
             // settingsButton
             // 
             settingsButton.BackColor = System.Drawing.Color.Transparent;
-            settingsButton.BackgroundImage = Properties.Resources.gear_40dp1;
+            settingsButton.BackgroundImage = (System.Drawing.Image)resources.GetObject("settingsButton.BackgroundImage");
             settingsButton.BackgroundImageLayout = ImageLayout.Stretch;
             settingsButton.Cursor = Cursors.Hand;
             settingsButton.FlatAppearance.BorderSize = 0;
             settingsButton.FlatStyle = FlatStyle.Flat;
             settingsButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            settingsButton.Location = new System.Drawing.Point(371, -1);
+            settingsButton.Location = new System.Drawing.Point(373, 12);
             settingsButton.Name = "settingsButton";
-            settingsButton.Size = new System.Drawing.Size(42, 38);
+            settingsButton.Size = new System.Drawing.Size(29, 29);
             settingsButton.TabIndex = 24;
             settingsButton.UseVisualStyleBackColor = false;
             settingsButton.Click += button2_Click;
@@ -477,7 +489,6 @@ namespace Demo
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.SystemColors.Control;
             ClientSize = new System.Drawing.Size(413, 449);
-            Controls.Add(serviceStatusPanel);
             Controls.Add(mainPanel);
             Controls.Add(button1);
             Controls.Add(settingsButton);
@@ -488,6 +499,7 @@ namespace Demo
             Controls.Add(pictureBox11);
             Controls.Add(certPanel);
             Controls.Add(certButtonPanel);
+            Controls.Add(serviceStatusPanel);
             Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             ForeColor = System.Drawing.Color.Black;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -501,11 +513,11 @@ namespace Demo
             contextMenuStrip1.ResumeLayout(false);
             certPanel.ResumeLayout(false);
             mainPanel.ResumeLayout(false);
+            settingsPanel.ResumeLayout(false);
             panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            settingsPanel.ResumeLayout(false);
             serviceStatusPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureErrorBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
@@ -529,12 +541,12 @@ namespace Demo
         private PictureBox pictureBox5;
         private Label label6;
         private Panel mainPanel;
-        private CheckBox checkBox1;
+        private CheckBox checkBoxIniciarConWindows;
         private PictureBox pictureBox11;
         private PictureBox pictureBox12;
         private RotatedLabel rotatedLabel1;
         private Label labelVersion;
-        private CheckBox ontiCheckBox;
+        private CheckBox CheckBoxOnti;
         private Button settingsButton;
         private Panel settingsPanel;
         private Panel serviceStatusPanel;
@@ -547,6 +559,7 @@ namespace Demo
         private Label label3;
         private Label label2;
         private Panel certButtonPanel;
+        private CheckBox checkBoxMinimizado;
     }
 }
 

@@ -50,5 +50,11 @@
     <Setting Name="OntiIssuer" Type="System.String" Scope="Application">
       <Value Profile="(Default)">30680604572</Value>
     </Setting>
+    <Setting Name="OnlyOnti" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Minimized" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
