@@ -59,7 +59,8 @@ namespace Demo
         public Signature()
         {
             this.InitializeComponent();
-            var saraba = (bool)Properties.Settings.Default["Minimized"];
+            checkBoxMinimizado.Checked = (bool)Properties.Settings.Default["Minimized"];
+            CheckBoxOnti.Checked = (bool)Properties.Settings.Default["OnlyOnti"];
             if ((bool)Properties.Settings.Default["Minimized"])
             {
                 this.WindowState = FormWindowState.Minimized;
@@ -78,7 +79,6 @@ namespace Demo
             this.mainPanel.Visible = true;
             this.certPanel.Visible = false;
             this.settingsPanel.Visible = false;
-            this.CheckBoxOnti.Visible = true;
             this.serviceStatusPanel.Visible = false;
             this.settingsButton.Visible = true;
             this.mainPanel.BringToFront();
