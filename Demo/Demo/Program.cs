@@ -11,7 +11,9 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
+using System.Security.Policy;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,13 +24,13 @@ namespace Demo
     internal static class Program
     {
         private static readonly int Port = Settings.Default.Port;
-        public static bool _ontiChecked = true;
+
+        //public static bool _ontiChecked = (bool)Properties.Settings.Default["OnlyOnti"];
 
         private static void Start(string[] args)
         {
-            //if (StartupRegistryHelpers.IsFirstRun())
-            //nahuel pidio que ahora se lo desabilitemos
-            StartupRegistryHelpers.RegisterStartupScript(true);
+            if (StartupRegistryHelpers.IsFirstRun())
+                StartupRegistryHelpers.RegisterStartupScript(true);
             
             // Inicia Kestrel en un hilo separado
             Task.Run(() =>

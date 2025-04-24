@@ -251,6 +251,9 @@ dotnet_naming_style.begins_with_i.capitalization = pascal_case
 # IDE0161: Convertir en namespace con ámbito de archivo
 dotnet_diagnostic.IDE0161.severity = suggestion
 
+# CA1416: Validar la compatibilidad de la plataforma
+dotnet_diagnostic.CA1416.severity = none
+
 [*.{cs,vb}]
 end_of_line = crlf
 dotnet_style_allow_multiple_blank_lines_experimental = false:error

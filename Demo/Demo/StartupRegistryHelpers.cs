@@ -93,7 +93,6 @@ internal static class StartupRegistryHelpers
             return (names.Contains(registryValueName).Equals(true));
         }
     }
-
     public static bool IsFirstRun()
     {
         using (RegistryKey key = Registry.CurrentUser.OpenSubKey(authenticaConfigPath, true))

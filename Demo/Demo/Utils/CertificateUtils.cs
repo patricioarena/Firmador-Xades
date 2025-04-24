@@ -118,7 +118,7 @@ namespace Demo.Utils
                 store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
                 X509Certificate2Collection collection = (X509Certificate2Collection)store.Certificates;
                 X509Certificate2Collection fcollection = (X509Certificate2Collection)collection.Find(X509FindType.FindByTimeValid, DateTime.Now, false);
-                if (Program._ontiChecked)
+                if ((bool)Properties.Settings.Default["OnlyOnti"])
                     fcollection = filterBySerialNumber(fcollection);
                 if (string.IsNullOrEmpty(title))
                 {

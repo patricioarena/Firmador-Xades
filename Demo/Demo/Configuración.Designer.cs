@@ -32,14 +32,13 @@ namespace Demo
                 return;
 
             // Confirm user wants to close
-            DialogResult result = MessageBox.Show(this, "¿Desea minimizar al área de notificaciones?", "Minimizar", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            DialogResult result = MessageBox.Show(this, "        ¿Desea cerrar la aplicación?", "Cerrar", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
             {
                 this.Hide();
                 this.notifyIcon.Visible = true;
                 e.Cancel = true;
             }
-
         }
 
         #region Código generado por el Diseñador de Windows Forms
@@ -57,41 +56,47 @@ namespace Demo
             showToolStripMenuItem = new ToolStripMenuItem();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
-            panel2 = new Panel();
-            panel7 = new Panel();
-            pictureBox2 = new PictureBox();
-            pictureBox1 = new PictureBox();
-            panel9 = new Panel();
-            panel4 = new Panel();
-            pictureBox5 = new PictureBox();
-            label6 = new Label();
-            pictureBox7 = new PictureBox();
-            panel3 = new Panel();
+            certPanel = new Panel();
             label3 = new Label();
             label2 = new Label();
             listView1 = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
+            mainPanel = new Panel();
+            settingsPanel = new Panel();
+            checkBoxMinimizado = new CheckBox();
+            CheckBoxOnti = new CheckBox();
+            checkBoxIniciarConWindows = new CheckBox();
+            panel4 = new Panel();
+            pictureBox5 = new PictureBox();
+            label6 = new Label();
+            pictureBox1 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            panel9 = new Panel();
+            serviceStatusPanel = new Panel();
+            pictureErrorBox = new PictureBox();
+            resetWindowsButton = new Button();
             button1 = new Button();
+            settingsButton = new Button();
             rotatedLabel1 = new RotatedLabel();
             pictureBox12 = new PictureBox();
             pictureBox11 = new PictureBox();
-            customButton7 = new CustomButton();
-            checkBox1 = new CheckBox();
-            label1 = new Label();
             labelVersion = new Label();
-            checkBox2 = new CheckBox();
+            pictureBox7 = new PictureBox();
+            certButtonPanel = new Panel();
             contextMenuStrip1.SuspendLayout();
-            panel2.SuspendLayout();
-            panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            certPanel.SuspendLayout();
+            mainPanel.SuspendLayout();
+            settingsPanel.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
-            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            serviceStatusPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureErrorBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             SuspendLayout();
             // 
             // notifyIcon
@@ -126,62 +131,139 @@ namespace Demo
             saveFileDialog1.Filter = "Archivos PDF|*.pdf";
             saveFileDialog1.Title = "Guardar archivo PDF";
             // 
-            // panel2
+            // certPanel
             // 
-            panel2.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
-            panel2.Controls.Add(panel7);
-            panel2.Controls.Add(pictureBox7);
-            panel2.Controls.Add(panel3);
-            panel2.Controls.Add(button1);
-            panel2.Location = new System.Drawing.Point(0, 26);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(413, 410);
-            panel2.TabIndex = 6;
-            panel2.Paint += panel2_Paint;
+            certPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            certPanel.Controls.Add(label3);
+            certPanel.Controls.Add(label2);
+            certPanel.Controls.Add(listView1);
+            certPanel.Location = new System.Drawing.Point(0, 195);
+            certPanel.Name = "certPanel";
+            certPanel.Size = new System.Drawing.Size(413, 224);
+            certPanel.TabIndex = 6;
+            certPanel.Paint += panel2_Paint;
             // 
-            // panel7
+            // label3
             // 
-            panel7.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
-            panel7.Controls.Add(pictureBox2);
-            panel7.Controls.Add(pictureBox1);
-            panel7.Controls.Add(panel9);
-            panel7.Controls.Add(panel4);
-            panel7.Location = new System.Drawing.Point(1, 203);
-            panel7.Name = "panel7";
-            panel7.Size = new System.Drawing.Size(411, 208);
-            panel7.TabIndex = 21;
-            panel7.Paint += panel7_Paint_2;
+            label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            label3.BorderStyle = BorderStyle.FixedSingle;
+            label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            label3.Location = new System.Drawing.Point(297, 11);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(105, 24);
+            label3.TabIndex = 8;
+            label3.Text = "Verificación";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            label3.Click += label3_Click;
             // 
-            // pictureBox2
+            // label2
             // 
-            pictureBox2.Image = Properties.Resources.logo_cife_color_v2;
-            pictureBox2.Location = new System.Drawing.Point(251, 18);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new System.Drawing.Size(105, 41);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 2;
-            pictureBox2.TabStop = false;
+            label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            label2.BorderStyle = BorderStyle.FixedSingle;
+            label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            label2.Location = new System.Drawing.Point(12, 11);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(285, 24);
+            label2.TabIndex = 7;
+            label2.Text = "Certificados";
+            label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pictureBox1
+            // listView1
             // 
-            pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            pictureBox1.Image = Properties.Resources.logo_fiscalia;
-            pictureBox1.Location = new System.Drawing.Point(30, 18);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new System.Drawing.Size(192, 41);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
+            listView1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            listView1.BorderStyle = BorderStyle.FixedSingle;
+            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
+            listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            listView1.FullRowSelect = true;
+            listView1.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            listView1.Location = new System.Drawing.Point(12, 11);
+            listView1.Name = "listView1";
+            listView1.Size = new System.Drawing.Size(390, 199);
+            listView1.TabIndex = 1;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.Details;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            listView1.KeyDown += ListView_KeyDown;
+            listView1.MouseDoubleClick += ListView1MouseDoubleClick;
             // 
-            // panel9
+            // columnHeader1
             // 
-            panel9.BorderStyle = BorderStyle.FixedSingle;
-            panel9.ForeColor = System.Drawing.SystemColors.ControlDark;
-            panel9.Location = new System.Drawing.Point(14, 88);
-            panel9.Name = "panel9";
-            panel9.Size = new System.Drawing.Size(386, 1);
-            panel9.TabIndex = 18;
+            columnHeader1.Text = "Certificados";
+            columnHeader1.Width = 273;
+            // 
+            // columnHeader2
+            // 
+            columnHeader2.Text = "Verificación";
+            columnHeader2.TextAlign = HorizontalAlignment.Center;
+            columnHeader2.Width = 90;
+            // 
+            // mainPanel
+            // 
+            mainPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            mainPanel.Controls.Add(settingsPanel);
+            mainPanel.Controls.Add(panel4);
+            mainPanel.Controls.Add(pictureBox1);
+            mainPanel.Controls.Add(pictureBox2);
+            mainPanel.Controls.Add(panel9);
+            mainPanel.Location = new System.Drawing.Point(1, 194);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new System.Drawing.Size(411, 224);
+            mainPanel.TabIndex = 21;
+            mainPanel.Paint += panel7_Paint_2;
+            // 
+            // settingsPanel
+            // 
+            settingsPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            settingsPanel.Controls.Add(checkBoxMinimizado);
+            settingsPanel.Controls.Add(CheckBoxOnti);
+            settingsPanel.Controls.Add(checkBoxIniciarConWindows);
+            settingsPanel.Location = new System.Drawing.Point(0, 1);
+            settingsPanel.Name = "settingsPanel";
+            settingsPanel.Size = new System.Drawing.Size(413, 208);
+            settingsPanel.TabIndex = 22;
+            // 
+            // checkBoxMinimizado
+            // 
+            checkBoxMinimizado.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            checkBoxMinimizado.FlatStyle = FlatStyle.System;
+            checkBoxMinimizado.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBoxMinimizado.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            checkBoxMinimizado.Location = new System.Drawing.Point(33, 78);
+            checkBoxMinimizado.Name = "checkBoxMinimizado";
+            checkBoxMinimizado.Size = new System.Drawing.Size(163, 37);
+            checkBoxMinimizado.TabIndex = 25;
+            checkBoxMinimizado.Text = "Iniciar Minimizado";
+            checkBoxMinimizado.UseVisualStyleBackColor = false;
+            checkBoxMinimizado.CheckedChanged += checkBoxMinimizado_CheckedChanged;
+            // 
+            // CheckBoxOnti
+            // 
+            CheckBoxOnti.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            CheckBoxOnti.Cursor = Cursors.Hand;
+            CheckBoxOnti.FlatStyle = FlatStyle.System;
+            CheckBoxOnti.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            CheckBoxOnti.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            CheckBoxOnti.Location = new System.Drawing.Point(33, 33);
+            CheckBoxOnti.Name = "CheckBoxOnti";
+            CheckBoxOnti.Size = new System.Drawing.Size(80, 20);
+            CheckBoxOnti.TabIndex = 24;
+            CheckBoxOnti.Text = "Onti";
+            CheckBoxOnti.UseVisualStyleBackColor = false;
+            CheckBoxOnti.CheckedChanged += checkBox2_CheckedChanged;
+            // 
+            // checkBoxIniciarConWindows
+            // 
+            checkBoxIniciarConWindows.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            checkBoxIniciarConWindows.FlatStyle = FlatStyle.System;
+            checkBoxIniciarConWindows.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBoxIniciarConWindows.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
+            checkBoxIniciarConWindows.Location = new System.Drawing.Point(33, 51);
+            checkBoxIniciarConWindows.Name = "checkBoxIniciarConWindows";
+            checkBoxIniciarConWindows.Size = new System.Drawing.Size(163, 37);
+            checkBoxIniciarConWindows.TabIndex = 0;
+            checkBoxIniciarConWindows.Text = "Iniciar con Windows";
+            checkBoxIniciarConWindows.UseVisualStyleBackColor = false;
+            checkBoxIniciarConWindows.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // panel4
             // 
@@ -221,80 +303,77 @@ namespace Demo
             label6.MouseLeave += label6_MouseLeave;
             label6.MouseMove += label6_MouseMove;
             // 
-            // pictureBox7
+            // pictureBox1
             // 
-            pictureBox7.BackColor = System.Drawing.Color.Transparent;
-            pictureBox7.Image = (System.Drawing.Image)resources.GetObject("pictureBox7.Image");
-            pictureBox7.Location = new System.Drawing.Point(-3, 0);
-            pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new System.Drawing.Size(420, 104);
-            pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox7.TabIndex = 23;
-            pictureBox7.TabStop = false;
+            pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            pictureBox1.Image = Properties.Resources.logo_fiscalia;
+            pictureBox1.Location = new System.Drawing.Point(30, 18);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new System.Drawing.Size(192, 41);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 1;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
             // 
-            // panel3
+            // pictureBox2
             // 
-            panel3.Controls.Add(label3);
-            panel3.Controls.Add(label2);
-            panel3.Controls.Add(listView1);
-            panel3.Location = new System.Drawing.Point(10, 203);
-            panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(390, 199);
-            panel3.TabIndex = 7;
-            panel3.Visible = false;
+            pictureBox2.Image = Properties.Resources.logo_cife_color_v2;
+            pictureBox2.Location = new System.Drawing.Point(251, 18);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new System.Drawing.Size(105, 41);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 2;
+            pictureBox2.TabStop = false;
             // 
-            // label3
+            // panel9
             // 
-            label3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            label3.BorderStyle = BorderStyle.FixedSingle;
-            label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label3.Location = new System.Drawing.Point(285, 0);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(105, 24);
-            label3.TabIndex = 8;
-            label3.Text = "Verificación";
-            label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            panel9.BorderStyle = BorderStyle.FixedSingle;
+            panel9.ForeColor = System.Drawing.SystemColors.ControlDark;
+            panel9.Location = new System.Drawing.Point(14, 88);
+            panel9.Name = "panel9";
+            panel9.Size = new System.Drawing.Size(386, 1);
+            panel9.TabIndex = 18;
             // 
-            // label2
+            // serviceStatusPanel
             // 
-            label2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            label2.BorderStyle = BorderStyle.FixedSingle;
-            label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label2.Location = new System.Drawing.Point(0, 0);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(285, 24);
-            label2.TabIndex = 7;
-            label2.Text = "Certificados";
-            label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            serviceStatusPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            serviceStatusPanel.Controls.Add(pictureErrorBox);
+            serviceStatusPanel.Controls.Add(resetWindowsButton);
+            serviceStatusPanel.Location = new System.Drawing.Point(-1, 95);
+            serviceStatusPanel.Name = "serviceStatusPanel";
+            serviceStatusPanel.Size = new System.Drawing.Size(413, 322);
+            serviceStatusPanel.TabIndex = 25;
             // 
-            // listView1
+            // pictureErrorBox
             // 
-            listView1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            listView1.BorderStyle = BorderStyle.FixedSingle;
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
-            listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            listView1.FullRowSelect = true;
-            listView1.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listView1.Location = new System.Drawing.Point(0, 0);
-            listView1.Name = "listView1";
-            listView1.Size = new System.Drawing.Size(390, 198);
-            listView1.TabIndex = 1;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
-            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
-            listView1.KeyDown += ListView_KeyDown;
-            listView1.MouseDoubleClick += ListView1MouseDoubleClick;
+            pictureErrorBox.BackgroundImage = Properties.Resources.authentica_alert;
+            pictureErrorBox.Location = new System.Drawing.Point(41, 56);
+            pictureErrorBox.Name = "pictureErrorBox";
+            pictureErrorBox.Size = new System.Drawing.Size(341, 65);
+            pictureErrorBox.TabIndex = 2;
+            pictureErrorBox.TabStop = false;
             // 
-            // columnHeader1
+            // resetWindowsButton
             // 
-            columnHeader1.Text = "Certificados";
-            columnHeader1.Width = 273;
-            // 
-            // columnHeader2
-            // 
-            columnHeader2.Text = "Verificación";
-            columnHeader2.TextAlign = HorizontalAlignment.Center;
-            columnHeader2.Width = 90;
+            resetWindowsButton.BackColor = System.Drawing.Color.Transparent;
+            resetWindowsButton.BackgroundImage = (System.Drawing.Image)resources.GetObject("resetWindowsButton.BackgroundImage");
+            resetWindowsButton.BackgroundImageLayout = ImageLayout.Stretch;
+            resetWindowsButton.Cursor = Cursors.Hand;
+            resetWindowsButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            resetWindowsButton.FlatAppearance.BorderSize = 0;
+            resetWindowsButton.FlatStyle = FlatStyle.Flat;
+            resetWindowsButton.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            resetWindowsButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            resetWindowsButton.Location = new System.Drawing.Point(94, 191);
+            resetWindowsButton.Name = "resetWindowsButton";
+            resetWindowsButton.Size = new System.Drawing.Size(227, 46);
+            resetWindowsButton.TabIndex = 1;
+            resetWindowsButton.UseVisualStyleBackColor = false;
+            resetWindowsButton.Click += resetWindowsButton_Click;
+            resetWindowsButton.Enter += resetWindows_Enter;
+            resetWindowsButton.Leave += resetWindows_Leave;
+            resetWindowsButton.MouseLeave += resetWindows_MouseLeave;
+            resetWindowsButton.MouseHover += resetWindows_MouseHover;
             // 
             // button1
             // 
@@ -307,7 +386,7 @@ namespace Demo
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            button1.Location = new System.Drawing.Point(54, 122);
+            button1.Location = new System.Drawing.Point(57, 115);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(299, 64);
             button1.TabIndex = 0;
@@ -317,6 +396,22 @@ namespace Demo
             button1.Leave += button1_Leave;
             button1.MouseLeave += button1_MouseLeave;
             button1.MouseHover += button1_MouseHover;
+            // 
+            // settingsButton
+            // 
+            settingsButton.BackColor = System.Drawing.Color.Transparent;
+            settingsButton.BackgroundImage = (System.Drawing.Image)resources.GetObject("settingsButton.BackgroundImage");
+            settingsButton.BackgroundImageLayout = ImageLayout.Stretch;
+            settingsButton.Cursor = Cursors.Hand;
+            settingsButton.FlatAppearance.BorderSize = 0;
+            settingsButton.FlatStyle = FlatStyle.Flat;
+            settingsButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            settingsButton.Location = new System.Drawing.Point(373, 12);
+            settingsButton.Name = "settingsButton";
+            settingsButton.Size = new System.Drawing.Size(29, 29);
+            settingsButton.TabIndex = 24;
+            settingsButton.UseVisualStyleBackColor = false;
+            settingsButton.Click += button2_Click;
             // 
             // rotatedLabel1
             // 
@@ -357,103 +452,54 @@ namespace Demo
             pictureBox11.Visible = false;
             pictureBox11.WaitOnLoad = true;
             // 
-            // customButton7
-            // 
-            customButton7.BackColor = System.Drawing.Color.GhostWhite;
-            customButton7.BackgroundColor = System.Drawing.Color.GhostWhite;
-            customButton7.BorderColor = System.Drawing.Color.Silver;
-            customButton7.BorderRadius = 5;
-            customButton7.BorderSize = 1;
-            customButton7.FlatAppearance.BorderSize = 0;
-            customButton7.FlatStyle = FlatStyle.Flat;
-            customButton7.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            customButton7.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            customButton7.Icon = null;
-            customButton7.Image = (System.Drawing.Image)resources.GetObject("customButton7.Image");
-            customButton7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            customButton7.Location = new System.Drawing.Point(296, 444);
-            customButton7.Name = "customButton7";
-            customButton7.Padding = new Padding(6, 0, 6, 0);
-            customButton7.Size = new System.Drawing.Size(105, 33);
-            customButton7.TabIndex = 20;
-            customButton7.Text = "Salir";
-            customButton7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            customButton7.TextColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            customButton7.UseVisualStyleBackColor = false;
-            customButton7.Click += customButton7_Click;
-            // 
-            // checkBox1
-            // 
-            checkBox1.BackColor = System.Drawing.Color.Silver;
-            checkBox1.FlatStyle = FlatStyle.Flat;
-            checkBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox1.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox1.Location = new System.Drawing.Point(15, 443);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(163, 37);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "Iniciar con Windows";
-            checkBox1.UseVisualStyleBackColor = false;
-            checkBox1.Visible = false;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
-            // 
-            // label1
-            // 
-            label1.BackColor = System.Drawing.Color.Silver;
-            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            label1.Location = new System.Drawing.Point(0, 438);
-            label1.Name = "label1";
-            label1.Padding = new Padding(5);
-            label1.Size = new System.Drawing.Size(413, 47);
-            label1.TabIndex = 2;
-            label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            label1.Click += label1_Click;
-            // 
             // labelVersion
             // 
             labelVersion.BackColor = System.Drawing.Color.Silver;
             labelVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             labelVersion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            labelVersion.Location = new System.Drawing.Point(0, 0);
+            labelVersion.Location = new System.Drawing.Point(0, 419);
             labelVersion.Name = "labelVersion";
             labelVersion.Padding = new Padding(5);
             labelVersion.Size = new System.Drawing.Size(413, 32);
             labelVersion.TabIndex = 23;
             labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // checkBox2
+            // pictureBox7
             // 
-            checkBox2.BackColor = System.Drawing.Color.Silver;
-            checkBox2.Checked = true;
-            checkBox2.CheckState = CheckState.Checked;
-            checkBox2.FlatStyle = FlatStyle.Flat;
-            checkBox2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox2.ForeColor = System.Drawing.Color.FromArgb(50, 53, 51);
-            checkBox2.Location = new System.Drawing.Point(184, 444);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new System.Drawing.Size(94, 37);
-            checkBox2.TabIndex = 24;
-            checkBox2.Text = "Onti";
-            checkBox2.UseVisualStyleBackColor = false;
-            checkBox2.Visible = false;
-            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            pictureBox7.BackColor = System.Drawing.Color.Transparent;
+            pictureBox7.Image = (System.Drawing.Image)resources.GetObject("pictureBox7.Image");
+            pictureBox7.Location = new System.Drawing.Point(0, -1);
+            pictureBox7.Name = "pictureBox7";
+            pictureBox7.Size = new System.Drawing.Size(413, 99);
+            pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox7.TabIndex = 23;
+            pictureBox7.TabStop = false;
+            // 
+            // certButtonPanel
+            // 
+            certButtonPanel.BackColor = System.Drawing.Color.FromArgb(235, 240, 246, 255);
+            certButtonPanel.Location = new System.Drawing.Point(0, 98);
+            certButtonPanel.Name = "certButtonPanel";
+            certButtonPanel.Size = new System.Drawing.Size(413, 102);
+            certButtonPanel.TabIndex = 26;
             // 
             // Signature
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.SystemColors.Control;
-            ClientSize = new System.Drawing.Size(413, 484);
-            Controls.Add(checkBox2);
+            ClientSize = new System.Drawing.Size(413, 449);
+            Controls.Add(mainPanel);
+            Controls.Add(button1);
+            Controls.Add(settingsButton);
+            Controls.Add(pictureBox7);
             Controls.Add(labelVersion);
             Controls.Add(rotatedLabel1);
-            Controls.Add(checkBox1);
             Controls.Add(pictureBox12);
-            Controls.Add(customButton7);
-            Controls.Add(panel2);
-            Controls.Add(label1);
             Controls.Add(pictureBox11);
+            Controls.Add(certPanel);
+            Controls.Add(certButtonPanel);
+            Controls.Add(serviceStatusPanel);
             Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             ForeColor = System.Drawing.Color.Black;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -465,16 +511,18 @@ namespace Demo
             Load += Configuración_Load;
             Resize += Form_Hide;
             contextMenuStrip1.ResumeLayout(false);
-            panel2.ResumeLayout(false);
-            panel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            certPanel.ResumeLayout(false);
+            mainPanel.ResumeLayout(false);
+            settingsPanel.ResumeLayout(false);
             panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
-            panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            serviceStatusPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureErrorBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ResumeLayout(false);
         }
 
@@ -484,7 +532,7 @@ namespace Demo
         private ToolStripMenuItem showToolStripMenuItem;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
-        private Panel panel2;
+        private Panel certPanel;
         private Panel panel9;
         private Button button1;
         private PictureBox pictureBox1;
@@ -492,22 +540,26 @@ namespace Demo
         private Panel panel4;
         private PictureBox pictureBox5;
         private Label label6;
-        private ListView listView1;
-        private ColumnHeader columnHeader1;
-        private ColumnHeader columnHeader2;
-        private Panel panel7;
-        private Label label2;
-        private Label label3;
-        private Panel panel3;
-        private CustomButton customButton7;
-        private Label label1;
-        private CheckBox checkBox1;
-        private PictureBox pictureBox7;
+        private Panel mainPanel;
+        private CheckBox checkBoxIniciarConWindows;
         private PictureBox pictureBox11;
         private PictureBox pictureBox12;
         private RotatedLabel rotatedLabel1;
         private Label labelVersion;
-        private CheckBox checkBox2;
+        private CheckBox CheckBoxOnti;
+        private Button settingsButton;
+        private Panel settingsPanel;
+        private Panel serviceStatusPanel;
+        private Button resetWindowsButton;
+        private PictureBox pictureErrorBox;
+        private PictureBox pictureBox7;
+        private ListView listView1;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private Label label3;
+        private Label label2;
+        private Panel certButtonPanel;
+        private CheckBox checkBoxMinimizado;
     }
 }
 

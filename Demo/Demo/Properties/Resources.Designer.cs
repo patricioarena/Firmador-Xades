@@ -91,6 +91,16 @@ namespace Demo.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap authentica_alert {
+            get {
+                object obj = ResourceManager.GetObject("authentica-alert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -----BEGIN CERTIFICATE-----
         ///MIIFBjCCAu6gAwIBAgIIbypojB20TkowDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
         ///AxMKQXV0aGVudGljYTAeFw0yNDExMDEwNDM2NDVaFw0zNDEwMzEwNDM2NDVaMBUx
@@ -190,6 +200,26 @@ namespace Demo.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap boton_reiniciar {
+            get {
+                object obj = ResourceManager.GetObject("boton-reiniciar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boton_reiniciar_hover {
+            get {
+                object obj = ResourceManager.GetObject("boton-reiniciar-hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap boton1 {
             get {
                 object obj = ResourceManager.GetObject("boton1", resourceCulture);
@@ -204,6 +234,16 @@ namespace Demo.Properties {
             get {
                 object obj = ResourceManager.GetObject("cucarda", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] engranaje {
+            get {
+                object obj = ResourceManager.GetObject("engranaje", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

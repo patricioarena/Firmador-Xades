@@ -10,9 +10,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Demo
@@ -56,11 +59,14 @@ namespace Demo
         public Signature()
         {
             this.InitializeComponent();
-
-            //if (IsFirstRun())
-            //{
-            //    RegisterStartup();
-            //}
+            checkBoxMinimizado.Checked = (bool)Properties.Settings.Default["Minimized"];
+            CheckBoxOnti.Checked = (bool)Properties.Settings.Default["OnlyOnti"];
+            if ((bool)Properties.Settings.Default["Minimized"])
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
+                this.Hide();
+            }
 
             var position = rotatedLabel1.Parent.PointToScreen(rotatedLabel1.Location);
             position = pictureBox12.PointToClient(position);
@@ -70,9 +76,17 @@ namespace Demo
             this.PublishVersion();
             LoadCheckeds();
             this.listView1.ColumnWidthChanging += new ColumnWidthChangingEventHandler(listView1_ColumnWidthChanging);
-            this.panel7.Visible = true;
-            this.panel2.Visible = true;
-            this.panel3.Visible = false;
+            this.mainPanel.Visible = true;
+            this.certPanel.Visible = false;
+            this.settingsPanel.Visible = false;
+            this.serviceStatusPanel.Visible = false;
+            this.settingsButton.Visible = true;
+            this.mainPanel.BringToFront();
+
+            GetDataAsync().ContinueWith(task =>
+            {
+                this.Invoke(() => this.ShouldBeShowErrorView(task.Result));
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public static Signature GetInstance()
@@ -82,6 +96,40 @@ namespace Demo
                 _instance = new Signature();
             }
             return _instance;
+        }
+
+        public static async Task<bool> GetDataAsync()
+        {
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage response = await httpClient.GetAsync("https://localhost:8400/api/signature/ping");
+                return response.StatusCode != HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en GetDataAsync: {ex.Message}"); // Mejor loguear el error
+                return false;
+            }
+        }
+
+        private void ShouldBeShowErrorView(bool isNeedViewError)
+        {
+            if (isNeedViewError)
+            {
+                this.settingsButton.Visible = false;
+
+                this.mainPanel.SendToBack();
+                this.mainPanel.Visible = false;
+
+                this.certPanel.SendToBack();
+                this.certPanel.Visible = false;
+
+                this.serviceStatusPanel.BringToFront();
+                this.serviceStatusPanel.Visible = true;
+            }
+            this.Invalidate();
+            this.Refresh();
         }
 
         private void pictureBox11_Paint(object sender, PaintEventArgs e)
@@ -137,31 +185,44 @@ namespace Demo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(panel2.Visible);
-            Console.WriteLine(panel7.Visible);
+            certPanel.Visible = !certPanel.Visible;
+            mainPanel.Visible = !mainPanel.Visible;
 
-            panel3.Visible = !panel3.Visible;
-            panel7.Visible = !panel7.Visible;
-
-            if (panel3.Visible == true)
+            if (certPanel.Visible == true)
             {
-                panel7.SendToBack();
-                panel2.SendToBack();
-                panel3.BringToFront();
+                settingsButton.Enabled = false;
+                mainPanel.SendToBack();
+                certPanel.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            if (panel3.Visible == false)
+            if (certPanel.Visible == false)
             {
-                panel3.SendToBack();
-                panel2.SendToBack();
-                panel7.BringToFront();
+                settingsButton.Enabled = true;
+                certPanel.SendToBack();
+                mainPanel.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            panel7.Refresh();
-            Console.WriteLine("cambie la prop visible del panel");
+            mainPanel.Refresh();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            settingsPanel.Visible = !settingsPanel.Visible;
+            if (settingsPanel.Visible == true)
+            {
+                button1.Enabled = false;
+                settingsPanel.BringToFront();
+            }
+            if (settingsPanel.Visible == false)
+            {
+                button1.Enabled = true;
+                settingsPanel.SendToBack();
+            }
+            mainPanel.Refresh();
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             Close();
@@ -257,66 +318,36 @@ namespace Demo
             X509Certificate2 certificate = collection.OfType<X509Certificate2>().Where(cert => cert.Thumbprint == thumbprint).FirstOrDefault();
             X509Certificate2UI.DisplayCertificate(certificate);
         }
-        //private void LoadCheckeds()
-        //{
-        //    using (RegistryKey registry = Registry.CurrentUser.OpenSubKey(_keyName))
-        //    {
-        //        List<string> names = registry.GetValueNames().ToList();
-        //        if (names.Contains(_applicationName).Equals(true))
-        //        {
-        //            checkBox1.Checked = true;
-        //        }
-        //        else
-        //        {
-        //            checkBox1.Checked = false;
-        //        }
-        //    }
-        //}
 
         private void LoadCheckeds()
         {
             if (StartupRegistryHelpers.GetIniciarConWindows())
             {
-                checkBox1.Checked = true;
+                checkBoxIniciarConWindows.Checked = true;
             }
             else
             {
-                checkBox1.Checked = false;
+                checkBoxIniciarConWindows.Checked = false;
             }
         }
 
         private void button1_Leave(object sender, EventArgs e)
         {
-            //Console.WriteLine("sali del boton");
         }
         private void button1_Enter(object sender, EventArgs e)
         {
-            //Console.WriteLine("entré al boton");
         }
 
-        
-        // ahora no se registra mas la app si no un script intermedio para que la desisntalaacion sea lipia
-        // la version anterior dejaba el registro con la referencia a Authentica
-
-        //private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (checkBox1.Checked == true)
-        //    {
-        //        Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
-        //    }
-        //    else
-        //    {
-        //        Registry.CurrentUser.OpenSubKey(_keyName, true).DeleteValue(_applicationName);
-        //    }
-        //}
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            StartupRegistryHelpers.RegisterStartupScript(checkBox1.Checked);
+            StartupRegistryHelpers.RegisterStartupScript(checkBoxIniciarConWindows.Checked);
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            Program._ontiChecked = !Program._ontiChecked;
+            //Program._ontiChecked = !Program._ontiChecked;
+            Properties.Settings.Default["OnlyOnti"] = this.CheckBoxOnti.Checked;
+            Properties.Settings.Default.Save();
         }
 
         void listView1_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -332,7 +363,6 @@ namespace Demo
 
         private void label6_Click(object sender, EventArgs e)
         {
-            //Process.Start(_fiscaliaWeb);
             try
             {
                 Process.Start(new ProcessStartInfo
@@ -405,32 +435,28 @@ namespace Demo
 
         private void customButton5_Click(object sender, EventArgs e)
         {
-            panel2.Visible = !panel2.Visible;
+            certPanel.Visible = !certPanel.Visible;
 
-            if (panel2.Visible == true)
+            if (certPanel.Visible == true)
             {
-                panel3.SendToBack();
-                panel2.BringToFront();
-                panel7.BringToFront();
+                certPanel.SendToBack();
+                mainPanel.BringToFront();
                 listView1.Refresh();
                 LoadViewList();
             }
-            if (panel2.Visible == false)
+            if (certPanel.Visible == false)
             {
-                panel2.SendToBack();
-                panel7.SendToBack();
-                panel3.SendToBack();
+                certPanel.SendToBack();
+                mainPanel.SendToBack();
                 listView1.Refresh();
                 LoadViewList();
             }
-            //Console.WriteLine("cambie la prop visible del panel");
         }
 
         private void customButton6_Click(object sender, EventArgs e)
         {
-            panel2.Visible = !panel2.Visible;
-            panel2.Refresh();
-            //Console.WriteLine("cambie la prop visible del panel");
+            certPanel.Visible = !certPanel.Visible;
+            certPanel.Refresh();
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -498,58 +524,43 @@ namespace Demo
             button1.BackgroundImage =
                 (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton_certificados");
         }
+        private void resetWindows_MouseHover(object sender, EventArgs e)
+        {
+            resetWindowsButton.BackgroundImage =
+                (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton-reiniciar-hover");
+        }
 
-        //private void CreateSubKeyFirstRun()
-        //{
-        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(_keyName, true))
-        //    {
-        //        if (key != null && key.GetValue(_applicationName) != null)
-        //        {
-        //            key.DeleteValue(_applicationName, false);
-        //        }
-        //    }
+        private void resetWindows_MouseLeave(object sender, EventArgs e)
+        {
+            resetWindowsButton.BackgroundImage =
+                (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("boton-reiniciar");
+        }
 
-        //    if (checkBox1.Checked)
-        //    {
-        //        Registry.CurrentUser.CreateSubKey(_keyName).SetValue(_applicationName, $"\"{appExe}\"", RegistryValueKind.String);
-        //    }
-        //}
-
-        //private bool IsFirstRun()
-        //{
-        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryPath, true))
-        //    {
-        //        if (key == null || key.GetValue(FirstRunKey) == null)
-        //        {
-        //            using (RegistryKey newKey = Registry.CurrentUser.CreateSubKey(RegistryPath))
-        //            {
-        //                newKey.SetValue(FirstRunKey, "1", RegistryValueKind.String);
-        //            }
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
-        //private void RegisterStartup()
-        //{
-        //    string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentica.exe");
-
-        //    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKeyPath, true))
-        //    {
-        //        if (key.GetValue(AppName) == null)
-        //        {
-        //            key.SetValue(AppName, $"\"{appPath}\"", RegistryValueKind.String);
-        //            //this.CreateSubKeyFirstRun();
-        //            StartupRegistryHelpers.RegisterStartupScript(true);
-        //            MessageBox.Show("Se ha registrado la aplicación para iniciarse con Windows automáticamente.");
-        //        }
-        //    }
-        //}
+        private void resetWindows_Leave(object sender, EventArgs e)
+        {
+        }
+        private void resetWindows_Enter(object sender, EventArgs e)
+        {
+        }
 
         private void pictureBox5_Click(object sender, EventArgs e)
         {
+        }
 
+        private void resetWindowsButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("shutdown", "/r /f /t 0");
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxMinimizado_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["Minimized"] = this.checkBoxMinimizado.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }
