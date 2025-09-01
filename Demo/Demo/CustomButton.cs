@@ -52,7 +52,7 @@ namespace Demo
             get { return BackColor; }
             set { BackColor = value; }
         }
-        [Category("Text Color")]
+        [Category("Forbidden Color")]
         public Color TextColor
         {
             get { return ForeColor; }

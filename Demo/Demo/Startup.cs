@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Demo.Handlers;
+using Demo.Middleware;
 using Demo.Properties;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -89,6 +90,8 @@ namespace Demo
             app.UseCors("AllowAll");
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ValidateRefererMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
