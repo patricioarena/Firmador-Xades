@@ -1,0 +1,3 @@
+[submodule "ClientValidation"]
+	path = ClientValidation
+	url = git@github.com:patricioarena/ClientValidation.git
