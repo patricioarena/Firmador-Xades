@@ -97,7 +97,7 @@ namespace Demo.Utils
         public static X509Certificate2 SelectCertificate(string message = null, string title = null, bool onlyFirmaDigital = true)
         {
             // Retornar certificado cacheado si ya fue seleccionado anteriormente
-            if ((_cachedCertificateSavedTime != null) && (DateTime.Now - _cachedCertificateSavedTime).Value.TotalSeconds > 60 )
+            if (_cachedCertificateSavedTime != null && (DateTime.Now - _cachedCertificateSavedTime).Value.TotalSeconds > 60 )
             {
                 _cachedCertificate = null;
                 _cachedCertificateSavedTime = null;
@@ -119,7 +119,7 @@ namespace Demo.Utils
                 X509Certificate2Collection collection = (X509Certificate2Collection)store.Certificates;
                 X509Certificate2Collection fcollection = (X509Certificate2Collection)collection.Find(X509FindType.FindByTimeValid, DateTime.Now, false);
                 if ((bool)Properties.Settings.Default["OnlyOnti"])
-                    fcollection = filterBySerialNumber(fcollection);
+                    fcollection = FilterBySerialNumber(fcollection);
                 if (string.IsNullOrEmpty(title))
                 {
                     title = "Seleccione un certificado.";
@@ -166,7 +166,7 @@ namespace Demo.Utils
             }
             return cert;
         }
-        private static X509Certificate2Collection filterBySerialNumber(X509Certificate2Collection installedCertificatesCollection)
+        private static X509Certificate2Collection FilterBySerialNumber(X509Certificate2Collection installedCertificatesCollection)
         {
             string issuer = Issuer;
             X509Certificate2Collection ontiCertificates = new X509Certificate2Collection();

@@ -32,7 +32,7 @@ namespace Demo
 
         private static string _path = AppDomain.CurrentDomain.BaseDirectory;
 
-        private static string appExe = Path.Combine(_path, "Authentica.exe");
+        private static string _appExe = Path.Combine(_path, "Authentica.exe");
 
         private const string RegistryPath = @"Software\AuthenticaApp";
 
@@ -54,7 +54,7 @@ namespace Demo
 
         private static Signature _instance;
 
-        private PictureBox _pictureBox;
+        private PictureBox pictureBox;
 
         public Signature()
         {

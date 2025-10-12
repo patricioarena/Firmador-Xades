@@ -8,9 +8,9 @@ namespace Demo
     internal class RotatedLabel : Control
     {
 
-        private float _rotationAngle = -45f;
-        private PictureBox _pictureBox;
-        private Color _backgroundColor = Color.Transparent;
+        private float rotationAngle = -45f;
+        private PictureBox pictureBox;
+        private Color backgroundColor = Color.Transparent;
 
         public RotatedLabel()
         {
@@ -22,20 +22,20 @@ namespace Demo
 
         public float RotationAngle
         {
-            get { return _rotationAngle; }
+            get { return rotationAngle; }
             set
             {
-                _rotationAngle = value;
+                rotationAngle = value;
                 Invalidate();
             }
         }
 
         public Color BackgroundColor
         {
-            get { return _backgroundColor; }
+            get { return backgroundColor; }
             set
             {
-                _backgroundColor = value;
+                backgroundColor = value;
                 Invalidate();
             }
         }
@@ -67,14 +67,14 @@ namespace Demo
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            using (Brush backgroundBrush = new SolidBrush(_backgroundColor))
+            using (Brush backgroundBrush = new SolidBrush(backgroundColor))
             using (Brush textBrush = new SolidBrush(ForeColor))
             {
                 SizeF textSize = e.Graphics.MeasureString(Text, Font);
                 PointF center = new PointF(ClientSize.Width / 2f, ClientSize.Height / 2f);
 
                 g.TranslateTransform(center.X, center.Y);
-                g.RotateTransform(_rotationAngle);
+                g.RotateTransform(rotationAngle);
                 g.TranslateTransform(-center.X, -center.Y);
                 g.DrawString(Text, Font, textBrush, center.X - (textSize.Width / 2f), center.Y - (textSize.Height / 2f));
                 g.ResetTransform();
