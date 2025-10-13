@@ -1,16 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Demo.Extensions;
+using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Demo.Extensions;
-using Helper.Results;
-using Microsoft.AspNetCore.Mvc;
-using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
-using System.Net;
 using System.IO;
-using Microsoft.AspNetCore.Components.RenderTree;
+using System.Threading.Tasks;
 
 namespace Demo.Middleware;
 public class ValidateRefererMiddleware
@@ -18,7 +10,9 @@ public class ValidateRefererMiddleware
     private const string Referer = "Referer";
 
     private const string Forbidden = "Forbidden";
+
     private const string whitelist = "\\whitelist.txt";
+
     private readonly RequestDelegate _next;
 
     public ValidateRefererMiddleware(RequestDelegate next)
