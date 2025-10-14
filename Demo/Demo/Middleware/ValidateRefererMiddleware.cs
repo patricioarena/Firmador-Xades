@@ -5,19 +5,20 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace Demo.Middleware;
+
 public class ValidateRefererMiddleware
 {
     private const string Referer = "Referer";
 
     private const string Forbidden = "Forbidden";
 
-    private const string whitelist = "\\whitelist.txt";
+    private const string Whitelist = "\\whitelist.txt";
 
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate next;
 
     public ValidateRefererMiddleware(RequestDelegate next)
     {
-        _next = next;
+        this.next = next;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -37,10 +38,10 @@ public class ValidateRefererMiddleware
             Directory.CreateDirectory(resourcesPath);
         }
 
-        var result = handle(resourcesPath, referer);
+        var result = Handle(resourcesPath, referer);
         if (result)
         {
-            await _next(context);
+            await next(context);
         }
 
         context.Response.StatusCode = StatusCodes.Status403Forbidden;
@@ -48,14 +49,14 @@ public class ValidateRefererMiddleware
         return;
     }
 
-    private bool handle(string resourcesPath, string referer)
+    private bool Handle(string resourcesPath, string referer)
     {
         if (ExistsWhitelist(resourcesPath))
         {
             if (IsEmpty(resourcesPath))
             {
                 //TODO: Descargar la whitelist y reemplazarla por la descargada
-                reWriteWhitelist(resourcesPath, referer);
+                ReWriteWhitelist(resourcesPath, referer);
             }
             else
             {
@@ -65,20 +66,21 @@ public class ValidateRefererMiddleware
         else
         {
             //TODO: Descargar la whitelist y guardarla en la carpeta
-            mockDownload(resourcesPath);
+            MockDownload(resourcesPath);
         }
+
         return false;
     }
 
-    private bool reWriteWhitelist(string resourcesPath, string referer) => throw new NotImplementedException();
+    private bool ReWriteWhitelist(string resourcesPath, string referer) => throw new NotImplementedException();
 
-    private bool IsEmpty(string resourcesPath) => new FileInfo(resourcesPath + whitelist).Length == 0;
+    private bool IsEmpty(string resourcesPath) => new FileInfo(resourcesPath + Whitelist).Length == 0;
 
-    private bool ExistsWhitelist(string resourcesPath) => File.Exists(resourcesPath + whitelist);
+    private bool ExistsWhitelist(string resourcesPath) => File.Exists(resourcesPath + Whitelist);
 
     private bool ExistsRegister(string resourcesPath, string entry)
     {
-        foreach (string line in File.ReadLines(resourcesPath + whitelist))
+        foreach (string line in File.ReadLines(resourcesPath + Whitelist))
         {
             if (line.Trim() == entry)
             {
@@ -91,16 +93,16 @@ public class ValidateRefererMiddleware
         return false;
     }
 
-    private static void mockDownload(string resourcesPath)
+    private static void MockDownload(string resourcesPath)
     {
-        File.Create(resourcesPath + whitelist).Dispose();
-        string[] registros = new string[]
-        {
-                "web-ar.com",
-                "web-ar.com.ar",
-                "arba.com",
-                "other.com"
-        };
-        File.WriteAllLines(resourcesPath + whitelist, registros);
+        File.Create(resourcesPath + Whitelist).Dispose();
+        string[] registros =
+        [
+            "web-ar.com",
+            "web-ar.com.ar",
+            "arba.com",
+            "other.com"
+        ];
+        File.WriteAllLines(resourcesPath + Whitelist, registros);
     }
 }
