@@ -14,14 +14,14 @@ namespace Demo
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration configuration;
 
-        private readonly bool _isSwaggerConfigured;
+        private readonly bool isSwaggerConfigured;
         
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _isSwaggerConfigured = _configuration.GetSection("KestrelSettings")
+            this.configuration = configuration;
+            isSwaggerConfigured = this.configuration.GetSection("KestrelSettings")
                 .GetChildren().Any(x => x.Key == "Swagger");
         }
         
@@ -73,7 +73,7 @@ namespace Demo
                 app.UseHsts();
             }
 
-            if (_isSwaggerConfigured)
+            if (isSwaggerConfigured)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>

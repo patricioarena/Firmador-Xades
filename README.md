@@ -131,6 +131,62 @@ El proyecto esta basado en la libreria https://github.com/ctt-gob-es/FirmaXadesN
 - https://www.w3.org/TR/2003/NOTE-XAdES-20030220/
 
 
+# Clonación y actualización del proyecto
+
+## Clonar el proyecto por primera vez
+
+Para obtener una copia del proyecto incluyendo todos los submódulos, ejecuta:
+
+```bash
+git clone --recurse-submodules https://github.com/patricioarena/Firmador-Xades.git
+cd Firmador-Xades
+```
+
+## Si ya tienes el repositorio clonado
+
+Si ya clonaste el repositorio sin los submódulos, puedes inicializarlos y actualizarlos con:
+
+```bash
+git submodule init
+git submodule update --recursive
+```
+
+## Actualizar el proyecto existente
+
+Cuando hay cambios en el repositorio principal o en los submódulos:
+
+```bash
+# Actualizar el repositorio principal
+git pull
+
+# Actualizar todos los submódulos a sus últimas versiones
+git submodule update --remote --merge
+```
+
+## Trabajando con cambios en submódulos
+
+Si necesitas hacer cambios en un submódulo:
+
+1. Navega al directorio del submódulo:
+   ```bash
+   cd ClientValidation
+   ```
+
+2. Crea una nueva rama para tus cambios:
+   ```bash
+   git checkout -b mi-rama-cambios
+   ```
+
+3. Después de hacer tus cambios, haz commit y push al repositorio del submódulo
+
+4. Vuelve al directorio principal y haz commit de la nueva referencia del submódulo:
+   ```bash
+   cd ..
+   git add ClientValidation
+   git commit -m "Actualizar referencia del submódulo ClientValidation"
+   git push
+   ```
+
 # Información útil
 Compilar Windows Forms con visual studio 2019 : https://docs.microsoft.com/en-us/visualstudio/ide/create-csharp-winform-visual-studio?view=vs-2019
 

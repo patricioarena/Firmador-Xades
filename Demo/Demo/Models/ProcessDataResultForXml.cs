@@ -9,12 +9,12 @@ namespace Demo.Models
     {
         public string MimeType => "xml";
 
-        private List<string> _data;
+        private List<string> data;
 
         public List<string> Data
         {
-            get => _data.IsNull() ? null : _data;
-            set => _data = value.IsNull() ? null : EncodeData(value);
+            get => data.IsNull() ? null : data;
+            set => data = value.IsNull() ? null : EncodeData(value);
         }
 
         public string Code { get; set; }
