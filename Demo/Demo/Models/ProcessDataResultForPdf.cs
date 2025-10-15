@@ -7,14 +7,12 @@ namespace Demo.Models
 {
     public class ProcessDataResultForPdf
     {
-        public string MimeType => "pdf";
-
-        private List<string> data;
+        private List<string> _data;
 
         public List<string> Data
         {
-            get => data.IsNull() ? null : data;
-            set => data = value.IsNull() ? null : EncodeData(value);
+            get => _data.IsNull() ? null : _data;
+            set => _data = value.IsNull() ? null : EncodeData(value);
         }
 
         public string Code { get; set; }

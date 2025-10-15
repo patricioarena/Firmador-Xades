@@ -54,7 +54,7 @@ namespace Demo
 
         private static Signature _instance;
 
-        private PictureBox pictureBox;
+        private PictureBox _pictureBox;
 
         public Signature()
         {

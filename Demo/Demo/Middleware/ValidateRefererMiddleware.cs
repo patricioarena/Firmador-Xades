@@ -14,12 +14,9 @@ public class ValidateRefererMiddleware
 
     private const string Whitelist = "\\whitelist.txt";
 
-    private readonly RequestDelegate next;
+    private readonly RequestDelegate _next;
 
-    public ValidateRefererMiddleware(RequestDelegate next)
-    {
-        this.next = next;
-    }
+    public ValidateRefererMiddleware(RequestDelegate next) => _next = next;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -41,7 +38,7 @@ public class ValidateRefererMiddleware
         var result = Handle(resourcesPath, referer);
         if (result)
         {
-            await next(context);
+            await _next(context);
         }
 
         context.Response.StatusCode = StatusCodes.Status403Forbidden;

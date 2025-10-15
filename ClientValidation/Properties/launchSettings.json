@@ -2,40 +2,40 @@
   "profiles": {
     "ClientValidation": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:8080"
     },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true,
-      "useSSL": false,
-      "httpPort": 8080,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development",
         "ASPNETCORE_URLS": "http://+:8080"
-      }
+      },
+      "publishAllPorts": true,
+      "useSSL": false,
+      "httpPort": 8080
     },
     "Docker Compose": {
       "commandName": "DockerCompose",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://+:8080"
+      },
       "composeLaunchServiceName": "clientvalidation",
       "serviceActions": {
         "clientvalidation": "StartDebugging"
       },
       "composeLaunchUrl": "{Scheme}://{ServiceIPAddress}:{ServicePort}",
-      "commandVersion": "1.0",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://+:8080"
-      }
+      "commandVersion": "1.0"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -45,6 +45,14 @@
         "ASPNETCORE_ENVIRONMENT": "Production",
         "DOTNET_ENVIRONMENT": "Production"
       }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:58333/",
+      "sslPort": 44343
     }
   }
 }

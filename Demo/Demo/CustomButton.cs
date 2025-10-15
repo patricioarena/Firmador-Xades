@@ -10,39 +10,39 @@ namespace Demo
     internal class CustomButton : Button
     {
         //Fields
-        private int borderSize = 0;
-        private int borderRadius = 20;
-        private Color borderColor = Color.Silver;
-        private Image icon;
+        private int _borderSize = 0;
+        private int _borderRadius = 20;
+        private Color _borderColor = Color.Silver;
+        private Image _icon;
 
         //Properties
         [Category("Border Size")]
         public int BorderSize
         {
-            get { return borderSize; }
+            get { return _borderSize; }
             set
             {
-                borderSize = value;
+                _borderSize = value;
                 Invalidate();
             }
         }
         [Category("Border Radius")]
         public int BorderRadius
         {
-            get { return borderRadius; }
+            get { return _borderRadius; }
             set
             {
-                borderRadius = value;
+                _borderRadius = value;
                 Invalidate();
             }
         }
         [Category("Border Color")]
         public Color BorderColor
         {
-            get { return borderColor; }
+            get { return _borderColor; }
             set
             {
-                borderColor = value;
+                _borderColor = value;
                 Invalidate();
             }
         }
@@ -61,10 +61,10 @@ namespace Demo
         [Category("Image Icon")]
         public Image Icon
         {
-            get { return icon; }
+            get { return _icon; }
             set
             {
-                icon = value;
+                _icon = value;
                 Invalidate();
             }
         }
@@ -82,8 +82,8 @@ namespace Demo
         }
         private void Button_Resize(object sender, EventArgs e)
         {
-            if (borderRadius > Height)
-                borderRadius = Height;
+            if (_borderRadius > Height)
+                _borderRadius = Height;
         }
 
         //Methods
@@ -106,18 +106,18 @@ namespace Demo
             base.OnPaint(pevent);
 
             Rectangle rectSurface = ClientRectangle;
-            Rectangle rectBorder = Rectangle.Inflate(rectSurface, borderSize, borderSize);
+            Rectangle rectBorder = Rectangle.Inflate(rectSurface, _borderSize, _borderSize);
             int smoothSize = 2;
 
-            if (borderSize > 0)
-                smoothSize = borderSize;
+            if (_borderSize > 0)
+                smoothSize = _borderSize;
 
-            if (borderRadius > 2) //Rounded button
+            if (_borderRadius > 2) //Rounded button
             {
-                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
-                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
+                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, _borderRadius))
+                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, _borderRadius - _borderSize))
                 using (Pen penSurface = new Pen(Parent.BackColor, smoothSize))
-                using (Pen penBorder = new Pen(borderColor, borderSize))
+                using (Pen penBorder = new Pen(_borderColor, _borderSize))
                 {
                     pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     //Button surface
@@ -126,7 +126,7 @@ namespace Demo
                     pevent.Graphics.DrawPath(penSurface, pathSurface);
 
                     //Button border                    
-                    if (borderSize >= 1)
+                    if (_borderSize >= 1)
                         //Draw control border
                         pevent.Graphics.DrawPath(penBorder, pathBorder);
 
@@ -138,9 +138,9 @@ namespace Demo
                 //Button surface
                 Region = new Region(rectSurface);
                 //Button border
-                if (borderSize >= 1)
+                if (_borderSize >= 1)
                 {
-                    using (Pen penBorder = new Pen(borderColor, borderSize))
+                    using (Pen penBorder = new Pen(_borderColor, _borderSize))
                     {
                         penBorder.Alignment = PenAlignment.Inset;
                         pevent.Graphics.DrawRectangle(penBorder, 0, 0, Width - 1, Height - 1);
@@ -149,11 +149,11 @@ namespace Demo
                 }
             }
 
-            if (icon != null)
+            if (_icon != null)
             {
                 int iconX = 5; // Ajustar la posición X según tus necesidades
-                int iconY = (Height - icon.Height) / 2;
-                pevent.Graphics.DrawImage(icon, iconX, iconY);
+                int iconY = (Height - _icon.Height) / 2;
+                pevent.Graphics.DrawImage(_icon, iconX, iconY);
             }
 
             DropShadow(pevent.Graphics);
